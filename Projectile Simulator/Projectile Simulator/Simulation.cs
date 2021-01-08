@@ -6,7 +6,7 @@ using MonoGame.Forms.Controls;
 
 namespace Projectile_Simulator
 {
-    class DrawTest : MonoGameControl
+    class Simulation : MonoGameControl
     {
         protected override void Initialize()
         {
