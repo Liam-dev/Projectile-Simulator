@@ -28,5 +28,10 @@ namespace Projectile_Simulator
             velocity += acceleration * delta;
             Position += velocity * delta;
         }
+
+        public void ApplyForce(Vector2 force, Vector2 offset = default)
+        {
+            resultantForce += force;
+        }
     }
 }

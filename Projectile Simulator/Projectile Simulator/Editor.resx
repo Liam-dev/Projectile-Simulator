@@ -86,13 +86,26 @@
         hqArRNaMLA7CYANAAGYISIA0/O0/AID67ECmnhNDAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="printToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="undoToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACHSURBVDhP3ZJRCoAgEEQ9Wngsj+UJOkF1kwpEP6sxFdNt
-        098GHgk7+yxI5LHWHi2Eeh0MpZQsTYJt3Un+KnDODcaYEYNWAcAOdgUOSik/7EFr7SXptedpIW+lQBc7
-        2H18d3y2QAp6eBXgzPEqoEolZS8Jcr4EZT/8DXeigKNaypObOUL9ihAnoWKSj1JdahUAAAAASUVORK5C
-        YII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD8SURBVDhPYwCBb9++/UfG379/V/j69et8NPH3ILH3798L
+        gDUhA5AChuA5YAxiP3v+4X310pP/+WMXwcXl05f/B4mBDPry5YsBVCsEIBvw/M2H/3pFa+F8dBwzYR/Y
+        EBSXIBuArDln1uH/O88+AGPfth1w8Vk7r/wHeqcBqh3VAGRFIHEQBioOANlqV7MZLAey5PPnz/eh2rEb
+        AMNgOSAAGbLy8C0McTAgxgBgzCTgNQAfBoU6kMbtBXwAphkU+jDbMQIRF8CmGcQG2Y41QSEDXJpBYhgJ
+        CR0MnGYQACrsv/7oNTwfkKQZBkC57sT1p+CkTLJmGAAZQlgzAwMAZELRJbCyCiAAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="redoToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFXSURBVDhPY0AG////Z/v69Wvut2/fzrx///4nEP8F8m8A
+        ceP3798VgOL/kTFUGwR8+vRJFCh4cv3xO/9tqzf9Zwuf9585dO5/vaK1/6dtu/z/69dvz5+/+fCfIXgO
+        GKMYALSZ6cuXL4cbV56GK0DHQZ27/j988Q7ORzEAyIneff4BXDJz5qH/Vx68+n//+bv/7WvO/mcNmwcW
+        t6/djNOAbQEdO8ESKVMPgiQvAf3sCFIEwquP3IIbgtUAoP8fyKUvB0scvvL4P1CzAzAABZD9jI5RDPj8
+        +fN9eagBhy6DDXAmyQAgZyvMCwmT9gND/OvVHz9+qAJD/j/IEGwY3YDovRcewk1vWnkGpOAKyBCQS3Bh
+        qHZ4NB5oA4Y4miGXQekDqgw/ACoUAWkAaaTEEFBqHISGSKUsA4c8MHqToUoIA5ghfRsv/L98/yXIBRVQ
+        KeIBzBDcmhkYALpL7eRIZQaVAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="cutToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -122,6 +135,15 @@
         /MTaZGpa6MDDcfQ/AzFj5ZxvpZR7rXUD6DFrx58LAe/9Zq0V0GPWjo+Lr4GUkgSdcwL6/hy02F4Y8kXy
         yIswzlUBAwz3Eq5TgiOmBRr/EazLKn8ixqjyIhoFuIC9xpTg7EumBVx7LgtGQgjnAsJLGm+Cb2jxX8qY
         J5nBJhUlLbsqAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="runToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACjSURBVDhPY0AG3759O//lyxcDKJd0ADTgPxC///79ewJU
+        iDQAMiBmXsT/ey/v/f/69ev89+/fC0CliAMgAyy6TP67THT4v/vKTpBrSPMSzAAY7t7ZSZqX0A0AYZK8
+        hM0AECbaS7gMgGGCXiJkQP3mWvIMAHlh/bm15HkBFIiXHl0iLxBBTn7+/Dnp0Ui0k9EByACSnIwOQAYA
+        MUWZicTszMAAALXNKJGYqAh4AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="helpToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -209,6 +231,14 @@
         /MTaZGpa6MDDcfQ/AzFj5ZxvpZR7rXUD6DFrx58LAe/9Zq0V0GPWjo+Lr4GUkgSdcwL6/hy02F4Y8kXy
         yIswzlUBAwz3Eq5TgiOmBRr/EazLKn8ixqjyIhoFuIC9xpTg7EumBVx7LgtGQgjnAsJLGm+Cb2jxX8qY
         J5nBJhUlLbsqAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="fullscreenToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAAGdJREFUOE+9zzEOgCAMhWHO1iPLwdSl6zMMNRUqbSVx+INU+BIKgKXMYab7g5mR
+        yQSIKJQL1K3i2M9HbRYC5KBG9MwF5EIPyD4EzPoHWHpCOyirBvS/KdBf7pEQ4PUKZBqAr5nDeCgXejcO
+        TtaDMM8AAAAASUVORK5CYII=
 </value>
   </data>
 </root>
