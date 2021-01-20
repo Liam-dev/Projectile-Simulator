@@ -13,6 +13,7 @@ namespace Projectile_Simulator
         public Editor()
         {
             InitializeComponent();
+            
         }
 
         public Editor(string filename)

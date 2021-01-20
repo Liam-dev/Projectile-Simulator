@@ -17,7 +17,8 @@ namespace Projectile_Simulator
 
         private void newButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("New Simulation created");
+            Editor editor = new Editor();
+            editor.Show();
         }
 
         private void loadButton_Click(object sender, EventArgs e)
