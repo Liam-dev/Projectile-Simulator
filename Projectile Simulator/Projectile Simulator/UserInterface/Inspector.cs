@@ -24,6 +24,7 @@ namespace Projectile_Simulator.UserInterface
 
         private void Inspector_Load(object sender, EventArgs e)
         {
+
         }
     }
 }

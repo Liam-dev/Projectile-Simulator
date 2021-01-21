@@ -38,5 +38,10 @@ namespace Projectile_Simulator
             simulation.AddObject(p);
             inspector.Object = p;
         }
+
+        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
+        }
     }
 }

@@ -47,5 +47,10 @@ namespace Projectile_Simulator.UserInterface
         {
             objects.Add(obj);
         }
+
+        public List<SimulationObject> GetObjects()
+        {
+            return objects;
+        }
     }
 }
