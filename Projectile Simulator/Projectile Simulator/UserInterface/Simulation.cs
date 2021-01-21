@@ -37,7 +37,7 @@ namespace Projectile_Simulator.UserInterface
 
             foreach (SimulationObject obj in objects)
             {
-                Editor.spriteBatch.Draw(obj.Texture, obj.Position, Color.White);
+                obj.Draw(Editor.spriteBatch);
             }
 
             Editor.spriteBatch.End();

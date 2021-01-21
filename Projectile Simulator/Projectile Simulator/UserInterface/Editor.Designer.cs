@@ -41,7 +41,7 @@
             this.simulation.Location = new System.Drawing.Point(5, 52);
             this.simulation.MouseHoverUpdatesOnly = true;
             this.simulation.Name = "simulation";
-            this.simulation.Size = new System.Drawing.Size(944, 626);
+            this.simulation.Size = new System.Drawing.Size(816, 554);
             this.simulation.TabIndex = 0;
             this.simulation.Text = "Simulation";
             // 
@@ -49,9 +49,9 @@
             // 
             this.inspector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.inspector.Location = new System.Drawing.Point(964, 52);
+            this.inspector.Location = new System.Drawing.Point(836, 52);
             this.inspector.Name = "inspector";
-            this.inspector.Size = new System.Drawing.Size(288, 626);
+            this.inspector.Size = new System.Drawing.Size(288, 554);
             this.inspector.TabIndex = 3;
             // 
             // toolbar
@@ -61,7 +61,7 @@
             this.toolbar.Location = new System.Drawing.Point(0, 0);
             this.toolbar.Margin = new System.Windows.Forms.Padding(0);
             this.toolbar.Name = "toolbar";
-            this.toolbar.Size = new System.Drawing.Size(1264, 50);
+            this.toolbar.Size = new System.Drawing.Size(1136, 50);
             this.toolbar.TabIndex = 4;
             this.toolbar.BallButtonClicked += new System.EventHandler(this.toolbar_BallButtonClicked);
             // 
@@ -69,7 +69,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(1136, 609);
             this.Controls.Add(this.toolbar);
             this.Controls.Add(this.inspector);
             this.Controls.Add(this.simulation);

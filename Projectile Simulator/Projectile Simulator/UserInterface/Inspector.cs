@@ -6,28 +6,24 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Projectile_Simulator.Simulation;
 
 namespace Projectile_Simulator.UserInterface
 {
     public partial class Inspector : UserControl
     {
-        Vector2 stuff;
+        public SimulationObject Object
+        {
+            set { propertyGrid.SelectedObject = value; }
+        }
 
         public Inspector()
         {
             InitializeComponent();
-            stuff = new Vector2();
-            propertyGrid.SelectedObject = stuff;
         }
 
         private void Inspector_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void propertyGrid_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
