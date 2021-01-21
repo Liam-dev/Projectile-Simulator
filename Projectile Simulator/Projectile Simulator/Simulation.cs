@@ -11,16 +11,11 @@ namespace Projectile_Simulator
     {
         protected List<SimulationObject> objects;
 
-        Texture2D ballTexture;
-
         protected override void Initialize()
         {
             base.Initialize();
 
             objects = new List<SimulationObject>();
-
-            ballTexture = Editor.Content.Load<Texture2D>("ball");
-            AddObject(new PhysicsObject(new Vector2(50, 50), ballTexture, 20));
         }
 
         protected override void Update(GameTime gameTime)

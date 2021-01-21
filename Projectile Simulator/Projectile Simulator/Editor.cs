@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Projectile_Simulator
 {
@@ -14,12 +16,19 @@ namespace Projectile_Simulator
         public Editor()
         {
             InitializeComponent();
-            new UITypeEditor();
+            simulation.MouseHoverUpdatesOnly = false;
         }
 
+        /*
         public Editor(string filename)
         {
+            
+        }
+        */
 
+        private void toolbar_BallButtonClicked(object sender, EventArgs e)
+        {
+            simulation.AddObject(new Projectile(new Vector2(50, 50), simulation.Editor.Content.Load<Texture2D>("ball"), 20));
         }
     }
 }

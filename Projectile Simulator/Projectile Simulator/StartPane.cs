@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Projectile_Simulator
 {
@@ -15,10 +16,15 @@ namespace Projectile_Simulator
             InitializeComponent();
         }
 
+        private void StartPane_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void newButton_Click(object sender, EventArgs e)
         {
-            Editor editor = new Editor();
-            editor.Show();
+            new Thread(() => new Editor().ShowDialog()).Start();
+            Application.ExitThread();
         }
 
         private void loadButton_Click(object sender, EventArgs e)
@@ -31,5 +37,6 @@ namespace Projectile_Simulator
         {
             MessageBox.Show("Preferences opening");
         }
+       
     }
 }

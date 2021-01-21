@@ -16,7 +16,6 @@ namespace Projectile_Simulator
         public PhysicsObject(Vector2 position, Texture2D texture, float mass) : base(position, texture)
         {
             this.mass = mass;
-            resultantForce = mass * 500f * Vector2.UnitY;
         }
 
         public override void Update(GameTime gameTime)

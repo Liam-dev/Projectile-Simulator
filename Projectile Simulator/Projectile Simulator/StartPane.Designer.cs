@@ -95,6 +95,7 @@
             this.Controls.Add(this.title);
             this.Name = "StartPane";
             this.Size = new System.Drawing.Size(330, 380);
+            this.Load += new System.EventHandler(this.StartPane_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

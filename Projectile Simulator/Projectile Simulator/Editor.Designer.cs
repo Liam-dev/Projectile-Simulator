@@ -30,8 +30,7 @@
         {
             this.simulation = new Projectile_Simulator.Simulation();
             this.inspector = new Projectile_Simulator.Inspector();
-            this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolbar = new Projectile_Simulator.Toolbar();
             this.SuspendLayout();
             // 
             // simulation
@@ -52,40 +51,32 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inspector.Location = new System.Drawing.Point(964, 52);
             this.inspector.Name = "inspector";
-            this.inspector.Size = new System.Drawing.Size(250, 626);
+            this.inspector.Size = new System.Drawing.Size(288, 626);
             this.inspector.TabIndex = 3;
             // 
-            // menuStrip
+            // toolbar
             // 
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1264, 24);
-            this.menuStrip.TabIndex = 4;
-            this.menuStrip.Text = "menuStrip1";
-            // 
-            // toolStrip
-            // 
-            this.toolStrip.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1264, 25);
-            this.toolStrip.TabIndex = 5;
-            this.toolStrip.Text = "toolStrip1";
+            this.toolbar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.toolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.toolbar.Location = new System.Drawing.Point(0, 0);
+            this.toolbar.Margin = new System.Windows.Forms.Padding(0);
+            this.toolbar.Name = "toolbar";
+            this.toolbar.Size = new System.Drawing.Size(1264, 50);
+            this.toolbar.TabIndex = 4;
+            this.toolbar.BallButtonClicked += new System.EventHandler(this.toolbar_BallButtonClicked);
             // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.toolbar);
             this.Controls.Add(this.inspector);
             this.Controls.Add(this.simulation);
-            this.Controls.Add(this.menuStrip);
-            this.MainMenuStrip = this.menuStrip;
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "Editor";
             this.Text = "Editor";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -93,7 +84,6 @@
 
         private Simulation simulation;
         private Inspector inspector;
-        private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStrip toolStrip;
+        private Toolbar toolbar;
     }
 }
