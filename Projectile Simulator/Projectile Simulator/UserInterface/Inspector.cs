@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 
-namespace Projectile_Simulator
+namespace Projectile_Simulator.UserInterface
 {
     public partial class Inspector : UserControl
     {

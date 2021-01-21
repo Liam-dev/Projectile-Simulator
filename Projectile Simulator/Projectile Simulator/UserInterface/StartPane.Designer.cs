@@ -1,4 +1,4 @@
-﻿namespace Projectile_Simulator
+﻿namespace Projectile_Simulator.UserInterface
 {
     partial class StartPane
     {
@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartPane));
             this.title = new System.Windows.Forms.Label();
-            this.newButton = new Projectile_Simulator.LargeMenuButton();
-            this.loadButton = new Projectile_Simulator.LargeMenuButton();
-            this.preferencesButton = new Projectile_Simulator.LargeMenuButton();
+            this.newButton = new Projectile_Simulator.UserInterface.LargeMenuButton();
+            this.loadButton = new Projectile_Simulator.UserInterface.LargeMenuButton();
+            this.preferencesButton = new Projectile_Simulator.UserInterface.LargeMenuButton();
             this.SuspendLayout();
             // 
             // title

@@ -1,4 +1,4 @@
-﻿namespace Projectile_Simulator
+﻿namespace Projectile_Simulator.UserInterface
 {
     partial class Homepage
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.title = new System.Windows.Forms.Label();
-            this.startPane1 = new Projectile_Simulator.StartPane();
+            this.startPane1 = new Projectile_Simulator.UserInterface.StartPane();
             this.SuspendLayout();
             // 
             // title

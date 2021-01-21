@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Projectile_Simulator.Simulation;
 
-namespace Projectile_Simulator
+namespace Projectile_Simulator.Simulation
 {
     class Projectile : PhysicsObject
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Projectile_Simulator
+namespace Projectile_Simulator.UserInterface
 {
     public partial class StartPane : UserControl
     {

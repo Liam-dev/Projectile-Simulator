@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Projectile_Simulator
+namespace Projectile_Simulator.UserInterface
 {
     public partial class Homepage : Form
     {

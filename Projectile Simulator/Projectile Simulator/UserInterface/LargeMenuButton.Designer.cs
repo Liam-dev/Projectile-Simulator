@@ -1,4 +1,4 @@
-﻿namespace Projectile_Simulator
+﻿namespace Projectile_Simulator.UserInterface
 {
     partial class LargeMenuButton
     {

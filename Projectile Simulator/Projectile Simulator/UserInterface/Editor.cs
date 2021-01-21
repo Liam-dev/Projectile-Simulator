@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Projectile_Simulator.Simulation;
 
 namespace Projectile_Simulator
 {
@@ -17,6 +18,11 @@ namespace Projectile_Simulator
         {
             InitializeComponent();
             simulation.MouseHoverUpdatesOnly = false;
+        }
+
+        private void Editor_Load(object sender, EventArgs e)
+        {
+
         }
 
         /*

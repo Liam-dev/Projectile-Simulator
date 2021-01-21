@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.simulation = new Projectile_Simulator.Simulation();
-            this.inspector = new Projectile_Simulator.Inspector();
-            this.toolbar = new Projectile_Simulator.Toolbar();
+            this.simulation = new Projectile_Simulator.UserInterface.Simulation();
+            this.inspector = new Projectile_Simulator.UserInterface.Inspector();
+            this.toolbar = new Projectile_Simulator.UserInterface.Toolbar();
             this.SuspendLayout();
             // 
             // simulation
@@ -76,14 +76,14 @@
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "Editor";
             this.Text = "Editor";
+            this.Load += new System.EventHandler(this.Editor_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private Simulation simulation;
-        private Inspector inspector;
-        private Toolbar toolbar;
+        private Projectile_Simulator.UserInterface.Simulation simulation;
+        private Projectile_Simulator.UserInterface.Inspector inspector;
+        private Projectile_Simulator.UserInterface.Toolbar toolbar;
     }
 }
