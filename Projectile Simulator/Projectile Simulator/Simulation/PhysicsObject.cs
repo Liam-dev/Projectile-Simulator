@@ -6,16 +6,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Projectile_Simulator.Simulation
 {
-    class PhysicsObject : SimulationObject
+    public class PhysicsObject : SimulationObject
     {
         protected Vector2 velocity;
         protected Vector2 acceleration;
         protected Vector2 resultantForce;
-        protected float mass;
+
+        public float Mass { get; set; }
 
         public PhysicsObject(Vector2 position, Texture2D texture, float mass) : base(position, texture)
         {
-            this.mass = mass;
+            Mass = mass;
         }
 
         public override void Update(GameTime gameTime)
@@ -23,7 +24,7 @@ namespace Projectile_Simulator.Simulation
             base.Update(gameTime);
 
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            acceleration = resultantForce / mass;
+            acceleration = resultantForce / Mass;
             velocity += acceleration * delta;
             Position += velocity * delta;
         }

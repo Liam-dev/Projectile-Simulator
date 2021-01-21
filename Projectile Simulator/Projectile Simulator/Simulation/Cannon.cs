@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Projectile_Simulator.Simulation
 {
-    class Cannon : SimulationObject
+    public class Cannon : SimulationObject
     {
         public Cannon(Vector2 position, Texture2D texture) : base(position, texture)
         {

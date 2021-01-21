@@ -6,20 +6,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Projectile_Simulator.Simulation
 {
-    class SimulationObject
+    public class SimulationObject
     {
-        public Vector2 Position { get; set; }
-        public Texture2D Texture { get; set; }
+        public Vector2 Position { get; protected set; }
+        protected Texture2D texture;
 
         public SimulationObject(Vector2 position, Texture2D texture)
         {
             Position = position;
-            Texture = texture;
+            this.texture = texture;
         }
 
         public virtual void Update(GameTime gameTime)
         {
 
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, Position, Color.White);
         }
     }
 }

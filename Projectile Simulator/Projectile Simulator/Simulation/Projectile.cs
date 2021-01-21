@@ -7,7 +7,7 @@ using Projectile_Simulator.Simulation;
 
 namespace Projectile_Simulator.Simulation
 {
-    class Projectile : PhysicsObject
+    public class Projectile : PhysicsObject
     {
         public Projectile(Vector2 position, Texture2D texture, float mass) : base(position, texture, mass)
         {
