@@ -12,11 +12,16 @@ using Projectile_Simulator.Simulation;
 
 namespace Projectile_Simulator
 {
+    /// <summary>
+    /// Main editor form
+    /// </summary>
     public partial class Editor : Form
     {
         public Editor()
         {
             InitializeComponent();
+
+            // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
         }
 

@@ -8,6 +8,9 @@ using Projectile_Simulator.Simulation;
 
 namespace Projectile_Simulator.UserInterface
 {
+    /// <summary>
+    /// Xna controlled simulation window
+    /// </summary>
     class Simulation : MonoGameControl
     {
         protected List<SimulationObject> objects;
