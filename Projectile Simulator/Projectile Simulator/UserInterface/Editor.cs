@@ -27,7 +27,7 @@ namespace Projectile_Simulator
 
         private void Editor_Load(object sender, EventArgs e)
         {
-
+            simulation.AddObject(new SimulationObject(new Vector2(800, 800), simulation.Editor.Content.Load<Texture2D>("tree")));
         }
 
         /*
@@ -39,14 +39,14 @@ namespace Projectile_Simulator
 
         private void toolbar_BallButtonClicked(object sender, EventArgs e)
         {
-            var p = new Projectile(new Vector2(50, 50), simulation.Editor.Content.Load<Texture2D>("ball"), 20);
+            var p = new Projectile(new Vector2(50, 900), simulation.Editor.Content.Load<Texture2D>("ball"), 20);
             simulation.AddObject(p);
             inspector.Object = p;
         }
 
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
+            //ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
         }
     }
 }

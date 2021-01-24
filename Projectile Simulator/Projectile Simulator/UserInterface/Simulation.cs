@@ -13,11 +13,15 @@ namespace Projectile_Simulator.UserInterface
     /// </summary>
     class Simulation : MonoGameControl
     {
+        protected RenderTarget2D renderTarget;
+        protected Vector2 resolution = new Vector2(1920, 1080);
         protected List<SimulationObject> objects;
 
         protected override void Initialize()
         {
             base.Initialize();
+
+            renderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
 
             objects = new List<SimulationObject>();
         }
@@ -34,7 +38,7 @@ namespace Projectile_Simulator.UserInterface
 
         protected override void Draw()
         {
-            base.Draw();
+            GraphicsDevice.Clear(Color.SkyBlue);
 
             Editor.spriteBatch.Begin();
 

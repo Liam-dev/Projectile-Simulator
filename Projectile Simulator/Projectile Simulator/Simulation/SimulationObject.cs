@@ -19,12 +19,13 @@ namespace Projectile_Simulator.Simulation
 
         public virtual void Update(GameTime gameTime)
         {
-
+            
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Position, Color.White);
+            Vector2 position = new Vector2(Position.X, spriteBatch.GraphicsDevice.Viewport.Height - Position.Y);
+            spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

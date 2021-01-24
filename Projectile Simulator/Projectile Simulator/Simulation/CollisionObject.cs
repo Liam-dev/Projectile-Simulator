@@ -8,9 +8,11 @@ namespace Projectile_Simulator.Simulation
 {
     public class CollisionObject : SimulationObject
     {
-        public CollisionObject(Vector2 position, Texture2D texture) : base(position, texture)
-        {
+        protected ICollisionShape collisionShape;
 
+        public CollisionObject(Vector2 position, Texture2D texture/*, ICollisionShape collisionShape*/) : base(position, texture)
+        {
+            //this.collisionShape = collisionShape;
         }
     }
 }

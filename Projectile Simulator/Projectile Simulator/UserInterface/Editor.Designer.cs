@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.simulation = new Projectile_Simulator.UserInterface.Simulation();
-            this.inspector = new Projectile_Simulator.UserInterface.Inspector();
             this.toolbar = new Projectile_Simulator.UserInterface.Toolbar();
+            this.inspector = new Projectile_Simulator.UserInterface.Inspector();
             this.SuspendLayout();
             // 
             // simulation
@@ -41,18 +41,9 @@
             this.simulation.Location = new System.Drawing.Point(5, 52);
             this.simulation.MouseHoverUpdatesOnly = true;
             this.simulation.Name = "simulation";
-            this.simulation.Size = new System.Drawing.Size(816, 554);
+            this.simulation.Size = new System.Drawing.Size(960, 540);
             this.simulation.TabIndex = 0;
             this.simulation.Text = "Simulation";
-            // 
-            // inspector
-            // 
-            this.inspector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.inspector.Location = new System.Drawing.Point(836, 52);
-            this.inspector.Name = "inspector";
-            this.inspector.Size = new System.Drawing.Size(288, 554);
-            this.inspector.TabIndex = 3;
             // 
             // toolbar
             // 
@@ -61,17 +52,26 @@
             this.toolbar.Location = new System.Drawing.Point(0, 0);
             this.toolbar.Margin = new System.Windows.Forms.Padding(0);
             this.toolbar.Name = "toolbar";
-            this.toolbar.Size = new System.Drawing.Size(1136, 50);
+            this.toolbar.Size = new System.Drawing.Size(1228, 50);
             this.toolbar.TabIndex = 4;
             this.toolbar.BallButtonClicked += new System.EventHandler(this.toolbar_BallButtonClicked);
+            // 
+            // inspector
+            // 
+            this.inspector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.inspector.Location = new System.Drawing.Point(971, 51);
+            this.inspector.Name = "inspector";
+            this.inspector.Size = new System.Drawing.Size(250, 542);
+            this.inspector.TabIndex = 5;
             // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1136, 609);
-            this.Controls.Add(this.toolbar);
+            this.ClientSize = new System.Drawing.Size(1228, 597);
             this.Controls.Add(this.inspector);
+            this.Controls.Add(this.toolbar);
             this.Controls.Add(this.simulation);
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "Editor";
@@ -84,7 +84,7 @@
 
         #endregion
         private Projectile_Simulator.UserInterface.Simulation simulation;
-        private Projectile_Simulator.UserInterface.Inspector inspector;
         private Projectile_Simulator.UserInterface.Toolbar toolbar;
+        private UserInterface.Inspector inspector;
     }
 }
