@@ -41,6 +41,9 @@
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.ballToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.zoomInToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.zoomOutToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,6 +93,9 @@
             this.toolStripSeparator7,
             this.ballToolStripButton,
             this.toolStripSeparator8,
+            this.zoomInToolStripButton,
+            this.zoomOutToolStripButton,
+            this.toolStripSeparator9,
             this.helpToolStripButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
@@ -184,6 +190,31 @@
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+            // 
+            // zoomInToolStripButton
+            // 
+            this.zoomInToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.zoomInToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("zoomInToolStripButton.Image")));
+            this.zoomInToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.zoomInToolStripButton.Name = "zoomInToolStripButton";
+            this.zoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.zoomInToolStripButton.Text = "Zoom In";
+            this.zoomInToolStripButton.Click += new System.EventHandler(this.zoomInToolStripButton_Click);
+            // 
+            // zoomOutToolStripButton
+            // 
+            this.zoomOutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.zoomOutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("zoomOutToolStripButton.Image")));
+            this.zoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.zoomOutToolStripButton.Name = "zoomOutToolStripButton";
+            this.zoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.zoomOutToolStripButton.Text = "Zoom Out";
+            this.zoomOutToolStripButton.Click += new System.EventHandler(this.zoomOutToolStripButton_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
             // 
             // helpToolStripButton
             // 
@@ -493,5 +524,8 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton ballToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripButton zoomInToolStripButton;
+        private System.Windows.Forms.ToolStripButton zoomOutToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
     }
 }

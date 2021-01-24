@@ -55,6 +55,8 @@
             this.toolbar.Size = new System.Drawing.Size(1228, 50);
             this.toolbar.TabIndex = 4;
             this.toolbar.BallButtonClicked += new System.EventHandler(this.toolbar_BallButtonClicked);
+            this.toolbar.ZoomInButtonClicked += new System.EventHandler(this.toolbar_ZoomInButtonClicked);
+            this.toolbar.ZoomOutButtonClicked += new System.EventHandler(this.toolbar_ZoomOutButtonClicked);
             // 
             // inspector
             // 

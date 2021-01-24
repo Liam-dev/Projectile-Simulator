@@ -13,15 +13,19 @@ namespace Projectile_Simulator.UserInterface
     /// </summary>
     class Simulation : MonoGameControl
     {
-        protected RenderTarget2D renderTarget;
-        protected Vector2 resolution = new Vector2(1920, 1080);
         protected List<SimulationObject> objects;
+
+        public float Scale { get; set; }
+
+        public Camera camera;
 
         protected override void Initialize()
         {
             base.Initialize();
 
-            renderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
+            Scale = 100;
+
+            camera = new Camera(GraphicsDevice.Viewport);
 
             objects = new List<SimulationObject>();
         }
@@ -34,17 +38,19 @@ namespace Projectile_Simulator.UserInterface
             {
                 obj.Update(gameTime);
             }
+
+            camera.Update(objects[0].Position);
         }
 
         protected override void Draw()
         {
             GraphicsDevice.Clear(Color.SkyBlue);
 
-            Editor.spriteBatch.Begin();
+            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
 
             foreach (SimulationObject obj in objects)
             {
-                obj.Draw(Editor.spriteBatch);
+                obj.Draw(Editor.spriteBatch, Scale);
             }
 
             Editor.spriteBatch.End();

@@ -22,10 +22,12 @@ namespace Projectile_Simulator.Simulation
             
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, float scale = 100f)
         {
-            Vector2 position = new Vector2(Position.X, spriteBatch.GraphicsDevice.Viewport.Height - Position.Y);
-            spriteBatch.Draw(texture, position, Color.White);
+            Vector2 position = new Vector2(scale * Position.X, spriteBatch.GraphicsDevice.Viewport.Height - (scale * Position.Y));
+
+            //spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, Position, Color.White);
         }
     }
 }
