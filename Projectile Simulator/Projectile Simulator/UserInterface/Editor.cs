@@ -27,21 +27,22 @@ namespace Projectile_Simulator
 
         private void Editor_Load(object sender, EventArgs e)
         {
-            var m = new SimulationObject(new Vector2(8, 1.6f), simulation.Editor.Content.Load<Texture2D>("character"));
-            simulation.AddObject(m);
-            inspector.Object = m;
+            simulation.AddObject(new SimulationObject(new Vector2(1, 1), simulation.Editor.Content.Load<Texture2D>("character")));
+            simulation.AddObject(new SimulationObject(new Vector2(500, 300), simulation.Editor.Content.Load<Texture2D>("character")));
         }
 
-        /*
+        
         public Editor(string filename)
         {
-            
-        }
-        */
+            simulation.MouseHoverUpdatesOnly = false;
+            //List<SimulationObject> loadedObjects = ObjectSerializer.ReadFromJson<SimulationObject>(filename)
+            //simulation.AddObject();
 
+        }
+        
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
+            ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
         }
 
         private void toolbar_BallButtonClicked(object sender, EventArgs e)

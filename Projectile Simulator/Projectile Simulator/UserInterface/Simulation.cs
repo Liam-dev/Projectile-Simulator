@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Forms.Controls;
 using Projectile_Simulator.Simulation;
 
@@ -18,6 +19,7 @@ namespace Projectile_Simulator.UserInterface
         public float Scale { get; set; }
 
         public Camera camera;
+        protected int mouseScroll;
 
         protected override void Initialize()
         {
@@ -26,6 +28,8 @@ namespace Projectile_Simulator.UserInterface
             Scale = 100;
 
             camera = new Camera(GraphicsDevice.Viewport);
+            camera.Update();
+            mouseScroll = Mouse.GetState().ScrollWheelValue;
 
             objects = new List<SimulationObject>();
         }
@@ -39,7 +43,20 @@ namespace Projectile_Simulator.UserInterface
                 obj.Update(gameTime);
             }
 
-            camera.Update(objects[0].Position);
+            int newMouseScroll = Mouse.GetState().ScrollWheelValue;
+            if (newMouseScroll > mouseScroll)
+            {
+                camera.ZoomIn();
+                camera.Focus(Mouse.GetState().Position.ToVector2());
+            }
+            else if (newMouseScroll < mouseScroll)
+            {
+                camera.ZoomOut();
+                camera.Focus(Mouse.GetState().Position.ToVector2());
+            }
+            mouseScroll = newMouseScroll;
+            //Update AFTER new Focus
+            camera.Update();
         }
 
         protected override void Draw()
@@ -65,5 +82,7 @@ namespace Projectile_Simulator.UserInterface
         {
             return objects;
         }
+
+        
     }
 }

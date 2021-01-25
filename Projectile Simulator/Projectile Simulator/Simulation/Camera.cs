@@ -14,13 +14,24 @@ namespace Projectile_Simulator.Simulation
         protected Viewport viewport;
 
         protected float zoom = 1;
+        protected float oldZoom = 1;
 
-        public Vector2 Centre { get; set; }
+        protected float zoomMultiplier = 1.05f;
+        protected int maxZoomLevel = 20;
+        protected int minZoomLevel = -5;
+
+        protected Vector2 centre { get; set; }
 
         public float Zoom
         {
             get { return zoom; }
-            set { zoom = value; if (zoom < 0.1f) zoom = 0.1f; if (zoom > 1.5f) zoom = 1.5f; }
+            set
+            {
+                oldZoom = zoom;
+                zoom = value;
+                if (zoom < MathF.Pow(zoomMultiplier, minZoomLevel)) zoom = MathF.Pow(zoomMultiplier, minZoomLevel);
+                if (zoom > MathF.Pow(zoomMultiplier, maxZoomLevel)) zoom = MathF.Pow(zoomMultiplier, maxZoomLevel);
+            }
         }
 
         public Camera(Viewport viewport)
@@ -28,12 +39,25 @@ namespace Projectile_Simulator.Simulation
             this.viewport = viewport;
         }
 
-        public void Update(Vector2 position)
+        public void ZoomIn()
         {
-            Centre = position;
-            Transform = Matrix.CreateTranslation(new Vector3(-Centre, 0)) *
-                Matrix.CreateScale(Zoom) *
-                Matrix.CreateTranslation(new Vector3(viewport.Width / 2, viewport.Height / 2, 0));
+            Zoom *= zoomMultiplier;
+        }
+
+        public void ZoomOut()
+        {
+            Zoom /= zoomMultiplier;
+        }
+
+
+        public void Focus(Vector2 position)
+        {
+            centre = position + (oldZoom / zoom) * (centre - position);
+        }
+
+        public void Update()
+        {
+            Transform = Matrix.CreateTranslation(new Vector3(-centre, 0)) * Matrix.CreateScale(zoom);                      
         }
     }
 }

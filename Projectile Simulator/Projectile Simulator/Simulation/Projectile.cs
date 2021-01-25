@@ -11,8 +11,8 @@ namespace Projectile_Simulator.Simulation
     {
         public Projectile(Vector2 position, Texture2D texture, float mass) : base(position, texture, mass)
         {
-            resultantForce = mass * -9.8f * Vector2.UnitY;
-            velocity = new Vector2(2f, 0);
+            resultantForce = mass * 980 * Vector2.UnitY;
+            velocity = new Vector2(200, 0);
         }
     }
 }
