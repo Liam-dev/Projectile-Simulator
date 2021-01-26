@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Projectile_Simulator.Simulation
 {
-    public class PhysicsObject : SimulationObject
+    public class PhysicsObject : CollisionObject
     {
         protected Vector2 velocity;
         protected Vector2 acceleration;

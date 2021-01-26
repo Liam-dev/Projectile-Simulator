@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Projectile_Simulator
 {
+    /// <summary>
+    /// Static class used to save objects to a file
+    /// </summary>
     public static class ObjectSerializer
     {
         public static void WriteToJson<T>(string path, T @object)
