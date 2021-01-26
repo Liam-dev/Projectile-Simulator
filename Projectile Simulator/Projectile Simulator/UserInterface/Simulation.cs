@@ -27,8 +27,7 @@ namespace Projectile_Simulator.UserInterface
 
             Scale = 100;
 
-            camera = new Camera(GraphicsDevice.Viewport);
-            camera.Update();
+            camera = new Camera();
             mouseScroll = Mouse.GetState().ScrollWheelValue;
 
             objects = new List<SimulationObject>();
@@ -46,24 +45,24 @@ namespace Projectile_Simulator.UserInterface
             int newMouseScroll = Mouse.GetState().ScrollWheelValue;
             if (newMouseScroll > mouseScroll)
             {
+                Vector2 pos = Mouse.GetState().Position.ToVector2();
                 camera.ZoomIn();
-                camera.Focus(Mouse.GetState().Position.ToVector2());
+                camera.Update(pos);
             }
             else if (newMouseScroll < mouseScroll)
             {
+                Vector2 pos = Mouse.GetState().Position.ToVector2();
                 camera.ZoomOut();
-                camera.Focus(Mouse.GetState().Position.ToVector2());
+                camera.Update(pos);
             }
-            mouseScroll = newMouseScroll;
-            //Update AFTER new Focus
-            camera.Update();
+            mouseScroll = newMouseScroll;          
         }
 
         protected override void Draw()
         {
             GraphicsDevice.Clear(Color.SkyBlue);
 
-            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
+            Editor.spriteBatch.Begin(/*transformMatrix:Matrix.Identity*/transformMatrix : camera.Transform);
 
             foreach (SimulationObject obj in objects)
             {

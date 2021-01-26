@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,53 +12,54 @@ namespace Projectile_Simulator.Simulation
     {
         public Matrix Transform { get; protected set; }
 
-        protected Viewport viewport;
+        protected float zoom;
+        protected float oldZoom;
 
-        protected float zoom = 1;
-        protected float oldZoom = 1;
-
-        protected float zoomMultiplier = 1.05f;
-        protected int maxZoomLevel = 20;
-        protected int minZoomLevel = -5;
+        protected float ZoomMultiplier;
+        protected int MaxZoomLevel;
+        protected int MinZoomLevel;
 
         protected Vector2 centre { get; set; }
 
-        public float Zoom
+        public Camera()
         {
-            get { return zoom; }
-            set
-            {
-                oldZoom = zoom;
-                zoom = value;
-                if (zoom < MathF.Pow(zoomMultiplier, minZoomLevel)) zoom = MathF.Pow(zoomMultiplier, minZoomLevel);
-                if (zoom > MathF.Pow(zoomMultiplier, maxZoomLevel)) zoom = MathF.Pow(zoomMultiplier, maxZoomLevel);
-            }
-        }
-
-        public Camera(Viewport viewport)
-        {
-            this.viewport = viewport;
+            Transform = Matrix.Identity;
+            zoom = 1;
+            oldZoom = 1;
+            ZoomMultiplier = 1.1f;
+            MaxZoomLevel = 8;
+            MinZoomLevel = -10;
         }
 
         public void ZoomIn()
         {
-            Zoom *= zoomMultiplier;
+            oldZoom = zoom;
+            zoom *= ZoomMultiplier;          
+            if (zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
+            {
+                zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
+            }
         }
 
         public void ZoomOut()
         {
-            Zoom /= zoomMultiplier;
+            oldZoom = zoom;
+            zoom /= ZoomMultiplier;
+            if (zoom < MathF.Pow(ZoomMultiplier, MinZoomLevel))
+            {
+                zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
+            }
         }
 
-
-        public void Focus(Vector2 position)
+        public void Update(Vector2 position)
         {
-            centre = position + (oldZoom / zoom) * (centre - position);
-        }
+            Matrix toPosition = Matrix.CreateTranslation(new Vector3(-position, 0));
+            Matrix scale = Matrix.CreateScale(zoom / oldZoom);
+            Matrix fromPosition = Matrix.CreateTranslation(new Vector3(position, 0));
 
-        public void Update()
-        {
-            Transform = Matrix.CreateTranslation(new Vector3(-centre, 0)) * Matrix.CreateScale(zoom);                      
+            Transform *= toPosition;
+            Transform *= scale;
+            Transform *= fromPosition;
         }
     }
 }

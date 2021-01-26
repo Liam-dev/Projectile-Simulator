@@ -27,11 +27,17 @@ namespace Projectile_Simulator
 
         private void Editor_Load(object sender, EventArgs e)
         {
-            simulation.AddObject(new SimulationObject(new Vector2(1, 1), simulation.Editor.Content.Load<Texture2D>("character")));
-            simulation.AddObject(new SimulationObject(new Vector2(500, 300), simulation.Editor.Content.Load<Texture2D>("character")));
+            
+            simulation.AddObject(new SimulationObject(new Vector2(100, 100), simulation.Editor.Content.Load<Texture2D>("character")));
+            simulation.AddObject(new SimulationObject(new Vector2(100, 400), simulation.Editor.Content.Load<Texture2D>("character")));
+            simulation.AddObject(new SimulationObject(new Vector2(400, 100), simulation.Editor.Content.Load<Texture2D>("character")));
+            simulation.AddObject(new SimulationObject(new Vector2(400, 400), simulation.Editor.Content.Load<Texture2D>("character")));
+            
+            //simulation.AddObject(new SimulationObject(new Vector2(0, 0), simulation.Editor.Content.Load<Texture2D>("map2")));
+            
         }
 
-        
+
         public Editor(string filename)
         {
             simulation.MouseHoverUpdatesOnly = false;
@@ -55,13 +61,13 @@ namespace Projectile_Simulator
         private void toolbar_ZoomInButtonClicked(object sender, EventArgs e)
         {
             //simulation.Scale *= 1.5f;
-            simulation.camera.Zoom *= 1.5f;
+            //simulation.camera.ZoomIn();
         }
 
         private void toolbar_ZoomOutButtonClicked(object sender, EventArgs e)
         {
             //simulation.Scale /= 1.5f;
-            simulation.camera.Zoom /= 1.5f;
+            //simulation.camera.ZoomOut();
         }
     }
 }
