@@ -18,7 +18,7 @@ namespace Projectile_Simulator.UserInterface
 
         public float Scale { get; set; }
 
-        public Camera camera;
+        protected Camera camera;
         protected int mouseScroll;
 
         protected override void Initialize()
@@ -29,7 +29,7 @@ namespace Projectile_Simulator.UserInterface
 
             camera = new Camera();
             mouseScroll = Mouse.GetState().ScrollWheelValue;
-
+            
             objects = new List<SimulationObject>();
         }
 
@@ -37,51 +37,119 @@ namespace Projectile_Simulator.UserInterface
         {
             base.Update(gameTime);
 
+            // Check collisions
+            CheckCollisions();
+
+            // Update each of the objects
             foreach (SimulationObject obj in objects)
             {
                 obj.Update(gameTime);
             }
 
             int newMouseScroll = Mouse.GetState().ScrollWheelValue;
+            Vector2 mousePosition = Mouse.GetState().Position.ToVector2();
+
+            // Mouse wheel up
             if (newMouseScroll > mouseScroll)
-            {
-                Vector2 pos = Mouse.GetState().Position.ToVector2();
+            {                
                 camera.ZoomIn();
-                camera.Update(pos);
+                camera.Update(mousePosition);
             }
+            // Mouse wheel down
             else if (newMouseScroll < mouseScroll)
             {
-                Vector2 pos = Mouse.GetState().Position.ToVector2();
                 camera.ZoomOut();
-                camera.Update(pos);
+                camera.Update(mousePosition);
             }
+
+            // Reset relative mouse wheel value;
             mouseScroll = newMouseScroll;          
         }
 
         protected override void Draw()
         {
+            // Reset and clear the simulation window
             GraphicsDevice.Clear(Color.SkyBlue);
 
-            Editor.spriteBatch.Begin(/*transformMatrix:Matrix.Identity*/transformMatrix : camera.Transform);
+            // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
+            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
 
+            // Draw each of the objects
             foreach (SimulationObject obj in objects)
             {
-                obj.Draw(Editor.spriteBatch, Scale);
+                obj.Draw(Editor.spriteBatch);
             }
 
             Editor.spriteBatch.End();
         }
 
-        public void AddObject(SimulationObject obj)
+        /// <summary>
+        /// Add an object to the simulation
+        /// </summary>
+        /// <param name="object"></param>
+        public void AddObject(SimulationObject @object)
         {
-            objects.Add(obj);
+            objects.Add(@object);
         }
 
         public List<SimulationObject> GetObjects()
         {
+            List<(SimulationObject, Type)> list = new List<(SimulationObject, Type)>();
+
+            foreach (SimulationObject @object in objects)
+            {
+                list.Add((@object, @object.GetType()));
+            }
+
+            //return list;
+
             return objects;
         }
 
-        
+
+        #region Collisions
+
+        protected void CheckCollisions()
+        {
+            foreach (SimulationObject i in objects)
+            {
+                if (i is Projectile a)
+                {
+                    foreach (SimulationObject j in objects)
+                    {
+                        if (j is Projectile b && b != a)
+                        {
+                            bool colliding = MathF.Abs(MathF.Pow(a.Position.X - b.Position.X, 2) + MathF.Pow(a.Position.Y - b.Position.Y, 2)) <= MathF.Pow(a.Radius + b.Radius, 2);
+                            //bool colliding = (a.Position - b.Position).LengthSquared() <= a.Radius + b.Radius;
+
+                            if (colliding)
+                            {
+                                
+                                float distance = MathF.Sqrt(MathF.Pow(a.Position.X - b.Position.X, 2) + MathF.Pow(a.Position.Y - b.Position.Y, 2));
+                                float overlap = 0.1f * (distance - a.Radius - b.Radius);
+
+                                
+                                Vector2 collisionNormal = Vector2.Normalize(b.Position - a.Position);
+
+                                // Static
+                                a.Position += overlap * collisionNormal;
+                                b.Position -= overlap * collisionNormal;
+
+                                // Dynamic
+                                Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
+                                Vector2 impulse = -(a.RestitutionCoefficient * b.RestitutionCoefficient)
+                                    * Vector2.Dot(relativeVelocity, collisionNormal) * collisionNormal
+                                    / (collisionNormal.LengthSquared() * ((1 / a.Mass) + (1 / b.Mass)));
+
+                                a.ApplyImpulse(impulse);
+                                b.ApplyImpulse(-impulse);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

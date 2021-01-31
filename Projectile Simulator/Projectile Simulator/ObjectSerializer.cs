@@ -26,5 +26,7 @@ namespace Projectile_Simulator
             reader.Close();
             return JsonConvert.DeserializeObject<T>(data);
         }
+
+
     }
 }
