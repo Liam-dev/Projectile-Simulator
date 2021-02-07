@@ -42,6 +42,9 @@ namespace Projectile_Simulator
             simulation.AddObject(new SimulationObject(new Vector2(100, 400), simulation.Editor.Content.Load<Texture2D>("crate")));
             simulation.AddObject(new SimulationObject(new Vector2(400, 100), simulation.Editor.Content.Load<Texture2D>("crate")));
             simulation.AddObject(new SimulationObject(new Vector2(400, 400), simulation.Editor.Content.Load<Texture2D>("crate")));
+
+            simulation.AddObject(new Box(new Vector2(800, 100), new Texture2D(simulation.GraphicsDevice, 1, 1), new Vector2(20, 500)));
+            simulation.AddObject(new Box(new Vector2(320, 600), new Texture2D(simulation.GraphicsDevice, 1, 1), new Vector2(500, 20)));
         }
 
         /// <summary>
@@ -66,8 +69,9 @@ namespace Projectile_Simulator
 
         private void toolbar_BallButtonClicked(object sender, EventArgs e)
         {
-            simulation.AddObject(new Projectile(new Vector2(20, 350), new Vector2(300, 0), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
-            simulation.AddObject(new Projectile(new Vector2(500, 350), new Vector2(-100, 10), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
+            simulation.AddObject(new Projectile(simulation.cannon.Position + new Vector2(40, 40), new Vector2(800, -800), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
+            //simulation.AddObject(new Projectile(new Vector2(40, 200), new Vector2(200, 60), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
+            //simulation.AddObject(new Projectile(new Vector2(400, 220), new Vector2(0, 0), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
         }
 
         private void toolbar_ZoomInButtonClicked(object sender, EventArgs e)

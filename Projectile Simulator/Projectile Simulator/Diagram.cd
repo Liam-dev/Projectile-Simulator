@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Projectile_Simulator.Properties.Resources" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQCAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.CollisionShapes.CollisionCircle" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\CollisionShapes\CollisionCircle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.CollisionShapes.CollisionRectangle" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\CollisionShapes\CollisionRectangle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.Camera" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACAIQAAAAAAAAACAAABQAEAAAAACIAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\Camera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.Cannon" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\Cannon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.CollisionObject" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Simulation\CollisionObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.PhysicsObject">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAAABAAACAAAAAAAAEEQAAAQAAACAAQA=</HashCode>
+      <FileName>Simulation\PhysicsObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.Projectile" Collapsed="true">
+    <Position X="11.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAAAAAAIAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.SimulationObject" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAgAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\SimulationObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Simulation.StaticObject" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\StaticObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Editor" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAQAAAgACQAAAEAAACAAEACAAAAAgAEAAEAAAAAAAA=</HashCode>
+      <FileName>UserInterface\Editor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.ObjectSerializer" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>ObjectSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.Program" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.UserInterface.Homepage" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAAAAAAACAAAACAAAAAAAAAAAgAAAAgAA=</HashCode>
+      <FileName>UserInterface\Homepage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.UserInterface.Inspector" Collapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAACAAAAAgAACAAAgCCAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserInterface\Inspector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.UserInterface.LargeMenuButton" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAAAACACAAAAAAAACAAAACAEAAAAAAAQAAACEEAAA=</HashCode>
+      <FileName>UserInterface\LargeMenuButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.UserInterface.Simulation" Collapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQSAAAAAAgAAAwAAAAIAAAAABQAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>UserInterface\Simulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.UserInterface.StartPane" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAIAAAAACAAAACBAAIAAAAAAAAwAAAQAA=</HashCode>
+      <FileName>UserInterface\StartPane.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Projectile_Simulator.UserInterface.Toolbar" Collapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BICCA/0wRCAAAAAIAgCCkCdaCIBAAJABAgwARjAEAEQ=</HashCode>
+      <FileName>UserInterface\Toolbar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Projectile_Simulator.Simulation.ICollisionShape" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulation\CollisionShapes\ICollisionShape.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

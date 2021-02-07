@@ -14,7 +14,7 @@ namespace Projectile_Simulator.Simulation
         protected Vector2 impulse;
 
         public float Mass { get; set; }
-        public float RestitutionCoefficient { get; set; }
+        
 
         public PhysicsObject(Vector2 position, Texture2D texture, float mass) : base(position, texture)
         {

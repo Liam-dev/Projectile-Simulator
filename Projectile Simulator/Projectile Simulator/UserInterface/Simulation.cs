@@ -21,6 +21,8 @@ namespace Projectile_Simulator.UserInterface
         protected Camera camera;
         protected int mouseScroll;
 
+        public Cannon cannon;
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -31,6 +33,9 @@ namespace Projectile_Simulator.UserInterface
             mouseScroll = Mouse.GetState().ScrollWheelValue;
             
             objects = new List<SimulationObject>();
+
+            cannon = new Cannon(new Vector2(20, 600), Editor.Content.Load<Texture2D>("cannon"));
+            AddObject(cannon);
         }
 
         protected override void Update(GameTime gameTime)
@@ -80,7 +85,10 @@ namespace Projectile_Simulator.UserInterface
                 obj.Draw(Editor.spriteBatch);
             }
 
+            cannon.Draw(Editor.spriteBatch);
+
             Editor.spriteBatch.End();
+
         }
 
         /// <summary>
@@ -126,14 +134,14 @@ namespace Projectile_Simulator.UserInterface
                             {
                                 
                                 float distance = MathF.Sqrt(MathF.Pow(a.Position.X - b.Position.X, 2) + MathF.Pow(a.Position.Y - b.Position.Y, 2));
-                                float overlap = 0.1f * (distance - a.Radius - b.Radius);
+                                float overlap = 0.5f * (distance - a.Radius - b.Radius);
 
                                 
-                                Vector2 collisionNormal = Vector2.Normalize(b.Position - a.Position);
+                                Vector2 collisionNormal = b.Position - a.Position;
 
                                 // Static
-                                a.Position += overlap * collisionNormal;
-                                b.Position -= overlap * collisionNormal;
+                                a.Position += overlap * Vector2.Normalize(collisionNormal);
+                                b.Position -= overlap * Vector2.Normalize(collisionNormal);
 
                                 // Dynamic
                                 Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
@@ -143,7 +151,31 @@ namespace Projectile_Simulator.UserInterface
 
                                 a.ApplyImpulse(impulse);
                                 b.ApplyImpulse(-impulse);
-                            }
+                            }          
+                        }
+                        else if (j is Box c)
+                        {
+                            
+                            Vector2 nearestPoint;
+                            nearestPoint.X = MathF.Max(c.Position.X, MathF.Min(a.Position.X, c.Position.X + c.Dimensions.X));
+                            nearestPoint.Y = MathF.Max(c.Position.Y, MathF.Min(a.Position.Y, c.Position.Y + c.Dimensions.Y));
+
+                            float overlap = 2 * a.Radius - (nearestPoint - a.Position).Length();
+
+                            if (overlap > 0)
+                            {
+                                Vector2 collisionNormal = nearestPoint - a.Position;
+
+                                // Static
+                                a.Position -= overlap * Vector2.Normalize(collisionNormal);
+
+                                // Dynamic
+                                Vector2 impulse = -(a.RestitutionCoefficient * c.RestitutionCoefficient)
+                                    * Vector2.Dot(a.GetVelocity(), collisionNormal) * collisionNormal
+                                    / (collisionNormal.LengthSquared() * (1 / a.Mass));
+
+                                a.ApplyImpulse(2 * impulse);
+                            }                           
                         }
                     }
                 }

@@ -14,7 +14,7 @@ namespace Projectile_Simulator.Simulation
 
         public Projectile(Vector2 position, Vector2 velocity, Texture2D texture, float mass) : base(position, texture, mass)
         {
-            DragCoefficient = 0f;           
+            DragCoefficient = 0.00f;           
             RestitutionCoefficient = 1f;
             this.velocity = velocity;
         }
@@ -22,7 +22,7 @@ namespace Projectile_Simulator.Simulation
         public override void Update(GameTime gameTime)
         {
             resultantForce = Vector2.Zero;
-            //resultantForce += Mass * 980 * Vector2.UnitY;
+            resultantForce += Mass * 980 * Vector2.UnitY;
             resultantForce += CalulateDrag();
 
             base.Update(gameTime);
