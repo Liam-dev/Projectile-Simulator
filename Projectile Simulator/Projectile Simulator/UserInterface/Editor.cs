@@ -17,34 +17,35 @@ namespace Projectile_Simulator
     /// </summary>
     public partial class Editor : Form
     {
-        List<SimulationObject> loadedObjects;
+        private List<SimulationObject> objectsToLoad;
 
         public Editor()
         {
             InitializeComponent();
 
-            loadedObjects = new List<SimulationObject>();
+            objectsToLoad = new List<SimulationObject>();
 
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
+
+            // Test objects for mouse zoom testing
             
+            objectsToLoad.Add(new Box(new Vector2(100, 100), "crate", new Vector2(64, 64)));
+            objectsToLoad.Add(new Box(new Vector2(100, 400), "crate", new Vector2(64, 64)));
+            objectsToLoad.Add(new Box(new Vector2(400, 100), "crate", new Vector2(64, 64)));
+            objectsToLoad.Add(new Box(new Vector2(400, 400), "crate", new Vector2(64, 64)));
+
+            objectsToLoad.Add(new Box(new Vector2(800, 100), "wall", new Vector2(20, 500)));
+            objectsToLoad.Add(new Box(new Vector2(320, 600), "wall", new Vector2(500, 20)));
         }
 
         private void Editor_Load(object sender, EventArgs e)
         {
-            foreach (var @object in loadedObjects)
+            // load objects
+            foreach (var @object in objectsToLoad)
             {
                 simulation.AddObject(@object);
             }
-
-            // Test objects for mouse zoom testing
-            simulation.AddObject(new Box(new Vector2(100, 100), "crate", new Vector2(64, 64)));
-            simulation.AddObject(new Box(new Vector2(100, 400), "crate", new Vector2(64, 64)));
-            simulation.AddObject(new Box(new Vector2(400, 100), "crate", new Vector2(64, 64)));
-            simulation.AddObject(new Box(new Vector2(400, 400), "crate", new Vector2(64, 64)));
-            
-            simulation.AddObject(new Box(new Vector2(800, 100), "wall", new Vector2(20, 500)));
-            simulation.AddObject(new Box(new Vector2(320, 600), "wall", new Vector2(500, 20)));         
         }
 
         /// <summary>
@@ -58,13 +59,13 @@ namespace Projectile_Simulator
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
-            loadedObjects = ObjectSerializer.ReadFromJson<List<SimulationObject>>(filename);
+            objectsToLoad = ObjectWriter.ReadJson<SimulationObject>(filename);
         }
         
         // Run on close
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
+            ObjectWriter.WriteJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
         }
 
 

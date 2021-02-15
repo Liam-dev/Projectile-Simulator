@@ -8,6 +8,11 @@ namespace Projectile_Simulator.Simulation
 {
     public class StaticObject : CollisionObject
     {
+        public StaticObject()
+        {
+
+        }
+
         public StaticObject(Vector2 position, string textureName) : base(position, textureName)
         {
 

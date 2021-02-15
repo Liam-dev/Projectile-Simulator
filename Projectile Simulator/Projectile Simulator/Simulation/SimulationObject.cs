@@ -12,9 +12,14 @@ namespace Projectile_Simulator.Simulation
     {
         public Vector2 Position { get; set; }
 
-        public string TextureName { get; protected set; }
+        public string TextureName { get; set; }
 
         protected Texture2D texture;
+
+        public SimulationObject()
+        {
+
+        }
 
         public SimulationObject(Vector2 position, string textureName)
         {

@@ -10,6 +10,11 @@ namespace Projectile_Simulator.Simulation
     {
         public float RestitutionCoefficient { get; set; }
 
+        public CollisionObject()
+        {
+
+        }
+
         public CollisionObject(Vector2 position, string textureName) : base(position, textureName)
         {
             

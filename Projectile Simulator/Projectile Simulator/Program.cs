@@ -31,8 +31,6 @@ namespace Projectile_Simulator
             else
             {
                 Application.Run(new Homepage());
-                //Application.Run(new Editor("C:/Users/Liam/Desktop/ObjectData/data.sim"));
-
             }  
         }
     }

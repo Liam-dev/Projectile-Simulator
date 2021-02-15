@@ -9,7 +9,12 @@ namespace Projectile_Simulator.Simulation
 {
     public class Box : StaticObject
     {
-        public Vector2 Dimensions;
+        public Vector2 Dimensions { get; set; }
+
+        public Box()
+        {
+
+        }
 
         public Box(Vector2 position, string textureName, Vector2 dimensions) : base(position, textureName)
         {

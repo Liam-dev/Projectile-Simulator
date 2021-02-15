@@ -16,8 +16,6 @@ namespace Projectile_Simulator.UserInterface
     {
         protected List<SimulationObject> objects;
 
-
-
         public float Scale { get; set; }
 
         protected Camera camera;
@@ -105,15 +103,6 @@ namespace Projectile_Simulator.UserInterface
 
         public List<SimulationObject> GetObjects()
         {
-            List<(SimulationObject, Type)> list = new List<(SimulationObject, Type)>();
-
-            foreach (SimulationObject @object in objects)
-            {
-                list.Add((@object, @object.GetType()));
-            }
-
-            //return list;
-
             return objects;
         }
 

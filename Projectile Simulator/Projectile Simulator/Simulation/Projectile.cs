@@ -12,6 +12,11 @@ namespace Projectile_Simulator.Simulation
         public float DragCoefficient { get; set; }
         public float Radius { get { return texture.Width / 2; } }
 
+        public Projectile()
+        {
+
+        }
+
         public Projectile(Vector2 position, Vector2 velocity, string textureName, float mass) : base(position, textureName, mass)
         {
             DragCoefficient = 0.005f;           

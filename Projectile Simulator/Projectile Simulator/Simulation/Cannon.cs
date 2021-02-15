@@ -8,9 +8,16 @@ namespace Projectile_Simulator.Simulation
 {
     public class Cannon : SimulationObject
     {
-        public Cannon(Vector2 position, string textureName) : base(position, textureName)
+        public int ATestProperty { get; set; }
+
+        public Cannon()
         {
 
+        }
+
+        public Cannon(Vector2 position, string textureName) : base(position, textureName)
+        {
+            ATestProperty = 42;
         }
     }
 }
