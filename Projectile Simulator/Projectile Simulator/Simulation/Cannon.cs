@@ -8,7 +8,7 @@ namespace Projectile_Simulator.Simulation
 {
     public class Cannon : SimulationObject
     {
-        public Cannon(Vector2 position, Texture2D texture) : base(position, texture)
+        public Cannon(Vector2 position, string textureName) : base(position, textureName)
         {
 
         }

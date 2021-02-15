@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Projectile Simulator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:/Users/Liam/Desktop/ObjectData/data.sim\""
+    }
+  }
+}

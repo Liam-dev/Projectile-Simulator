@@ -10,11 +10,9 @@ namespace Projectile_Simulator.Simulation
     {
         public float RestitutionCoefficient { get; set; }
 
-        protected ICollisionShape collisionShape;
-
-        public CollisionObject(Vector2 position, Texture2D texture/*, ICollisionShape collisionShape*/) : base(position, texture)
+        public CollisionObject(Vector2 position, string textureName) : base(position, textureName)
         {
-            //this.collisionShape = collisionShape;
+            
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Projectile_Simulator
 {
@@ -11,9 +8,9 @@ namespace Projectile_Simulator
     /// </summary>
     public static class ObjectSerializer
     {
-        public static void WriteToJson<T>(string path, T @object)
+        public static void WriteToJson<T>(string path, T objects)
         {
-            string data = JsonConvert.SerializeObject(@object);
+            string data = JsonConvert.SerializeObject(objects);
             StreamWriter writer = new StreamWriter(path);
             writer.Write(data);
             writer.Close();

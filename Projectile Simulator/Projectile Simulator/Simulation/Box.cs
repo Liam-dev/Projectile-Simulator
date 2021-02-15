@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,12 @@ using System.Text;
 
 namespace Projectile_Simulator.Simulation
 {
-    class Box : StaticObject
+    public class Box : StaticObject
     {
         public Vector2 Dimensions;
 
-        public Box(Vector2 position, Texture2D texture, Vector2 dimensions) : base(position, texture)
+        public Box(Vector2 position, string textureName, Vector2 dimensions) : base(position, textureName)
         {
-            texture.SetData(new[] { Color.SaddleBrown });
             Dimensions = dimensions;
             RestitutionCoefficient = 0.95f;
         }

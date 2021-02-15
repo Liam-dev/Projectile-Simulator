@@ -12,10 +12,10 @@ namespace Projectile_Simulator.Simulation
         public float DragCoefficient { get; set; }
         public float Radius { get { return texture.Width / 2; } }
 
-        public Projectile(Vector2 position, Vector2 velocity, Texture2D texture, float mass) : base(position, texture, mass)
+        public Projectile(Vector2 position, Vector2 velocity, string textureName, float mass) : base(position, textureName, mass)
         {
-            DragCoefficient = 0.00f;           
-            RestitutionCoefficient = 1f;
+            DragCoefficient = 0.005f;           
+            RestitutionCoefficient = 0.95f;
             this.velocity = velocity;
         }
 
@@ -26,6 +26,11 @@ namespace Projectile_Simulator.Simulation
             resultantForce += CalulateDrag();
 
             base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, Position - new Vector2(Radius), Color.White);
         }
 
         protected Vector2 CalulateDrag()

@@ -41,6 +41,7 @@
             this.simulation.Location = new System.Drawing.Point(5, 52);
             this.simulation.MouseHoverUpdatesOnly = true;
             this.simulation.Name = "simulation";
+            this.simulation.Scale = 100F;
             this.simulation.Size = new System.Drawing.Size(960, 540);
             this.simulation.TabIndex = 0;
             this.simulation.Text = "Simulation";

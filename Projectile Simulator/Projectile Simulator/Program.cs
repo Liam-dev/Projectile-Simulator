@@ -25,7 +25,7 @@ namespace Projectile_Simulator
                 string fileName = args[0];
                 if (File.Exists(fileName))
                 {
-                    //Application.Run(new Editor(fileName));
+                    Application.Run(new Editor(fileName));
                 }
             }
             else

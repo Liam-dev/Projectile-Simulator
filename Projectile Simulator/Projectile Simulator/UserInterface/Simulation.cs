@@ -16,6 +16,8 @@ namespace Projectile_Simulator.UserInterface
     {
         protected List<SimulationObject> objects;
 
+
+
         public float Scale { get; set; }
 
         protected Camera camera;
@@ -34,7 +36,7 @@ namespace Projectile_Simulator.UserInterface
             
             objects = new List<SimulationObject>();
 
-            cannon = new Cannon(new Vector2(20, 600), Editor.Content.Load<Texture2D>("cannon"));
+            cannon = new Cannon(new Vector2(0, 600), "cannon");
             AddObject(cannon);
         }
 
@@ -97,6 +99,7 @@ namespace Projectile_Simulator.UserInterface
         /// <param name="object"></param>
         public void AddObject(SimulationObject @object)
         {
+            @object.SetTexture(Editor.Content);
             objects.Add(@object);
         }
 
@@ -155,26 +158,85 @@ namespace Projectile_Simulator.UserInterface
                         }
                         else if (j is Box c)
                         {
+
+                            Vector2 nearestPoint = new Vector2();
+
                             
-                            Vector2 nearestPoint;
                             nearestPoint.X = MathF.Max(c.Position.X, MathF.Min(a.Position.X, c.Position.X + c.Dimensions.X));
                             nearestPoint.Y = MathF.Max(c.Position.Y, MathF.Min(a.Position.Y, c.Position.Y + c.Dimensions.Y));
+                            
+                            /*
+                            if (a.Position.X + (2 * a.Radius) < c.Position.X)
+                            {
+                                //ball right - box left
+                                nearestPoint.X = c.Position.X;
+                            }
+                            else if (a.Position.X > c.Position.X + c.Dimensions.X)
+                            {
+                                //ball left - box right
+                                nearestPoint.X = c.Position.X + c.Dimensions.X;                              
+                            }
+                            else
+                            {
+                                //between vertical edges
+                                float midpoint = c.Position.X + (c.Dimensions.X / 2);
+                                if (midpoint > a.Position.X)
+                                {
+                                    //ball from left
+                                    nearestPoint.X = c.Position.X;
+                                }
+                                else
+                                {
+                                    //ball from right
+                                    nearestPoint.X = c.Position.X + c.Dimensions.X;
+                                }
+                                
+                            }
 
-                            float overlap = 2 * a.Radius - (nearestPoint - a.Position).Length();
+                            if (a.Position.Y + (2 * a.Radius) < c.Position.Y)
+                            {
+                                //ball bottom - box top
+                                nearestPoint.Y = c.Position.Y;
+                            }
+                            else if (a.Position.Y > c.Position.Y + c.Dimensions.Y)
+                            {
+                                //ball top - box bottom
+                                nearestPoint.Y = c.Position.Y + c.Dimensions.Y;
+                            }
+                            else
+                            {
+                                // between horizontal edges
+                                float midpoint = c.Position.Y + (c.Dimensions.Y / 2);
+                                if (midpoint > a.Position.Y)
+                                {
+                                    //ball from left
+                                    nearestPoint.Y = c.Position.Y;
+                                }
+                                else
+                                {
+                                    //ball from right
+                                    nearestPoint.Y = c.Position.Y + c.Dimensions.Y;
+                                }
+                            }
+                            */
+                            float overlap = a.Radius - (nearestPoint - (a.Position /*+ new Vector2(a.Radius)*/)).Length();
 
                             if (overlap > 0)
                             {
-                                Vector2 collisionNormal = nearestPoint - a.Position;
+                                Vector2 collisionNormal = nearestPoint - (a.Position);
 
                                 // Static
                                 a.Position -= overlap * Vector2.Normalize(collisionNormal);
 
                                 // Dynamic
-                                Vector2 impulse = -(a.RestitutionCoefficient * c.RestitutionCoefficient)
+                                if (a.GetVelocity().LengthSquared() > 0.00001)
+                                {
+                                    Vector2 impulse = -(a.RestitutionCoefficient * c.RestitutionCoefficient)
                                     * Vector2.Dot(a.GetVelocity(), collisionNormal) * collisionNormal
                                     / (collisionNormal.LengthSquared() * (1 / a.Mass));
 
-                                a.ApplyImpulse(2 * impulse);
+                                    a.ApplyImpulse(2 * impulse);
+                                }   
                             }                           
                         }
                     }

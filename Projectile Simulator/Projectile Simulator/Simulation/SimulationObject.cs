@@ -11,13 +11,15 @@ namespace Projectile_Simulator.Simulation
     public class SimulationObject
     {
         public Vector2 Position { get; set; }
+
+        public string TextureName { get; protected set; }
+
         protected Texture2D texture;
 
-        public SimulationObject(Vector2 position, Texture2D texture)
+        public SimulationObject(Vector2 position, string textureName)
         {
             Position = position;
-            
-            this.texture = texture;
+            TextureName = textureName; 
         }
 
         public virtual void Update(GameTime gameTime)
@@ -32,6 +34,11 @@ namespace Projectile_Simulator.Simulation
             //spriteBatch.Draw(texture, position, Color.White);
 
             spriteBatch.Draw(texture, Position, Color.White);
+        }
+
+        public void SetTexture(ContentManager content)
+        {
+            texture = content.Load<Texture2D>(TextureName);
         }
     }
 }

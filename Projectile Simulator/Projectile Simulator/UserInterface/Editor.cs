@@ -38,13 +38,13 @@ namespace Projectile_Simulator
             }
 
             // Test objects for mouse zoom testing
-            simulation.AddObject(new SimulationObject(new Vector2(100, 100), simulation.Editor.Content.Load<Texture2D>("crate")));
-            simulation.AddObject(new SimulationObject(new Vector2(100, 400), simulation.Editor.Content.Load<Texture2D>("crate")));
-            simulation.AddObject(new SimulationObject(new Vector2(400, 100), simulation.Editor.Content.Load<Texture2D>("crate")));
-            simulation.AddObject(new SimulationObject(new Vector2(400, 400), simulation.Editor.Content.Load<Texture2D>("crate")));
-
-            simulation.AddObject(new Box(new Vector2(800, 100), new Texture2D(simulation.GraphicsDevice, 1, 1), new Vector2(20, 500)));
-            simulation.AddObject(new Box(new Vector2(320, 600), new Texture2D(simulation.GraphicsDevice, 1, 1), new Vector2(500, 20)));
+            simulation.AddObject(new Box(new Vector2(100, 100), "crate", new Vector2(64, 64)));
+            simulation.AddObject(new Box(new Vector2(100, 400), "crate", new Vector2(64, 64)));
+            simulation.AddObject(new Box(new Vector2(400, 100), "crate", new Vector2(64, 64)));
+            simulation.AddObject(new Box(new Vector2(400, 400), "crate", new Vector2(64, 64)));
+            
+            simulation.AddObject(new Box(new Vector2(800, 100), "wall", new Vector2(20, 500)));
+            simulation.AddObject(new Box(new Vector2(320, 600), "wall", new Vector2(500, 20)));         
         }
 
         /// <summary>
@@ -67,9 +67,11 @@ namespace Projectile_Simulator
             ObjectSerializer.WriteToJson("C:/Users/Liam/Desktop/ObjectData/data.sim", simulation.GetObjects());
         }
 
+
+
         private void toolbar_BallButtonClicked(object sender, EventArgs e)
         {
-            simulation.AddObject(new Projectile(simulation.cannon.Position + new Vector2(40, 40), new Vector2(800, -800), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
+            simulation.AddObject(new Projectile(simulation.cannon.Position + new Vector2(40, 40), new Vector2(800, -800), "ball", 5));
             //simulation.AddObject(new Projectile(new Vector2(40, 200), new Vector2(200, 60), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
             //simulation.AddObject(new Projectile(new Vector2(400, 220), new Vector2(0, 0), simulation.Editor.Content.Load<Texture2D>("ball"), 5));
         }

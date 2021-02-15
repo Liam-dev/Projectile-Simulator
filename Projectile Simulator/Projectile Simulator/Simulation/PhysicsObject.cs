@@ -16,7 +16,7 @@ namespace Projectile_Simulator.Simulation
         public float Mass { get; set; }
         
 
-        public PhysicsObject(Vector2 position, Texture2D texture, float mass) : base(position, texture)
+        public PhysicsObject(Vector2 position, string textureName, float mass) : base(position, textureName)
         {
             Mass = mass;
         }
