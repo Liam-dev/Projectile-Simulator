@@ -34,7 +34,13 @@ namespace Projectile_Simulator.UserInterface
             
             objects = new List<SimulationObject>();
 
-            cannon = new Cannon(new Vector2(0, 600), "cannon");
+
+            Projectile projectile = new Projectile(Vector2.Zero, "ball", 5, 0.95f, 0.005f);
+            cannon = new Cannon(new Vector2(0, 600), "cannon", projectile);
+
+            // register event
+            cannon.Fired += CannonFired;
+
             AddObject(cannon);
         }
 
@@ -104,6 +110,16 @@ namespace Projectile_Simulator.UserInterface
         public List<SimulationObject> GetObjects()
         {
             return objects;
+        }
+
+        protected void CannonFired(object sender, EventArgs e)
+        {
+            if (e is FiringArgs args)
+            {
+                Projectile projectile = args.Projectile;
+                projectile.ApplyImpulse(args.Impulse);
+                AddObject(projectile);
+            }
         }
 
 

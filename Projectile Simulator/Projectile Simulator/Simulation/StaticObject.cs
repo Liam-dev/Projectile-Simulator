@@ -13,7 +13,7 @@ namespace Projectile_Simulator.Simulation
 
         }
 
-        public StaticObject(Vector2 position, string textureName) : base(position, textureName)
+        public StaticObject(Vector2 position, string textureName, float restitutionCoefficient) : base(position, textureName, restitutionCoefficient)
         {
 
         }

@@ -10,18 +10,30 @@ namespace Projectile_Simulator.Simulation
     public class Projectile : PhysicsObject
     {
         public float DragCoefficient { get; set; }
-        public float Radius { get { return texture.Width / 2; } }
+        public float Radius
+        {
+            get
+            {
+                if (texture != null)
+                {
+                    return texture.Width / 2;
+                }
+                else
+                {
+                    return 0;
+                }
+                
+            }
+        }
 
         public Projectile()
         {
 
         }
 
-        public Projectile(Vector2 position, Vector2 velocity, string textureName, float mass) : base(position, textureName, mass)
+        public Projectile(Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(position, textureName, mass, restitutionCoefficient)
         {
-            DragCoefficient = 0.005f;           
-            RestitutionCoefficient = 0.95f;
-            this.velocity = velocity;
+            DragCoefficient = dragCoefficient;           
         }
 
         public override void Update(GameTime gameTime)

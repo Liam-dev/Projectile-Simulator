@@ -16,7 +16,7 @@ namespace Projectile_Simulator.Simulation
 
         }
 
-        public Box(Vector2 position, string textureName, Vector2 dimensions) : base(position, textureName)
+        public Box(Vector2 position, string textureName, float restitutionCoefficient, Vector2 dimensions) : base(position, textureName, restitutionCoefficient)
         {
             Dimensions = dimensions;
             RestitutionCoefficient = 0.95f;
