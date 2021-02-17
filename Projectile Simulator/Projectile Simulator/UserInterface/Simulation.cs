@@ -33,15 +33,6 @@ namespace Projectile_Simulator.UserInterface
             mouseScroll = Mouse.GetState().ScrollWheelValue;
             
             objects = new List<SimulationObject>();
-
-
-            Projectile projectile = new Projectile(Vector2.Zero, "ball", 5, 0.95f, 0.005f);
-            cannon = new Cannon(new Vector2(0, 600), "cannon", projectile);
-
-            // register event
-            cannon.Fired += CannonFired;
-
-            AddObject(cannon);
         }
 
         protected override void Update(GameTime gameTime)
@@ -112,7 +103,7 @@ namespace Projectile_Simulator.UserInterface
             return objects;
         }
 
-        protected void CannonFired(object sender, EventArgs e)
+        public void CannonFired(object sender, EventArgs e)
         {
             if (e is FiringArgs args)
             {

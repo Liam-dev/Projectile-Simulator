@@ -120,6 +120,7 @@
             this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripButton.Name = "newToolStripButton";
             this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.newToolStripButton.Tag = "newFile";
             this.newToolStripButton.Text = "&New";
             // 
             // openToolStripButton
@@ -129,6 +130,7 @@
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.openToolStripButton.Tag = "openFile";
             this.openToolStripButton.Text = "&Open";
             // 
             // saveToolStripButton
@@ -138,6 +140,7 @@
             this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripButton.Name = "saveToolStripButton";
             this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.saveToolStripButton.Tag = "saveFile";
             this.saveToolStripButton.Text = "&Save";
             // 
             // printToolStripButton
@@ -147,6 +150,7 @@
             this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.printToolStripButton.Name = "printToolStripButton";
             this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.printToolStripButton.Tag = "print";
             this.printToolStripButton.Text = "&Print";
             // 
             // toolStripSeparator6
@@ -161,6 +165,7 @@
             this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cutToolStripButton.Name = "cutToolStripButton";
             this.cutToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.cutToolStripButton.Tag = "cut";
             this.cutToolStripButton.Text = "C&ut";
             // 
             // copyToolStripButton
@@ -170,6 +175,7 @@
             this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyToolStripButton.Name = "copyToolStripButton";
             this.copyToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.copyToolStripButton.Tag = "copy";
             this.copyToolStripButton.Text = "&Copy";
             // 
             // pasteToolStripButton
@@ -179,6 +185,7 @@
             this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pasteToolStripButton.Name = "pasteToolStripButton";
             this.pasteToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.pasteToolStripButton.Tag = "paste";
             this.pasteToolStripButton.Text = "&Paste";
             // 
             // toolStripSeparator7
@@ -193,8 +200,9 @@
             this.ballToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ballToolStripButton.Name = "ballToolStripButton";
             this.ballToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.ballToolStripButton.Tag = "ball";
             this.ballToolStripButton.Text = "New Ball";
-            this.ballToolStripButton.Click += new System.EventHandler(this.ballToolStripButton_Click);
+            this.ballToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // newObjectToolStripButton
             // 
@@ -235,7 +243,7 @@
             this.zoomInToolStripButton.Name = "zoomInToolStripButton";
             this.zoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.zoomInToolStripButton.Text = "Zoom In";
-            this.zoomInToolStripButton.Click += new System.EventHandler(this.zoomInToolStripButton_Click);
+            this.zoomInToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // zoomOutToolStripButton
             // 
@@ -245,7 +253,7 @@
             this.zoomOutToolStripButton.Name = "zoomOutToolStripButton";
             this.zoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.zoomOutToolStripButton.Text = "Zoom Out";
-            this.zoomOutToolStripButton.Click += new System.EventHandler(this.zoomOutToolStripButton_Click);
+            this.zoomOutToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // toolStripSeparator9
             // 
