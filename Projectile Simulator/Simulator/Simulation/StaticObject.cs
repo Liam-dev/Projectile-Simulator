@@ -13,7 +13,7 @@ namespace Simulator.Simulation
 
         }
 
-        public StaticObject(Vector2 position, string textureName, float restitutionCoefficient) : base(position, textureName, restitutionCoefficient)
+        public StaticObject(string name, Vector2 position, string textureName, float restitutionCoefficient) : base(name, position, textureName, restitutionCoefficient)
         {
 
         }

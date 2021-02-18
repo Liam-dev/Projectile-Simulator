@@ -10,7 +10,7 @@ namespace Simulator.Simulation
     {
         public float Lifetime { get; protected set; }
 
-        public Dot(Vector2 position, float lifetime, string textureName = "dot") : base(position, textureName)
+        public Dot(string name, Vector2 position, float lifetime, string textureName = "dot") : base(name, position, textureName)
         {
             Lifetime = lifetime;
         }

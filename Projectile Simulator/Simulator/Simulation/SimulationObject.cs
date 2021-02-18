@@ -10,6 +10,8 @@ namespace Simulator.Simulation
 {
     public class SimulationObject
     {
+        public string Name { get; protected set; }
+
         public Vector2 Position { get; set; }
 
         public string TextureName { get; set; }
@@ -21,8 +23,9 @@ namespace Simulator.Simulation
 
         }
 
-        public SimulationObject(Vector2 position, string textureName)
+        public SimulationObject(string name, Vector2 position, string textureName)
         {
+            Name = name;
             Position = position;
             TextureName = textureName; 
         }

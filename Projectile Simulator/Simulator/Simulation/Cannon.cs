@@ -20,7 +20,7 @@ namespace Simulator.Simulation
 
         }
 
-        public Cannon(Vector2 position, string textureName, Projectile projectile) : base(position, textureName)
+        public Cannon(string name, Vector2 position, string textureName, Projectile projectile) : base(name, position, textureName)
         {
             Projectile = projectile;
 
@@ -31,7 +31,7 @@ namespace Simulator.Simulation
 
         public void Fire()
         {
-            Projectile projectile = new Projectile(Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.DragCoefficient);
+            Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.DragCoefficient);
 
             Vector2 impulse = projectile.Mass * Speed * new Vector2(MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 

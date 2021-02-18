@@ -9,8 +9,6 @@ namespace Simulator.Simulation
 {
     public class Projectile : PhysicsObject
     {
-
-
         public float DragCoefficient { get; set; }
         public float Radius
         {
@@ -32,7 +30,7 @@ namespace Simulator.Simulation
 
         }
 
-        public Projectile(Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(position, textureName, mass, restitutionCoefficient)
+        public Projectile(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(name, position, textureName, mass, restitutionCoefficient)
         {
             DragCoefficient = dragCoefficient;           
         }

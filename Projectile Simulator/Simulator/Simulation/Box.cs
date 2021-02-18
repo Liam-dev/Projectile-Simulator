@@ -16,7 +16,7 @@ namespace Simulator.Simulation
 
         }
 
-        public Box(Vector2 position, string textureName, float restitutionCoefficient, Vector2 dimensions) : base(position, textureName, restitutionCoefficient)
+        public Box(string name, Vector2 position, string textureName, float restitutionCoefficient, Vector2 dimensions) : base(name, position, textureName, restitutionCoefficient)
         {
             Dimensions = dimensions;
             RestitutionCoefficient = 0.95f;

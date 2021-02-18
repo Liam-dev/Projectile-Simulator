@@ -20,7 +20,7 @@ namespace Simulator.Simulation
 
         }
 
-        public PhysicsObject(Vector2 position, string textureName, float mass, float restitutionCoefficient) : base(position, textureName, restitutionCoefficient)
+        public PhysicsObject(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient) : base(name, position, textureName, restitutionCoefficient)
         {
             Mass = mass;
         }

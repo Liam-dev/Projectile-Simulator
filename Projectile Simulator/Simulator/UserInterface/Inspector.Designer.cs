@@ -46,11 +46,18 @@
             // 
             this.selectionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selectionBox.FormattingEnabled = true;
+            this.selectionBox.Items.AddRange(new object[] {
+            "hello",
+            "1",
+            "2",
+            "3"});
             this.selectionBox.Location = new System.Drawing.Point(0, 2);
             this.selectionBox.Name = "selectionBox";
             this.selectionBox.Size = new System.Drawing.Size(250, 23);
             this.selectionBox.TabIndex = 1;
+            this.selectionBox.SelectedIndexChanged += new System.EventHandler(this.selectionBox_SelectedIndexChanged);
             // 
             // Inspector
             // 

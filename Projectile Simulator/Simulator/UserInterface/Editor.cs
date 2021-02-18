@@ -30,16 +30,16 @@ namespace Simulator
 
             // Test objects for mouse zoom testing
             
-            objectsToLoad.Add(new Box(new Vector2(100, 100), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box(new Vector2(100, 400), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box(new Vector2(400, 100), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box(new Vector2(400, 400), "crate", 0.95f, new Vector2(64, 64)));
+            objectsToLoad.Add(new Box("box", new Vector2(100, 100), "crate", 0.95f, new Vector2(64, 64)));
+            objectsToLoad.Add(new Box("box", new Vector2(100, 400), "crate", 0.95f, new Vector2(64, 64)));
+            objectsToLoad.Add(new Box("box", new Vector2(400, 100), "crate", 0.95f, new Vector2(64, 64)));
+            objectsToLoad.Add(new Box("box", new Vector2(400, 400), "crate", 0.95f, new Vector2(64, 64)));
 
-            objectsToLoad.Add(new Box(new Vector2(800, 100), "wall", 0.95f, new Vector2(20, 500)));
-            objectsToLoad.Add(new Box(new Vector2(320, 600), "wall", 0.95f, new Vector2(500, 20)));
+            objectsToLoad.Add(new Box("box", new Vector2(800, 100), "wall", 0.95f, new Vector2(20, 500)));
+            objectsToLoad.Add(new Box("box", new Vector2(320, 600), "wall", 0.95f, new Vector2(500, 20)));
 
-            Projectile projectile = new Projectile(Vector2.Zero, "ball", 5, 0.95f, 0.005f);
-            objectsToLoad.Add(new Cannon(new Vector2(0, 600), "cannon", projectile));
+            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.95f, 0.005f);
+            objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
         }
 
         private void Editor_Load(object sender, EventArgs e)
@@ -54,7 +54,8 @@ namespace Simulator
             simulation.cannon = (Cannon)objectsToLoad.Find(x => x is Cannon cannon);
             // register event
             simulation.cannon.Fired += simulation.CannonFired;
-            inspector.Object = simulation.cannon;
+
+            inspector.SetDataSource(simulation.GetObjects());
         }
 
         /// <summary>
