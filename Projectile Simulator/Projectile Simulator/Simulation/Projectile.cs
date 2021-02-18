@@ -9,6 +9,8 @@ namespace Projectile_Simulator.Simulation
 {
     public class Projectile : PhysicsObject
     {
+
+
         public float DragCoefficient { get; set; }
         public float Radius
         {
@@ -21,8 +23,7 @@ namespace Projectile_Simulator.Simulation
                 else
                 {
                     return 0;
-                }
-                
+                }              
             }
         }
 
@@ -39,7 +40,7 @@ namespace Projectile_Simulator.Simulation
         public override void Update(GameTime gameTime)
         {
             resultantForce = Vector2.Zero;
-            resultantForce += Mass * 980 * Vector2.UnitY;
+            resultantForce += CalculateWeight();
             resultantForce += CalulateDrag();
 
             base.Update(gameTime);
@@ -54,6 +55,11 @@ namespace Projectile_Simulator.Simulation
         {
             //float area = texture.Height * texture.Width * MathF.PI * 0.25f;
             return DragCoefficient * velocity.Length() * -velocity;
+        }
+
+        protected Vector2 CalculateWeight()
+        {
+            return Mass * 980 * Vector2.UnitY;
         }
     }
 
