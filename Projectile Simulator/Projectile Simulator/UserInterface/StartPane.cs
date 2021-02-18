@@ -29,8 +29,16 @@ namespace Projectile_Simulator.UserInterface
 
         private void loadButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileLoader = new OpenFileDialog();
-            fileLoader.ShowDialog();
+            OpenFileDialog fileDialogue = new OpenFileDialog();
+            fileDialogue.Title = "Open Simulation File";
+            fileDialogue.DefaultExt = "sim";
+            fileDialogue.Multiselect = false;      
+
+            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            {
+                new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
+                Application.ExitThread();
+            }        
         }
 
         private void preferencesButton_Click(object sender, EventArgs e)

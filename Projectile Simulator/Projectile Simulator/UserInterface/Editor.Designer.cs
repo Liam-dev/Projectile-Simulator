@@ -41,6 +41,7 @@
             this.simulation.Location = new System.Drawing.Point(5, 52);
             this.simulation.MouseHoverUpdatesOnly = true;
             this.simulation.Name = "simulation";
+            this.simulation.Scale = 100F;
             this.simulation.Size = new System.Drawing.Size(960, 540);
             this.simulation.TabIndex = 0;
             this.simulation.Text = "Simulation";
@@ -54,9 +55,7 @@
             this.toolbar.Name = "toolbar";
             this.toolbar.Size = new System.Drawing.Size(1228, 50);
             this.toolbar.TabIndex = 4;
-            this.toolbar.BallButtonClicked += new System.EventHandler(this.toolbar_BallButtonClicked);
-            this.toolbar.ZoomInButtonClicked += new System.EventHandler(this.toolbar_ZoomInButtonClicked);
-            this.toolbar.ZoomOutButtonClicked += new System.EventHandler(this.toolbar_ZoomOutButtonClicked);
+            this.toolbar.ButtonClicked += new System.EventHandler(this.toolbar_ButtonClicked);
             // 
             // inspector
             // 

@@ -9,10 +9,58 @@ namespace Projectile_Simulator.Simulation
 {
     public class Projectile : PhysicsObject
     {
-        public Projectile(Vector2 position, Texture2D texture, float mass) : base(position, texture, mass)
+
+
+        public float DragCoefficient { get; set; }
+        public float Radius
         {
-            resultantForce = mass * 980 * Vector2.UnitY;
-            velocity = new Vector2(200, 0);
+            get
+            {
+                if (texture != null)
+                {
+                    return texture.Width / 2;
+                }
+                else
+                {
+                    return 0;
+                }              
+            }
+        }
+
+        public Projectile()
+        {
+
+        }
+
+        public Projectile(Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(position, textureName, mass, restitutionCoefficient)
+        {
+            DragCoefficient = dragCoefficient;           
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            resultantForce = Vector2.Zero;
+            resultantForce += CalculateWeight();
+            resultantForce += CalulateDrag();
+
+            base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, Position - new Vector2(Radius), Color.White);
+        }
+
+        protected Vector2 CalulateDrag()
+        {
+            //float area = texture.Height * texture.Width * MathF.PI * 0.25f;
+            return DragCoefficient * velocity.Length() * -velocity;
+        }
+
+        protected Vector2 CalculateWeight()
+        {
+            return Mass * 980 * Vector2.UnitY;
         }
     }
+
 }

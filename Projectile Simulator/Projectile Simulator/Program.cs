@@ -20,17 +20,18 @@ namespace Projectile_Simulator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);          
 
-            string name = string.Empty;
             if (args != null && args.Length > 0)
             {
                 string fileName = args[0];
                 if (File.Exists(fileName))
                 {
-                    //Load file
+                    Application.Run(new Editor(fileName));
                 }
             }
-
-            Application.Run(new Homepage());
+            else
+            {
+                Application.Run(new Homepage());
+            }  
         }
     }
 }

@@ -11,10 +11,16 @@ namespace Projectile_Simulator.Simulation
         protected Vector2 velocity;
         protected Vector2 acceleration;
         protected Vector2 resultantForce;
+        protected Vector2 impulse;
 
         public float Mass { get; set; }
+        
+        public PhysicsObject()
+        {
 
-        public PhysicsObject(Vector2 position, Texture2D texture, float mass) : base(position, texture)
+        }
+
+        public PhysicsObject(Vector2 position, string textureName, float mass, float restitutionCoefficient) : base(position, textureName, restitutionCoefficient)
         {
             Mass = mass;
         }
@@ -24,14 +30,29 @@ namespace Projectile_Simulator.Simulation
             base.Update(gameTime);
 
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            velocity += impulse / Mass;
+            impulse = Vector2.Zero;
+
             acceleration = resultantForce / Mass;
+
             velocity += acceleration * delta;
             Position += velocity * delta;
         }
 
-        public void ApplyForce(Vector2 force, Vector2 offset = default)
+        public void ApplyForce(Vector2 force)
         {
             resultantForce += force;
+        }
+
+        public void ApplyImpulse(Vector2 impulse)
+        {
+            this.impulse += impulse;
+        }
+
+        public Vector2 GetVelocity()
+        {
+            return velocity;
         }
     }
 }

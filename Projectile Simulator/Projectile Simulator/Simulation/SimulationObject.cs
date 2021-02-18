@@ -3,18 +3,28 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using MonoGame;
 
 namespace Projectile_Simulator.Simulation
 {
     public class SimulationObject
     {
-        public Vector2 Position { get; protected set; }
+        public Vector2 Position { get; set; }
+
+        public string TextureName { get; set; }
+
         protected Texture2D texture;
 
-        public SimulationObject(Vector2 position, Texture2D texture)
+        public SimulationObject()
+        {
+
+        }
+
+        public SimulationObject(Vector2 position, string textureName)
         {
             Position = position;
-            this.texture = texture;
+            TextureName = textureName; 
         }
 
         public virtual void Update(GameTime gameTime)
@@ -22,12 +32,18 @@ namespace Projectile_Simulator.Simulation
             
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, float scale = 100f)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 position = new Vector2(scale * Position.X, spriteBatch.GraphicsDevice.Viewport.Height - (scale * Position.Y));
-
+            // Scaled position
+            //Vector2 position = new Vector2(scale * Position.X, spriteBatch.GraphicsDevice.Viewport.Height - (scale * Position.Y));
             //spriteBatch.Draw(texture, position, Color.White);
+
             spriteBatch.Draw(texture, Position, Color.White);
+        }
+
+        public void SetTexture(ContentManager content)
+        {
+            texture = content.Load<Texture2D>(TextureName);
         }
     }
 }

@@ -6,9 +6,14 @@ using System.Text;
 
 namespace Projectile_Simulator.Simulation
 {
-    public class StaticObject : CollisionObject
+    public class StaticObject : CollisionObject, IPersistent
     {
-        public StaticObject(Vector2 position, Texture2D texture) : base(position, texture)
+        public StaticObject()
+        {
+
+        }
+
+        public StaticObject(Vector2 position, string textureName, float restitutionCoefficient) : base(position, textureName, restitutionCoefficient)
         {
 
         }
