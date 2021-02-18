@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Projectile_Simulator.Simulation
 {
-    public class StaticObject : CollisionObject
+    public class StaticObject : CollisionObject, IPersistent
     {
         public StaticObject()
         {

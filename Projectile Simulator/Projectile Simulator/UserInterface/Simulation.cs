@@ -77,9 +77,17 @@ namespace Projectile_Simulator.UserInterface
             Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
 
             // Draw each of the objects
-            foreach (SimulationObject obj in objects)
+            foreach (SimulationObject @object in objects.ToArray())
             {
-                obj.Draw(Editor.spriteBatch);
+                @object.Draw(Editor.spriteBatch);
+
+                // EXPERIMENTAL - Projectile trails
+                /*
+                if (@object is Projectile projectile)
+                {
+                    AddObject(new Dot(projectile.Position, 3));
+                }
+                */
             }
 
             cannon.Draw(Editor.spriteBatch);

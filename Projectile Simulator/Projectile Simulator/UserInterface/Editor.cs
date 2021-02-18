@@ -86,6 +86,9 @@ namespace Projectile_Simulator
                     case "ball":
                         simulation.cannon.Fire();
                         break;
+
+                    case "newCannon":
+                        break;
                 }
             }
         }

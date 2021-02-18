@@ -12,17 +12,20 @@ namespace Projectile_Simulator
     /// </summary>
     public static class ObjectWriter
     {
+        private static JsonSerializerOptions options = new JsonSerializerOptions { Converters = { new VectorConverter() } };
+
         public static void WriteJson<T>(string path, List<T> objects)
         {
             StreamWriter writer = new StreamWriter(path);
 
             foreach (T @object in objects)
             {
-                //string data = JsonConvert.SerializeObject(@object);
-                var options = new JsonSerializerOptions { Converters = { new VectorConverter() } };
-                string data = JsonSerializer.Serialize(@object, @object.GetType(), options);
-                writer.WriteLine(@object.GetType());
-                writer.WriteLine(data);
+                if (@object is IPersistent)
+                {
+                    string data = JsonSerializer.Serialize(@object, @object.GetType(), options);
+                    writer.WriteLine(@object.GetType());
+                    writer.WriteLine(data);
+                }             
             }
 
             writer.Close();
@@ -41,10 +44,6 @@ namespace Projectile_Simulator
                 if (line.Length > 0)
                 {
                     Type dataType = Type.GetType(line);
-
-                    //@object = JsonConvert.DeserializeObject(reader.ReadLine());
-
-                    var options = new JsonSerializerOptions { Converters = { new VectorConverter() } };
                     dynamic @object = JsonSerializer.Deserialize(reader.ReadLine(), dataType, options);
                     objects.Add(@object);
                 }    

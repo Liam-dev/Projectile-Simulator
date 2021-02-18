@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Projectile_Simulator.Simulation
 {
-    public class Cannon : SimulationObject
+    public class Cannon : SimulationObject, IPersistent
     {
         public event EventHandler<FiringArgs> Fired;
 
