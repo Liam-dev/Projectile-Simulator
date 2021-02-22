@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace Simulator.Simulation
 {
-    class Trajectory
+    public class Trajectory
     {
-        protected List<Vector2> points;
+        protected List<Vector2> points = new List<Vector2>();
 
         public Trajectory(Vector2 position)
         {

@@ -15,9 +15,9 @@ namespace Simulator.Simulation
             Lifetime = lifetime;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan delta)
         {
-            Lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Lifetime -= (float)delta.TotalSeconds;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

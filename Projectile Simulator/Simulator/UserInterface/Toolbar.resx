@@ -123,6 +123,22 @@
         J5nBJhUlLbsqAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="playToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACjSURBVDhPY0AG3759O//lyxcDKJd0ADTgPxC///79ewJU
+        iDQAMiBmXsT/ey/v/f/69ev89+/fC0CliAMgAyy6TP67THT4v/vKTpBrSPMSzAAY7t7ZSZqX0A0AYZK8
+        hM0AECbaS7gMgGGCXiJkQP3mWvIMAHlh/bm15HkBFIiXHl0iLxBBTn7+4jnp0Ui0k9EByACSnIwOQAYA
+        MUWZicTszMAAALbwKJKIpc1tAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="pauseToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVDhPYxhc4Nu3b/+JwVDlmAAsGTwHjuEa0MSgyjHB
+        qAGjBoAATAMhDFU+PAADAwCC60F8n4x4egAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="ballToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

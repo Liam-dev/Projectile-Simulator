@@ -25,19 +25,19 @@ namespace Simulator.Simulation
             Mass = mass;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan delta)
         {
-            base.Update(gameTime);
-
-            float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float time = (float)delta.TotalSeconds;
 
             velocity += impulse / Mass;
             impulse = Vector2.Zero;
 
             acceleration = resultantForce / Mass;
 
-            velocity += acceleration * delta;
-            Position += velocity * delta;
+            velocity += acceleration * time;
+            Position += velocity * time;
+
+            base.Update(delta);
         }
 
         public void ApplyForce(Vector2 force)

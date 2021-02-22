@@ -26,10 +26,5 @@ namespace Simulator.Simulation
         {
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y), Color.White);
         }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
     }
 }

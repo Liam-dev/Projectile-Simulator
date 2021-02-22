@@ -39,6 +39,9 @@
             this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.playToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.pauseToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.ballToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.newObjectToolStripButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.newBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,6 +103,9 @@
             this.copyToolStripButton,
             this.pasteToolStripButton,
             this.toolStripSeparator7,
+            this.playToolStripButton,
+            this.pauseToolStripButton,
+            this.toolStripSeparator10,
             this.ballToolStripButton,
             this.newObjectToolStripButton,
             this.toolStripSeparator8,
@@ -193,6 +199,33 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
+            // playToolStripButton
+            // 
+            this.playToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.playToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("playToolStripButton.Image")));
+            this.playToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.playToolStripButton.Name = "playToolStripButton";
+            this.playToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.playToolStripButton.Tag = "play";
+            this.playToolStripButton.Text = "Play Simulation";
+            this.playToolStripButton.Click += new System.EventHandler(this.button_Click);
+            // 
+            // pauseToolStripButton
+            // 
+            this.pauseToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.pauseToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pauseToolStripButton.Image")));
+            this.pauseToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.pauseToolStripButton.Name = "pauseToolStripButton";
+            this.pauseToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.pauseToolStripButton.Tag = "pause";
+            this.pauseToolStripButton.Text = "Pause Simulation";
+            this.pauseToolStripButton.Click += new System.EventHandler(this.button_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
+            // 
             // ballToolStripButton
             // 
             this.ballToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -221,13 +254,16 @@
             this.newBoxToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newBoxToolStripMenuItem.Image")));
             this.newBoxToolStripMenuItem.Name = "newBoxToolStripMenuItem";
             this.newBoxToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newBoxToolStripMenuItem.Tag = "newBox";
             this.newBoxToolStripMenuItem.Text = "New Box";
+            this.newBoxToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // newCannonToolStripMenuItem
             // 
             this.newCannonToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newCannonToolStripMenuItem.Image")));
             this.newCannonToolStripMenuItem.Name = "newCannonToolStripMenuItem";
             this.newCannonToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.newCannonToolStripMenuItem.Tag = "newCannon";
             this.newCannonToolStripMenuItem.Text = "New Cannon";
             // 
             // toolStripSeparator8
@@ -634,5 +670,8 @@
         private System.Windows.Forms.ToolStripDropDownButton newObjectToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem newBoxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newCannonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton playToolStripButton;
+        private System.Windows.Forms.ToolStripButton pauseToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
     }
 }

@@ -16,44 +16,93 @@ namespace Simulator.UserInterface
     {
         protected List<SimulationObject> objects;
 
-        public float Scale { get; set; }
-
         protected Camera camera;
         protected int mouseScroll;
 
+        protected TimeSpan previousDelta;
+        protected float timeTolerance = 2f;
+
         public Cannon cannon;
+
+        public float Scale { get; set; }
+
+        public bool Paused { get; set; }
+
+        public Color BackgroundColour { get; set; }
 
         protected override void Initialize()
         {
             base.Initialize();
 
             Scale = 100;
+            BackgroundColour = Color.SkyBlue;
 
             camera = new Camera();
             mouseScroll = Mouse.GetState().ScrollWheelValue;
             
             objects = new List<SimulationObject>();
         }
-
+        
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+            GetInput();
 
-            // Check collisions
+            if (!Paused)
+            {
+                // Check for a percentage discrepancy in the elapsed game time to allow for lag (such as from window adjustments)
+                if (previousDelta == TimeSpan.Zero || gameTime.ElapsedGameTime.Duration() - previousDelta.Duration() < timeTolerance * previousDelta.Duration())
+                {
+                    Simulate(gameTime.ElapsedGameTime);
+                    previousDelta = gameTime.ElapsedGameTime;
+                }
+                else
+                {
+                    // If there is lag, then use elapsed time from previous update
+                    Simulate(previousDelta);
+                }
+            }
+        }
+
+        protected void Simulate(TimeSpan delta)
+        {
+            // Collisions
             CheckCollisions();
 
             // Update each of the objects
             foreach (SimulationObject obj in objects)
             {
-                obj.Update(gameTime);
+                obj.Update(delta);
+            }
+        }
+
+        protected override void Draw()
+        {
+            // Reset and clear the simulation window
+            GraphicsDevice.Clear(BackgroundColour);
+
+            // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
+            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
+
+            // Draw each of the objects
+            foreach (SimulationObject @object in objects)
+            {
+                @object.Draw(Editor.spriteBatch);              
             }
 
+            cannon.Draw(Editor.spriteBatch);
+
+            Editor.spriteBatch.End();
+
+        }
+
+        protected void GetInput()
+        {
             int newMouseScroll = Mouse.GetState().ScrollWheelValue;
             Vector2 mousePosition = Mouse.GetState().Position.ToVector2();
 
             // Mouse wheel up
             if (newMouseScroll > mouseScroll)
-            {                
+            {
                 camera.ZoomIn();
                 camera.Update(mousePosition);
             }
@@ -65,35 +114,7 @@ namespace Simulator.UserInterface
             }
 
             // Reset relative mouse wheel value;
-            mouseScroll = newMouseScroll;          
-        }
-
-        protected override void Draw()
-        {
-            // Reset and clear the simulation window
-            GraphicsDevice.Clear(Color.SkyBlue);
-
-            // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
-
-            // Draw each of the objects
-            foreach (SimulationObject @object in objects.ToArray())
-            {
-                @object.Draw(Editor.spriteBatch);
-
-                // EXPERIMENTAL - Projectile trails
-                /*
-                if (@object is Projectile projectile)
-                {
-                    AddObject(new Dot(projectile.Position, 3));
-                }
-                */
-            }
-
-            cannon.Draw(Editor.spriteBatch);
-
-            Editor.spriteBatch.End();
-
+            mouseScroll = newMouseScroll;
         }
 
         /// <summary>
@@ -102,7 +123,7 @@ namespace Simulator.UserInterface
         /// <param name="object"></param>
         public void AddObject(SimulationObject @object)
         {
-            @object.SetTexture(Editor.Content);
+            @object.OnLoad(Editor.Content);
             objects.Add(@object);
         }
 

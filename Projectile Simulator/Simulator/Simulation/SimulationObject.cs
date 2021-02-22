@@ -4,10 +4,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using MonoGame;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class SimulationObject
     {
         public string Name { get; protected set; }
@@ -30,7 +31,12 @@ namespace Simulator.Simulation
             TextureName = textureName; 
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void OnLoad(ContentManager content)
+        {
+            SetTexture(TextureName, content);
+        }
+
+        public virtual void Update(TimeSpan delta)
         {
             
         }
@@ -44,9 +50,9 @@ namespace Simulator.Simulation
             spriteBatch.Draw(texture, Position, Color.White);
         }
 
-        public void SetTexture(ContentManager content)
+        public void SetTexture(string textureName, ContentManager content)
         {
-            texture = content.Load<Texture2D>(TextureName);
+            texture = content.Load<Texture2D>(textureName);
         }
     }
 }

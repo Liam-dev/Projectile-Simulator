@@ -6,6 +6,7 @@
     <RootNamespace>Simulator</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <MonoGamePlatform>Windows</MonoGamePlatform>
+    <ApplicationIcon></ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

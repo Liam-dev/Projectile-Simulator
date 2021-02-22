@@ -88,26 +88,28 @@ namespace Simulator
                         simulation.cannon.Fire();
                         break;
 
-                    case "newCannon":
+                    case "newBox":
+                        simulation.AddObject(new Box("box", new Vector2(-100, -100), "crate", 0.95f, new Vector2(64, 64)));                      
+                        break;
+
+                    case "play":
+                        simulation.Paused = false;
+                        break;
+
+                    case "pause":
+                        simulation.Paused = true;
+                        break;
+                }
+            }
+            else if (sender is ToolStripMenuItem item)
+            {
+                switch (item.Tag)
+                {
+                    case "newBox":
+                        simulation.AddObject(new Box("box", new Vector2(-100, -100), "crate", 0.95f, new Vector2(64, 64)));
                         break;
                 }
             }
         }
-
-        private void toolbar_ZoomInButtonClicked(object sender, EventArgs e)
-        {
-            /*
-            simulation.camera.ZoomIn();
-            simulation.camera.Update(Vector2.Zero);
-            */
-        }
-
-        private void toolbar_ZoomOutButtonClicked(object sender, EventArgs e)
-        {
-            /*
-            simulation.camera.ZoomOut();
-            simulation.camera.Update(Vector2.Zero);
-            */
-        }        
     }
 }
