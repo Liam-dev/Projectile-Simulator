@@ -41,7 +41,7 @@ namespace Simulator.Simulation
             
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, float zoom)
         {
             // Scaled position
             //Vector2 position = new Vector2(scale * Position.X, spriteBatch.GraphicsDevice.Viewport.Height - (scale * Position.Y));

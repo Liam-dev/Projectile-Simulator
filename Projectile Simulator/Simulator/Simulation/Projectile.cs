@@ -59,7 +59,7 @@ namespace Simulator.Simulation
             base.Update(delta);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, Position - new Vector2(Radius), Color.White);
         }

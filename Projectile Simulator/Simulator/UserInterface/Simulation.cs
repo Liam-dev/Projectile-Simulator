@@ -45,7 +45,10 @@ namespace Simulator.UserInterface
         
         protected override void Update(GameTime gameTime)
         {
-            GetInput();
+            if (Focused)
+            {
+                GetInput();
+            }
 
             if (!Paused)
             {
@@ -86,10 +89,10 @@ namespace Simulator.UserInterface
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
             {
-                @object.Draw(Editor.spriteBatch);              
+                @object.Draw(Editor.spriteBatch, camera.GetZoom());              
             }
 
-            cannon.Draw(Editor.spriteBatch);
+            cannon.Draw(Editor.spriteBatch, camera.GetZoom());
 
             Editor.spriteBatch.End();
 

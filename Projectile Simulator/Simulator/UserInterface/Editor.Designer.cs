@@ -78,7 +78,7 @@
             this.Controls.Add(this.simulation);
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "Editor";
-            this.Text = "Editor";
+            this.Text = "Projectile Simulator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Editor_FormClosing);
             this.Load += new System.EventHandler(this.Editor_Load);
             this.ResumeLayout(false);

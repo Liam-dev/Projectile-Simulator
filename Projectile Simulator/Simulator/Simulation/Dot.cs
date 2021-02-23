@@ -20,11 +20,11 @@ namespace Simulator.Simulation
             Lifetime -= (float)delta.TotalSeconds;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             if (Lifetime > 0)
             {
-                base.Draw(spriteBatch);
+                base.Draw(spriteBatch, zoom);
             }
         }
     }

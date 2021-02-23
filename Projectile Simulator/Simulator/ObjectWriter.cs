@@ -33,7 +33,7 @@ namespace Simulator
         }
 
         public static List<T> ReadJson<T>(string path)
-        {
+        { 
             StreamReader reader = new StreamReader(path);
 
             List<T> objects = new List<T>();

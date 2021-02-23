@@ -138,6 +138,7 @@
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.openToolStripButton.Tag = "openFile";
             this.openToolStripButton.Text = "&Open";
+            this.openToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // saveToolStripButton
             // 
@@ -148,6 +149,7 @@
             this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.saveToolStripButton.Tag = "saveFile";
             this.saveToolStripButton.Text = "&Save";
+            this.saveToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // printToolStripButton
             // 
@@ -352,6 +354,7 @@
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // toolStripSeparator
             // 
@@ -366,6 +369,7 @@
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // saveAsToolStripMenuItem
             // 

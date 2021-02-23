@@ -26,9 +26,10 @@ namespace Simulator.Simulation
             Transform = Matrix.Identity;
             zoom = 1;
             oldZoom = 1;
+
             ZoomMultiplier = 1.1f;
             MaxZoomLevel = 8;
-            MinZoomLevel = -10;
+            MinZoomLevel = -16;
         }
 
         public void ZoomIn()
@@ -60,6 +61,16 @@ namespace Simulator.Simulation
             Transform *= toPosition;
             Transform *= scale;
             Transform *= fromPosition;
+        }
+
+        public float GetZoom()
+        {
+            Vector3 _zoom;
+            Quaternion _rotation;
+            Vector3 _position;
+            Transform.Decompose(out _zoom, out _rotation, out _position);
+            //return _zoom.Length();
+            return zoom;
         }
     }
 }
