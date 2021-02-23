@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
+using System.Threading.Tasks;
 
 namespace Simulator
 {
@@ -19,6 +20,8 @@ namespace Simulator
     /// </summary>
     public partial class Editor : Form
     {
+        public delegate void SafeCallDelegate();
+
         public string Filename { get; protected set; }
 
         private List<SimulationObject> objectsToLoad;
@@ -82,12 +85,6 @@ namespace Simulator
             inspector.SetDataSource(simulation.GetObjects());
         }
 
-        // Run on close
-        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveFile();
-        }
-
         private void toolbar_ButtonClicked(object sender, EventArgs e)
         {
             string tag = string.Empty;
@@ -117,7 +114,9 @@ namespace Simulator
                     break;
 
                 case "saveFile":
-                    SaveFile();
+                    Thread thread = new Thread(SaveFile);
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start();
                     break;
 
                 case "ball":
@@ -138,34 +137,97 @@ namespace Simulator
             }
         }
 
+        // Run on close
+        private void Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Filename == null)
+            {
+                string message = "Do you want to save your changes to the simulation\n\n" +
+                             "If you click \"No\", your changes will be lost forever (a very long time!)";
+
+                DialogResult result = MessageBox.Show(message, "Projectile Simulator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        e.Cancel = true;
+                        Thread thread = new Thread(() =>
+                        {
+                            SaveFile();
+                            CloseEditor();
+                        });
+
+                        thread.SetApartmentState(ApartmentState.STA);
+                        thread.Start();
+                        break;
+
+                    case DialogResult.No:
+                        break;
+
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
+            }               
+        }
+
+
+
+        protected void ShowSaveFileDialogue()
+        {
+            SaveFileDialog fileDialogue = new SaveFileDialog();
+            fileDialogue.Title = "Save Simulation File";
+            fileDialogue.DefaultExt = "sim";
+            fileDialogue.AddExtension = true;
+            fileDialogue.CheckPathExists = true;
+            fileDialogue.Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*";
+
+            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            {
+                Filename = fileDialogue.FileName;
+                ObjectWriter.WriteJson(Filename, simulation.GetObjects());
+            }
+        }
+
         protected void SaveFile()
         {
             if (Filename == null)
             {
-                Thread thread = new Thread(() =>
-                {
-                    SaveFileDialog fileDialogue = new SaveFileDialog();
-                    fileDialogue.Title = "Save Simulation File";
-                    fileDialogue.DefaultExt = "sim";
-                    fileDialogue.AddExtension = true;
-                    fileDialogue.CheckPathExists = true;
-                    fileDialogue.Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*";
-
-
-                    if (fileDialogue.ShowDialog() == DialogResult.OK)
-                    {
-                        Filename = fileDialogue.FileName;
-                        Text = Filename + " - Projectile Simulator";
-                        ObjectWriter.WriteJson(Filename, simulation.GetObjects());
-                    }
-                });
-
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.Start();
+                ShowSaveFileDialogue();
+                ChangeFormTitle();
             }
             else if (File.Exists(Filename))
             {
                 ObjectWriter.WriteJson(Filename, simulation.GetObjects());
+            }         
+        }
+
+        private void ChangeFormTitle()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SafeCallDelegate(ChangeFormTitle));
+            }
+            else
+            {
+                if (Filename != null)
+                {
+                    Text = Filename + " - Projectile Simulator";
+                }
+            }
+        }
+
+        protected void ShowOpenFileDialogue()
+        {
+            OpenFileDialog fileDialogue = new OpenFileDialog();
+            fileDialogue.Title = "Open Simulation File";
+            fileDialogue.DefaultExt = "sim";
+            fileDialogue.Multiselect = false;
+
+            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            {
+                CloseEditor();
+                new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
             }
         }
 
@@ -173,20 +235,31 @@ namespace Simulator
         {
             Thread thread = new Thread(() =>
             {
-                OpenFileDialog fileDialogue = new OpenFileDialog();
-                fileDialogue.Title = "Open Simulation File";
-                fileDialogue.DefaultExt = "sim";
-                fileDialogue.Multiselect = false;
+                // Save current simulation
+                Thread saveThread = new Thread(SaveFile);
+                saveThread.SetApartmentState(ApartmentState.STA);
+                saveThread.Start();
 
-                if (fileDialogue.ShowDialog() == DialogResult.OK)
-                {
-                    //Close();
-                    new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
-                }
+                // Load new simulation
+                Thread loadThread = new Thread(ShowOpenFileDialogue);
+                loadThread.SetApartmentState(ApartmentState.STA);
+                loadThread.Start();
             });
 
             thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            thread.Start();    
+        }
+
+        private void CloseEditor()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SafeCallDelegate(CloseEditor));
+            }
+            else
+            {
+                Close();
+            }
         }
     }
 }
