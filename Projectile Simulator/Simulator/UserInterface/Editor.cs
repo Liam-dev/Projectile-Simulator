@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Design;
 using System.Text;
 using System.IO;
@@ -119,8 +120,8 @@ namespace Simulator
                     SaveFile();
                     break;
 
-                case "print":
-                    Print();
+                case "screenshot":
+                    Screenshot();
                     break;
 
                 case "ball":
@@ -192,11 +193,29 @@ namespace Simulator
             thread.Start();
         }
 
-        protected void Print()
+        protected void Screenshot()
         {
-            Bitmap bitmap = new Bitmap(simulation.Width, simulation.Height);
-            simulation.DrawToBitmap(bitmap, new System.Drawing.Rectangle(0, 0, simulation.Width, simulation.Height));
-            bitmap.Save("C:/Users/Liam/Desktop/screenshots/image.png", ImageFormat.Png);
+            Thread saveThread = new Thread(() =>
+            {
+                RenderTarget2D screenshot = simulation.GetDrawCapture();
+
+                SaveFileDialog fileDialogue = new SaveFileDialog();
+                fileDialogue.Title = "Save Screenshot";
+                fileDialogue.DefaultExt = "png";
+                fileDialogue.AddExtension = true;
+                fileDialogue.CheckPathExists = true;
+                fileDialogue.Filter = "Portable Graphics Format (*.png)|*.png|All files (*.*)|*.*";
+
+                if (fileDialogue.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStream = new FileStream(fileDialogue.FileName, FileMode.Create);
+                    screenshot.SaveAsPng(fileStream, screenshot.Width, screenshot.Height);
+                    fileStream.Close();
+                } 
+            });
+
+            saveThread.SetApartmentState(ApartmentState.STA);
+            saveThread.Start();   
         }
 
         protected void Save()

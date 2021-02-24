@@ -120,6 +120,30 @@ namespace Simulator.UserInterface
             mouseScroll = newMouseScroll;
         }
 
+        public RenderTarget2D GetDrawCapture()
+        {
+            RenderTarget2D renderTarget = new RenderTarget2D(
+                GraphicsDevice,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,
+                false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
+            // Set the render target
+            GraphicsDevice.SetRenderTarget(renderTarget);
+
+            GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+
+            // Draw
+            Draw();
+
+            // Reset render target
+            GraphicsDevice.SetRenderTarget(null);
+
+            return renderTarget;
+        }
+
         /// <summary>
         /// Add an object to the simulation
         /// </summary>
