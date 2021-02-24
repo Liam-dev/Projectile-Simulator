@@ -128,6 +128,7 @@
             this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.newToolStripButton.Tag = "newFile";
             this.newToolStripButton.Text = "&New";
+            this.newToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // openToolStripButton
             // 
@@ -160,6 +161,7 @@
             this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.printToolStripButton.Tag = "print";
             this.printToolStripButton.Text = "&Print";
+            this.printToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // toolStripSeparator6
             // 
@@ -345,6 +347,7 @@
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.newToolStripMenuItem.Text = "&New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -390,6 +393,7 @@
             this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
             this.printToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.printToolStripMenuItem.Text = "&Print";
+            this.printToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // printPreviewToolStripMenuItem
             // 
