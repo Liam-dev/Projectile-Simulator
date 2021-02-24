@@ -11,6 +11,16 @@ namespace Simulator.Simulation
     {
         public Vector2 Dimensions { get; set; }
 
+        public override Rectangle BoundingBox
+        {
+            get { return new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y); }
+        }
+
+        public override Vector2 Centre
+        {
+            get { return Position + (Dimensions / 2); }
+        }
+
         public Box()
         {
 
@@ -24,7 +34,7 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y), Color.White);
+            spriteBatch.Draw(texture, BoundingBox, Color.White);
         }
     }
 }

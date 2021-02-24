@@ -61,7 +61,7 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            spriteBatch.Draw(texture, Position - new Vector2(Radius), Color.White);
+            spriteBatch.Draw(texture, Position, Color.White);
         }
 
         protected Vector2 CalulateDrag()

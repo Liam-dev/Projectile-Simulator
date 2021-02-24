@@ -15,6 +15,22 @@ namespace Simulator.Simulation
 
         public Vector2 Position { get; set; }
 
+        public virtual Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
+            }
+        }
+
+        public virtual Vector2 Centre
+        {
+            get
+            {
+                return Position + (new Vector2(texture.Width, texture.Height) / 2);
+            }
+        }
+
         public string TextureName { get; set; }
 
         protected Texture2D texture;

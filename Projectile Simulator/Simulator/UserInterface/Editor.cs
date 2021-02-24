@@ -48,7 +48,7 @@ namespace Simulator
             objectsToLoad.Add(new Box("box", new Vector2(800, 100), "wall", 0.95f, new Vector2(20, 500)));
             objectsToLoad.Add(new Box("box", new Vector2(320, 600), "wall", 0.95f, new Vector2(500, 20)));
 
-            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.95f, 0.005f);
+            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 0.005f);
             objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
 
             objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line"/*, simulation.Editor.Content.Load<SpriteFont>("Label")*/));
@@ -73,6 +73,8 @@ namespace Simulator
 
         private void Editor_Load(object sender, EventArgs e)
         {
+            toolbar.SimulationPaused = simulation.Paused;
+
             // load objects
             foreach (var @object in objectsToLoad)
             {
@@ -120,6 +122,14 @@ namespace Simulator
                     SaveFile();
                     break;
 
+                case "saveAs":
+                    SaveAs();
+                    break;
+
+                case "exit":
+                    CloseEditor();
+                    break;
+
                 case "screenshot":
                     Screenshot();
                     break;
@@ -134,10 +144,16 @@ namespace Simulator
 
                 case "play":
                     simulation.Paused = false;
+                    toolbar.SimulationPaused = false;
                     break;
 
                 case "pause":
                     simulation.Paused = true;
+                    toolbar.SimulationPaused = true;
+                    break;
+
+                case "about":
+                    OpenWebPage("https://github.com/Liam-dev/Projectile-Simulator");
                     break;
             }
         }
@@ -191,6 +207,17 @@ namespace Simulator
             Thread thread = new Thread(Save);
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
+        }
+
+        private void SaveAs()
+        {
+            Thread thread = new Thread(() =>
+            {
+                ShowSaveFileDialogue();
+                ChangeFormTitle();
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();    
         }
 
         protected void Screenshot()
@@ -340,12 +367,22 @@ namespace Simulator
             fileDialogue.Title = "Open Simulation File";
             fileDialogue.DefaultExt = "sim";
             fileDialogue.Multiselect = false;
+            fileDialogue.CheckFileExists = true;
+            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 CloseEditor();
                 new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
             }
+        }
+
+        protected void OpenWebPage(string url)
+        {
+            var processStartInfo = new System.Diagnostics.ProcessStartInfo();
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.FileName = url;
+            System.Diagnostics.Process.Start(processStartInfo);
         }
     }
 }
