@@ -55,7 +55,7 @@ namespace Simulator.Simulation
 
             ClampHorizontalSpeed();
 
-            trajectory.AddPoint(Position);
+            //trajectory.AddPoint(Position);
 
             base.Update(delta);
         }

@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
 using System.Threading.Tasks;
-using System.Drawing.Imaging;
 
 namespace Simulator
 {
@@ -121,32 +120,26 @@ namespace Simulator
             switch (tag)
             {
                 case "newFile":
-                    simulation.Paused = true;
                     SaveFilePerformAction(NewFile);
                     break;
 
                 case "openFile":
-                    simulation.Paused = true;
                     SaveFilePerformAction(OpenFile);
                     break;
 
                 case "saveFile":
-                    simulation.Paused = true;
                     SaveFile();
                     break;
 
                 case "saveAs":
-                    simulation.Paused = true;
                     SaveAs();
                     break;
 
                 case "exit":
-                    simulation.Paused = true;
                     CloseEditor();
                     break;
 
                 case "screenshot":
-                    simulation.Paused = true;
                     Screenshot();
                     break;
 
@@ -214,7 +207,7 @@ namespace Simulator
 
         private void OpenFile()
         {
-            // Open new simulation
+            // Open simulation
             Thread thread = new Thread(ShowOpenFileDialogue);
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
@@ -256,7 +249,7 @@ namespace Simulator
                     FileStream fileStream = new FileStream(fileDialogue.FileName, FileMode.Create);
                     screenshot.SaveAsPng(fileStream, screenshot.Width, screenshot.Height);
                     fileStream.Close();
-                } 
+                }
             });
 
             saveThread.SetApartmentState(ApartmentState.STA);
@@ -300,6 +293,7 @@ namespace Simulator
                             ObjectWriter.WriteJson(Filename, simulation.GetObjects());
                             action();
                         }
+
                     });
 
                     saveThread.SetApartmentState(ApartmentState.STA);

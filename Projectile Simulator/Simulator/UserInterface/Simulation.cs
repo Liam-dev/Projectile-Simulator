@@ -111,7 +111,7 @@ namespace Simulator.UserInterface
             }
 
             if (!Paused)
-            {               
+            {
                 // Check for a percentage discrepancy in the elapsed game time to allow for lag (such as from window adjustments)
                 if (previousDelta == TimeSpan.Zero || gameTime.ElapsedGameTime.Duration() - previousDelta.Duration() < timeTolerance * previousDelta.Duration())
                 {
@@ -237,7 +237,7 @@ namespace Simulator.UserInterface
 
 
             // Object movement
-
+            
             if (LeftMouseButtonPressed)
             {
                 if (lastMouseState.LeftButton == ButtonState.Pressed)
@@ -272,7 +272,9 @@ namespace Simulator.UserInterface
                 }
             }
 
-            SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
+            // LAG LAG LAG BUG
+            //SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
+            // LAG LAG LAG BUG
 
             // Reset relative mouse state
             lastMouseState = mouseState;
