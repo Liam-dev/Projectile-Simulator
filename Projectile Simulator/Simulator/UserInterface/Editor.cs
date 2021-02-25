@@ -139,7 +139,7 @@ namespace Simulator
                     break;
 
                 case "newBox":
-                    simulation.AddObject(new Box("box", new Vector2(-100, -100), "crate", 0.95f, new Vector2(64, 64)));
+                    simulation.AddObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
                     break;
 
                 case "play":

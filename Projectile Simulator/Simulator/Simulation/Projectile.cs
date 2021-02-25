@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Forms.Services;
 using Simulator.Simulation;
 
 namespace Simulator.Simulation
@@ -38,11 +39,11 @@ namespace Simulator.Simulation
             DragCoefficient = dragCoefficient;
         }
 
-        public override void OnLoad(ContentManager content)
+        public override void OnLoad(MonoGameService Editor)
         {
             trajectory = new Trajectory(Position);
 
-            base.OnLoad(content);
+            base.OnLoad(Editor);
         }
 
         public override void Update(TimeSpan delta)

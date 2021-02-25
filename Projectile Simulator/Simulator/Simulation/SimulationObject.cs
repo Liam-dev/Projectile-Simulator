@@ -4,12 +4,13 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using MonoGame.Forms.Services;
 using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public class SimulationObject
+    public class SimulationObject : IMovable
     {
         public string Name { get; protected set; }
 
@@ -33,6 +34,8 @@ namespace Simulator.Simulation
 
         public string TextureName { get; set; }
 
+        public bool Moving { get; set; }
+
         protected Texture2D texture;
 
         public SimulationObject()
@@ -47,9 +50,9 @@ namespace Simulator.Simulation
             TextureName = textureName; 
         }
 
-        public virtual void OnLoad(ContentManager content)
+        public virtual void OnLoad(MonoGameService Editor)
         {
-            SetTexture(TextureName, content);
+            SetTexture(TextureName, Editor.Content);
         }
 
         public virtual void Update(TimeSpan delta)
@@ -59,16 +62,17 @@ namespace Simulator.Simulation
 
         public virtual void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            // Scaled position
-            //Vector2 position = new Vector2(scale * Position.X, spriteBatch.GraphicsDevice.Viewport.Height - (scale * Position.Y));
-            //spriteBatch.Draw(texture, position, Color.White);
-
             spriteBatch.Draw(texture, Position, Color.White);
         }
 
         public void SetTexture(string textureName, ContentManager content)
         {
             texture = content.Load<Texture2D>(textureName);
+        }
+
+        public void Move(Vector2 displacement)
+        {
+            Position += displacement;
         }
     }
 }

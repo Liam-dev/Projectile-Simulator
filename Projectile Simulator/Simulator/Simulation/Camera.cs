@@ -69,8 +69,18 @@ namespace Simulator.Simulation
             Quaternion _rotation;
             Vector3 _position;
             Transform.Decompose(out _zoom, out _rotation, out _position);
-            //return _zoom.Length();
             return zoom;
+        }
+
+        public Vector2 GetSimulationPostion(Vector2 position)
+        {
+            Matrix inverse = Matrix.Invert(Transform);
+            return Vector2.Transform(position, inverse);       
+        }
+
+        public Vector2 GetActualPosition(Vector2 position)
+        {
+            return Vector2.Transform(position, Transform);
         }
     }
 }

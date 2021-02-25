@@ -34,8 +34,5 @@ namespace Simulator.UserInterface
         {
             ButtonClicked?.Invoke(sender, e);
         }
-
-
-
     }
 }

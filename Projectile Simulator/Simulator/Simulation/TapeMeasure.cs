@@ -34,9 +34,9 @@ namespace Simulator.Simulation
             float angle = -MathF.Atan2(-(End.Y - Position.Y), End.X - Position.X);
 
             // note power to scale
-            Rectangle rectangle = new Rectangle((int)Position.X, (int)Position.Y, (int)Length, (int)(Thickness / MathF.Pow(zoom, 0.5f)));
+            Rectangle rectangle = new Rectangle((int)Position.X, (int)Position.Y, (int)Length, (int)MathF.Round(Thickness / MathF.Pow(zoom, 0.5f), 0));
 
-            spriteBatch.Draw(texture, rectangle, null, Color.White, angle, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, rectangle, null, Color.White, angle, Vector2.Zero, SpriteEffects.None, 0.2f);
 
             //spriteBatch.DrawString(font, Length.ToString(), (End - Position) / 2 + new Vector2(10, 0), Color.Black);
         }
