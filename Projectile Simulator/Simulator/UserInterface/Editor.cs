@@ -6,15 +6,16 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Design;
 using System.Text;
+using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
-using System.Threading.Tasks;
 
-namespace Simulator
+
+namespace Simulator.UserInterface
 {
     /// <summary>
     /// Main editor form

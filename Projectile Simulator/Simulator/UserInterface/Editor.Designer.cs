@@ -1,4 +1,4 @@
-﻿namespace Simulator
+﻿namespace Simulator.UserInterface
 {
     partial class Editor
     {
