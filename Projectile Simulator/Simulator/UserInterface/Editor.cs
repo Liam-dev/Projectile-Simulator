@@ -73,20 +73,28 @@ namespace Simulator
 
         private void Editor_Load(object sender, EventArgs e)
         {
+            simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
+
             toolbar.SimulationPaused = simulation.Paused;
 
             // load objects
             foreach (var @object in objectsToLoad)
             {
                 simulation.AddObject(@object);
+
+                // Cannon test
+                if (@object is Cannon cannon)
+                {
+                    cannon.Fired += simulation.CannonFired;
+                }
             }
 
-            // Cannon test
-            simulation.cannon = (Cannon)objectsToLoad.Find(x => x is Cannon cannon);
-            // register event
-            simulation.cannon.Fired += simulation.CannonFired;
-
             inspector.SetDataSource(simulation.GetObjects());
+        }
+
+        private void Simulation_SelectedObjectChanged(object sender, EventArgs e)
+        {
+            inspector.Object = (SimulationObject)sender;
         }
 
         private void toolbar_ButtonClicked(object sender, EventArgs e)
@@ -135,7 +143,7 @@ namespace Simulator
                     break;
 
                 case "ball":
-                    simulation.cannon.Fire();
+                    simulation.FireAllCannons();
                     break;
 
                 case "newBox":

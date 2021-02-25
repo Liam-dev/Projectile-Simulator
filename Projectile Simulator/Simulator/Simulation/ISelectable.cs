@@ -11,6 +11,6 @@ namespace Simulator.Simulation
 
         bool Selectable { get; set; }
 
-        bool Intersects(Vector2 position);
+        bool Intersects(Vector2 point);
     }
 }

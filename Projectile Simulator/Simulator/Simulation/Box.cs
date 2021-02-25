@@ -8,10 +8,8 @@ using System.Text;
 
 namespace Simulator.Simulation
 {
-    public class Box : StaticObject, ISelectable, IMovable
+    public class Box : StaticObject, ISelectable
     {
-        protected Texture2D borderTexture;
-
         public Vector2 Dimensions { get; set; }
 
         public override Rectangle BoundingBox
@@ -40,9 +38,6 @@ namespace Simulator.Simulation
 
         public override void OnLoad(MonoGameService Editor)
         {
-            borderTexture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
-            borderTexture.SetData(new[] { Color.White });
-
             base.OnLoad(Editor);
         }
 
@@ -54,33 +49,6 @@ namespace Simulator.Simulation
             {
                 DrawBorder(spriteBatch, zoom);
             }  
-        }
-
-        protected void DrawBorder(SpriteBatch spriteBatch, float zoom)
-        {
-            // Border width
-            int width = (int)MathF.Max(1, MathF.Round(4 / MathF.Pow(zoom, 0.5f), 0f));
-
-            Rectangle[] border = new Rectangle[]
-            {
-                // Left
-                new Rectangle(BoundingBox.Left - width, BoundingBox.Top - width, width, BoundingBox.Height + (2 * width)),
-
-                // Right
-                new Rectangle(BoundingBox.Right, BoundingBox.Top, width, BoundingBox.Height + width),
-
-                // Top
-                new Rectangle(BoundingBox.Left - width, BoundingBox.Top - width, BoundingBox.Width + (2 * width), width),
-
-                // Bottom
-                new Rectangle(BoundingBox.Left, BoundingBox.Bottom, BoundingBox.Width + width, width)
-            };
-            
-
-            foreach (Rectangle side in border)
-            {
-                spriteBatch.Draw(borderTexture, destinationRectangle: side, color: Color.White);
-            }
         }
 
         public bool Intersects(Vector2 point)

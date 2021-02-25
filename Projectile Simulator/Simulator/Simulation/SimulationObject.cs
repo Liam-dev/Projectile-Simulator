@@ -20,7 +20,14 @@ namespace Simulator.Simulation
         {
             get
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
+                if (texture != null)
+                {
+                    return new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
+                }
+                else
+                {
+                    return Rectangle.Empty;
+                }
             }
         }
 
@@ -28,7 +35,14 @@ namespace Simulator.Simulation
         {
             get
             {
-                return Position + (new Vector2(texture.Width, texture.Height) / 2);
+                if (texture != null)
+                {
+                    return Position + (new Vector2(texture.Width, texture.Height) / 2);
+                }
+                else
+                {
+                    return Vector2.Zero;
+                }
             }
         }
 
@@ -37,6 +51,8 @@ namespace Simulator.Simulation
         public bool Moving { get; set; }
 
         protected Texture2D texture;
+
+        protected Texture2D borderTexture;
 
         public SimulationObject()
         {
@@ -53,6 +69,9 @@ namespace Simulator.Simulation
         public virtual void OnLoad(MonoGameService Editor)
         {
             SetTexture(TextureName, Editor.Content);
+
+            borderTexture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
+            borderTexture.SetData(new[] { Color.White });
         }
 
         public virtual void Update(TimeSpan delta)
@@ -73,6 +92,33 @@ namespace Simulator.Simulation
         public void Move(Vector2 displacement)
         {
             Position += displacement;
+        }
+
+        protected void DrawBorder(SpriteBatch spriteBatch, float zoom)
+        {
+            // Border width
+            int width = (int)MathF.Max(1, MathF.Round(4 / MathF.Pow(zoom, 0.5f), 0f));
+
+            Rectangle[] border = new Rectangle[]
+            {
+                // Left
+                new Rectangle(BoundingBox.Left - width, BoundingBox.Top - width, width, BoundingBox.Height + (2 * width)),
+
+                // Right
+                new Rectangle(BoundingBox.Right, BoundingBox.Top, width, BoundingBox.Height + width),
+
+                // Top
+                new Rectangle(BoundingBox.Left - width, BoundingBox.Top - width, BoundingBox.Width + (2 * width), width),
+
+                // Bottom
+                new Rectangle(BoundingBox.Left, BoundingBox.Bottom, BoundingBox.Width + width, width)
+            };
+
+
+            foreach (Rectangle side in border)
+            {
+                spriteBatch.Draw(borderTexture, destinationRectangle: side, color: Color.White);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Simulator.Simulation
 {
-    public class Cannon : SimulationObject, IPersistent
+    public class Cannon : SimulationObject, IPersistent, ISelectable
     {
         public event EventHandler<FiringArgs> Fired;
 
@@ -14,6 +14,9 @@ namespace Simulator.Simulation
         public float ProjectionAngle { get; set; }
         public float Speed { get; set; }
         public Projectile Projectile { get; set; }
+
+        public bool Selected { get; set; }
+        public bool Selectable { get; set; }
 
         public Cannon()
         {
@@ -36,6 +39,21 @@ namespace Simulator.Simulation
             Vector2 impulse = projectile.Mass * Speed * new Vector2(MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 
             Fired?.Invoke(this, new FiringArgs(projectile, impulse));
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
+        {
+            base.Draw(spriteBatch, zoom);
+
+            if (Selected)
+            {
+                DrawBorder(spriteBatch, zoom);
+            }
+        }
+
+        public bool Intersects(Vector2 point)
+        {
+            return BoundingBox.Contains(point);
         }
     }
 

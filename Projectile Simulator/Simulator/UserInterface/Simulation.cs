@@ -28,9 +28,7 @@ namespace Simulator.UserInterface
 
         public bool IsObjectSelected { get; private set; }
 
-
-        // TEMP
-        public Cannon cannon;
+        public event EventHandler SelectedObjectChanged;
 
         public float Scale { get; set; }
 
@@ -126,15 +124,13 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : camera.Transform, sortMode: SpriteSortMode.FrontToBack);
+            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
             {
                 @object.Draw(Editor.spriteBatch, camera.GetZoom());              
             }
-
-            cannon.Draw(Editor.spriteBatch, camera.GetZoom());
 
             Editor.spriteBatch.End();
 
@@ -243,6 +239,8 @@ namespace Simulator.UserInterface
                 }
             }
 
+            SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
+
             // Reset relative mouse state
             lastMouseState = mouseState;
         }
@@ -315,6 +313,8 @@ namespace Simulator.UserInterface
             @object.Selected = true;
             selectedObject = @object;
             IsObjectSelected = true;
+
+            
         }
 
         public void DeselectObject()
@@ -373,7 +373,17 @@ namespace Simulator.UserInterface
             return objects;
         }
 
-
+        //TEMP
+        public void FireAllCannons()
+        {
+            foreach (SimulationObject @object in objects.ToArray())
+            {
+                if (@object is Cannon cannon)
+                {
+                    cannon.Fire();
+                }
+            }
+        }
 
         public void CannonFired(object sender, EventArgs e)
         {
