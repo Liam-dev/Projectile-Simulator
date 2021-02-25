@@ -16,84 +16,376 @@ namespace Simulator.UserInterface
     {
         protected List<SimulationObject> objects;
 
-        public float Scale { get; set; }
+        private bool paused;
+
+        protected TimeSpan previousDelta;
+        // Lag constant
+        protected float timeTolerance = 2f;
 
         protected Camera camera;
-        protected int mouseScroll;
 
-        public Cannon cannon;
+        protected MouseState lastMouseState;
 
+        protected ISelectable selectedObject;
+
+        public bool IsObjectSelected { get; private set; }
+
+        public event EventHandler SelectedObjectChanged;
+
+        public float Scale { get; set; }
+
+        public Color BackgroundColour { get; set; }
+
+        public bool Paused
+        {
+            get { return paused; }
+            set
+            {
+                paused = value;
+                if (value)
+                {
+                    SimulationPaused?.Invoke(this, new EventArgs());
+                }
+                else
+                {
+                    SimulationUnPaused?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+
+        public event EventHandler SimulationPaused;
+        public event EventHandler SimulationUnPaused;
+
+        public Vector2 ScreenCentre
+        {
+            get { return camera.GetSimulationPostion(new Vector2(Width / 2, Height / 2)); }
+        }
+
+        public new Vector2 MousePosition
+        {
+            get { return Mouse.GetState().Position.ToVector2(); }
+        }
+
+        public bool LeftMouseButtonPressed
+        {
+            get { return Mouse.GetState().LeftButton == ButtonState.Pressed; }
+        }
+
+        public bool RightMouseButtonPressed
+        {
+            get { return Mouse.GetState().RightButton == ButtonState.Pressed; }
+        }
+
+        public event EventHandler<MouseScrollArgs> MouseScrolled;
+
+        public event EventHandler LeftMouseButtonJustPressed;
+        public event EventHandler LeftMouseButtonJustReleased;
+        
+        public event EventHandler RightMouseButtonJustPressed;
+        public event EventHandler RightMouseButtonJustReleased;       
+       
         protected override void Initialize()
         {
-            base.Initialize();
-
             Scale = 100;
+            BackgroundColour = Color.SkyBlue;
 
             camera = new Camera();
-            mouseScroll = Mouse.GetState().ScrollWheelValue;
+            lastMouseState = Mouse.GetState();
+
+            MouseScrolled += Simulation_MouseScrolled;
+            LeftMouseButtonJustPressed += Simulation_LeftMouseButtonJustPressed;
+            LeftMouseButtonJustReleased += Simulation_LeftMouseButtonJustReleased;
+            RightMouseButtonJustPressed += Simulation_RightMouseButtonJustPressed;
+            RightMouseButtonJustReleased += Simulation_RightMouseButtonJustReleased;
             
             objects = new List<SimulationObject>();
+
+            base.Initialize();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+            if (Focused)
+            {
+                GetInput();
+            }
 
-            // Check collisions
+            if (!Paused)
+            {
+                // Check for a percentage discrepancy in the elapsed game time to allow for lag (such as from window adjustments)
+                if (previousDelta == TimeSpan.Zero || gameTime.ElapsedGameTime.Duration() - previousDelta.Duration() < timeTolerance * previousDelta.Duration())
+                {
+                    Simulate(gameTime.ElapsedGameTime);
+                    previousDelta = gameTime.ElapsedGameTime;
+                }
+                else
+                {
+                    // If there is lag, then use elapsed time from previous update
+                    Simulate(previousDelta);
+                }
+            }
+        }
+
+        protected void Simulate(TimeSpan delta)
+        {
+            // Collisions
             CheckCollisions();
 
             // Update each of the objects
             foreach (SimulationObject obj in objects)
             {
-                obj.Update(gameTime);
+                obj.Update(delta);
             }
-
-            int newMouseScroll = Mouse.GetState().ScrollWheelValue;
-            Vector2 mousePosition = Mouse.GetState().Position.ToVector2();
-
-            // Mouse wheel up
-            if (newMouseScroll > mouseScroll)
-            {                
-                camera.ZoomIn();
-                camera.Update(mousePosition);
-            }
-            // Mouse wheel down
-            else if (newMouseScroll < mouseScroll)
-            {
-                camera.ZoomOut();
-                camera.Update(mousePosition);
-            }
-
-            // Reset relative mouse wheel value;
-            mouseScroll = newMouseScroll;          
         }
 
         protected override void Draw()
         {
             // Reset and clear the simulation window
-            GraphicsDevice.Clear(Color.SkyBlue);
+            GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
             Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
 
             // Draw each of the objects
-            foreach (SimulationObject @object in objects.ToArray())
+            foreach (SimulationObject @object in objects)
             {
-                @object.Draw(Editor.spriteBatch);
-
-                // EXPERIMENTAL - Projectile trails
-                /*
-                if (@object is Projectile projectile)
-                {
-                    AddObject(new Dot(projectile.Position, 3));
-                }
-                */
+                @object.Draw(Editor.spriteBatch, camera.GetZoom());              
             }
-
-            cannon.Draw(Editor.spriteBatch);
 
             Editor.spriteBatch.End();
 
+        }
+
+        #region Input
+
+        public enum ScrollDiretion
+        {
+            Up,
+            Down
+        }
+
+        public class MouseScrollArgs : EventArgs
+        {
+            public ScrollDiretion ScrollDiretion { get; private set; }
+
+            public MouseScrollArgs(ScrollDiretion scrollDiretion)
+            {
+                ScrollDiretion = scrollDiretion;
+            }
+        }
+
+        protected void GetInput()
+        {
+            MouseState mouseState = Mouse.GetState();
+
+            if (LeftMouseButtonPressed)
+            {
+                // Left button pressed
+
+                if (mouseState.LeftButton != lastMouseState.LeftButton)
+                {
+                    // Left button just pressed
+                    LeftMouseButtonJustPressed?.Invoke(this, new EventArgs());
+                }
+            }
+            else
+            {
+                // Left button not pressed
+
+                if (mouseState.LeftButton != lastMouseState.LeftButton)
+                {
+                    // Left button just released
+                    LeftMouseButtonJustReleased?.Invoke(this, new EventArgs());
+                }
+            }
+
+            if (RightMouseButtonPressed)
+            {
+                // Right button pressed
+
+                if (mouseState.RightButton != lastMouseState.RightButton)
+                {
+                    // Right button just pressed
+                    RightMouseButtonJustPressed?.Invoke(this, new EventArgs());
+                }
+            }
+            else
+            {
+                // Right button not pressed
+
+                if (mouseState.RightButton != lastMouseState.RightButton)
+                {
+                    // Right button just released
+                    RightMouseButtonJustReleased?.Invoke(this, new EventArgs());
+                }
+            }
+
+            // Scrolling
+
+            int newMouseScroll = mouseState.ScrollWheelValue;
+
+            // Mouse wheel up
+            if (newMouseScroll > lastMouseState.ScrollWheelValue)
+            {
+                MouseScrolled?.Invoke(this, new MouseScrollArgs(ScrollDiretion.Up));
+            }
+            // Mouse wheel down
+            else if (newMouseScroll < lastMouseState.ScrollWheelValue)
+            {
+                MouseScrolled?.Invoke(this, new MouseScrollArgs(ScrollDiretion.Down));
+            }
+
+
+            // Object movement
+            
+            if (LeftMouseButtonPressed)
+            {
+                if (lastMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    if (IsObjectSelected && selectedObject is IMovable movable)
+                    {
+                        // Move object
+
+                        if (mouseState.Position != lastMouseState.Position)
+                        {
+                            Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
+
+                            movable.Moving = true;
+                            movable.Move(mouseMovement / camera.GetZoom());
+                        }
+                        else
+                        {
+                            movable.Moving = false;
+                        }
+                    }
+                    else
+                    {
+                        // Move camera
+
+                        if (mouseState.Position != lastMouseState.Position)
+                        {
+                            Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
+
+                            camera.Translate(mouseMovement);
+                        }
+                    }
+                }
+            }
+
+            // LAG LAG LAG BUG
+            //SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
+            // LAG LAG LAG BUG
+
+            // Reset relative mouse state
+            lastMouseState = mouseState;
+        }
+
+        private void Simulation_MouseScrolled(object sender, MouseScrollArgs e)
+        {
+            // Simulation zooming
+
+            Vector2 mousePosition = Mouse.GetState().Position.ToVector2();
+
+            switch (e.ScrollDiretion)
+            {
+                case ScrollDiretion.Up:
+                    camera.ZoomIn();
+                    camera.ZoomUpdate(mousePosition);
+                    break;
+
+                case ScrollDiretion.Down:
+                    camera.ZoomOut();
+                    camera.ZoomUpdate(mousePosition);
+                    break;
+            }
+        }
+
+        private void Simulation_LeftMouseButtonJustPressed(object sender, EventArgs e)
+        {
+            // Object selection
+
+            if (IsObjectSelected)
+            {
+                if (!selectedObject.Intersects(camera.GetSimulationPostion(MousePosition)))
+                {
+                    DeselectObject();
+                }
+            }
+
+            foreach (SimulationObject @object in objects)
+            {
+                if (@object is ISelectable selectable)
+                {
+                    Vector2 mouseSimulationPosition = camera.GetSimulationPostion(MousePosition);
+                    if (selectable.Intersects(mouseSimulationPosition))
+                    {
+                        SelectObject(selectable);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void Simulation_LeftMouseButtonJustReleased(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Simulation_RightMouseButtonJustPressed(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Simulation_RightMouseButtonJustReleased(object sender, EventArgs e)
+        {
+
+        }
+
+        public void SelectObject(ISelectable @object)
+        {
+            DeselectObject();
+
+            @object.Selected = true;
+            selectedObject = @object;
+            IsObjectSelected = true;
+
+            
+        }
+
+        public void DeselectObject()
+        {
+            if (IsObjectSelected)
+            {
+                selectedObject.Selected = false;
+                selectedObject = null;
+                IsObjectSelected = false;
+            }
+        }
+
+        #endregion
+
+        public RenderTarget2D GetDrawCapture()
+        {
+            RenderTarget2D renderTarget = new RenderTarget2D(
+                GraphicsDevice,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
+                GraphicsDevice.PresentationParameters.BackBufferHeight,
+                false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
+            // Set the render target
+            GraphicsDevice.SetRenderTarget(renderTarget);
+
+            GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+
+            // Draw
+            Draw();
+
+            // Reset render target
+            GraphicsDevice.SetRenderTarget(null);
+
+            return renderTarget;
         }
 
         /// <summary>
@@ -102,13 +394,30 @@ namespace Simulator.UserInterface
         /// <param name="object"></param>
         public void AddObject(SimulationObject @object)
         {
-            @object.SetTexture(Editor.Content);
+            @object.OnLoad(Editor);
             objects.Add(@object);
+            if (@object is ISelectable selectable)
+            {
+                SelectObject(selectable);
+            }
+            
         }
 
         public List<SimulationObject> GetObjects()
         {
             return objects;
+        }
+
+        //TEMP
+        public void FireAllCannons()
+        {
+            foreach (SimulationObject @object in objects.ToArray())
+            {
+                if (@object is Cannon cannon)
+                {
+                    cannon.Fire();
+                }
+            }
         }
 
         public void CannonFired(object sender, EventArgs e)
@@ -134,113 +443,57 @@ namespace Simulator.UserInterface
                     {
                         if (j is Projectile b && b != a)
                         {
-                            bool colliding = MathF.Abs(MathF.Pow(a.Position.X - b.Position.X, 2) + MathF.Pow(a.Position.Y - b.Position.Y, 2)) <= MathF.Pow(a.Radius + b.Radius, 2);
-                            //bool colliding = (a.Position - b.Position).LengthSquared() <= a.Radius + b.Radius;
+                            bool colliding = MathF.Abs(MathF.Pow(a.Centre.X - b.Centre.X, 2) + MathF.Pow(a.Centre.Y - b.Centre.Y, 2)) <= MathF.Pow(a.Radius + b.Radius, 2);
 
                             if (colliding)
-                            {
-                                
-                                float distance = MathF.Sqrt(MathF.Pow(a.Position.X - b.Position.X, 2) + MathF.Pow(a.Position.Y - b.Position.Y, 2));
-                                float overlap = 0.5f * (distance - a.Radius - b.Radius);
+                            {                                
+                                float distance = MathF.Sqrt(MathF.Pow(a.Centre.X - b.Centre.X, 2) + MathF.Pow(a.Centre.Y - b.Centre.Y, 2));
+                                float overlap = (a.Radius + b.Radius - distance);
 
-                                
-                                Vector2 collisionNormal = b.Position - a.Position;
+
+                                Vector2 collisionNormal = a.Centre - b.Centre;
 
                                 // Static
-                                a.Position += overlap * Vector2.Normalize(collisionNormal);
-                                b.Position -= overlap * Vector2.Normalize(collisionNormal);
+                                if (overlap > 0)
+                                {
+                                    a.Position += overlap * Vector2.Normalize(collisionNormal);
+                                    b.Position -= overlap * Vector2.Normalize(collisionNormal);
 
-                                // Dynamic
-                                Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
-                                Vector2 impulse = -(a.RestitutionCoefficient * b.RestitutionCoefficient)
-                                    * Vector2.Dot(relativeVelocity, collisionNormal) * collisionNormal
-                                    / (collisionNormal.LengthSquared() * ((1 / a.Mass) + (1 / b.Mass)));
+                                    // Dynamic
+                                    Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
+                                    Vector2 impulse = -(1 + (a.RestitutionCoefficient * b.RestitutionCoefficient))
+                                        * Vector2.Dot(relativeVelocity, collisionNormal) * collisionNormal
+                                        / (collisionNormal.LengthSquared() * ((1 / a.Mass) + (1 / b.Mass)));
 
-                                a.ApplyImpulse(impulse);
-                                b.ApplyImpulse(-impulse);
+                                    a.ApplyImpulse(impulse);
+                                    b.ApplyImpulse(-impulse);
+                                }   
                             }          
                         }
                         else if (j is Box c)
                         {
-
-                            Vector2 nearestPoint = new Vector2();
-
+                            Vector2 nearestPoint = new Vector2()
+                            {
+                                X = MathF.Max(c.Position.X, MathF.Min(a.Centre.X, c.Position.X + c.Dimensions.X)),
+                                Y = MathF.Max(c.Position.Y, MathF.Min(a.Centre.Y, c.Position.Y + c.Dimensions.Y))
+                            };          
                             
-                            nearestPoint.X = MathF.Max(c.Position.X, MathF.Min(a.Position.X, c.Position.X + c.Dimensions.X));
-                            nearestPoint.Y = MathF.Max(c.Position.Y, MathF.Min(a.Position.Y, c.Position.Y + c.Dimensions.Y));
-                            
-                            /*
-                            if (a.Position.X + (2 * a.Radius) < c.Position.X)
-                            {
-                                //ball right - box left
-                                nearestPoint.X = c.Position.X;
-                            }
-                            else if (a.Position.X > c.Position.X + c.Dimensions.X)
-                            {
-                                //ball left - box right
-                                nearestPoint.X = c.Position.X + c.Dimensions.X;                              
-                            }
-                            else
-                            {
-                                //between vertical edges
-                                float midpoint = c.Position.X + (c.Dimensions.X / 2);
-                                if (midpoint > a.Position.X)
-                                {
-                                    //ball from left
-                                    nearestPoint.X = c.Position.X;
-                                }
-                                else
-                                {
-                                    //ball from right
-                                    nearestPoint.X = c.Position.X + c.Dimensions.X;
-                                }
-                                
-                            }
-
-                            if (a.Position.Y + (2 * a.Radius) < c.Position.Y)
-                            {
-                                //ball bottom - box top
-                                nearestPoint.Y = c.Position.Y;
-                            }
-                            else if (a.Position.Y > c.Position.Y + c.Dimensions.Y)
-                            {
-                                //ball top - box bottom
-                                nearestPoint.Y = c.Position.Y + c.Dimensions.Y;
-                            }
-                            else
-                            {
-                                // between horizontal edges
-                                float midpoint = c.Position.Y + (c.Dimensions.Y / 2);
-                                if (midpoint > a.Position.Y)
-                                {
-                                    //ball from left
-                                    nearestPoint.Y = c.Position.Y;
-                                }
-                                else
-                                {
-                                    //ball from right
-                                    nearestPoint.Y = c.Position.Y + c.Dimensions.Y;
-                                }
-                            }
-                            */
-                            float overlap = a.Radius - (nearestPoint - (a.Position /*+ new Vector2(a.Radius)*/)).Length();
+                            float overlap = a.Radius - (nearestPoint - a.Centre).Length();
 
                             if (overlap > 0)
                             {
-                                Vector2 collisionNormal = nearestPoint - (a.Position);
+                                Vector2 collisionNormal = nearestPoint - a.Centre;
 
                                 // Static
                                 a.Position -= overlap * Vector2.Normalize(collisionNormal);
 
                                 // Dynamic
-                                if (a.GetVelocity().LengthSquared() > 0.00001)
-                                {
-                                    Vector2 impulse = -(a.RestitutionCoefficient * c.RestitutionCoefficient)
+                                
+                                Vector2 impulse = -(1 + (a.RestitutionCoefficient * c.RestitutionCoefficient))
                                     * Vector2.Dot(a.GetVelocity(), collisionNormal) * collisionNormal
                                     / (collisionNormal.LengthSquared() * (1 / a.Mass));
 
-                                    a.ApplyImpulse(2 * impulse);
-                                }   
+                                a.ApplyImpulse(impulse);  
                             }                           
                         }
                     }

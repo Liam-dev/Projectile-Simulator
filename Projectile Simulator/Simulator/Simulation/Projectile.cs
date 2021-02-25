@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Forms.Services;
 using Simulator.Simulation;
 
 namespace Simulator.Simulation
 {
     public class Projectile : PhysicsObject
     {
-
+        protected Trajectory trajectory;
 
         public float DragCoefficient { get; set; }
         public float Radius
@@ -32,23 +34,35 @@ namespace Simulator.Simulation
 
         }
 
-        public Projectile(Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(position, textureName, mass, restitutionCoefficient)
+        public Projectile(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(name, position, textureName, mass, restitutionCoefficient)
         {
-            DragCoefficient = dragCoefficient;           
+            DragCoefficient = dragCoefficient;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void OnLoad(MonoGameService Editor)
+        {
+            trajectory = new Trajectory(Position);
+
+            base.OnLoad(Editor);
+        }
+
+        public override void Update(TimeSpan delta)
         {
             resultantForce = Vector2.Zero;
-            resultantForce += CalculateWeight();
-            resultantForce += CalulateDrag();
+            
+            ApplyForce(CalculateWeight());
+            ApplyForce(CalulateDrag());
 
-            base.Update(gameTime);
+            ClampHorizontalSpeed();
+
+            //trajectory.AddPoint(Position);
+
+            base.Update(delta);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            spriteBatch.Draw(texture, Position - new Vector2(Radius), Color.White);
+            spriteBatch.Draw(texture, Position, Color.White);
         }
 
         protected Vector2 CalulateDrag()
@@ -60,6 +74,14 @@ namespace Simulator.Simulation
         protected Vector2 CalculateWeight()
         {
             return Mass * 980 * Vector2.UnitY;
+        }
+
+        protected void ClampHorizontalSpeed()
+        {
+            if (MathF.Abs(velocity.X) < 1)
+            {
+                velocity.X = 0;
+            }
         }
     }
 

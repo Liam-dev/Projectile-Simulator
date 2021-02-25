@@ -10,21 +10,21 @@ namespace Simulator.Simulation
     {
         public float Lifetime { get; protected set; }
 
-        public Dot(Vector2 position, float lifetime, string textureName = "dot") : base(position, textureName)
+        public Dot(string name, Vector2 position, float lifetime, string textureName = "dot") : base(name, position, textureName)
         {
             Lifetime = lifetime;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan delta)
         {
-            Lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Lifetime -= (float)delta.TotalSeconds;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             if (Lifetime > 0)
             {
-                base.Draw(spriteBatch);
+                base.Draw(spriteBatch, zoom);
             }
         }
     }

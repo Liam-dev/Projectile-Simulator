@@ -12,6 +12,19 @@ namespace Simulator.UserInterface
     {
         public event EventHandler ButtonClicked;
 
+        public bool SimulationPaused
+        {
+            get
+            {
+                return playToolStripButton.Enabled;
+            }
+            set
+            {
+                playToolStripButton.Enabled = value;
+                pauseToolStripButton.Enabled = !value;
+            }
+        }
+
         public Toolbar()
         {
             InitializeComponent();
@@ -22,5 +35,14 @@ namespace Simulator.UserInterface
             ButtonClicked?.Invoke(sender, e);
         }
 
+        public void Simulation_Paused(object sender, EventArgs e)
+        {
+            SimulationPaused = true;
+        }
+
+        public void Simulation_UnPaused(object sender, EventArgs e)
+        {
+            SimulationPaused = false;
+        }
     }
 }

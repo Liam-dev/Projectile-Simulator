@@ -15,7 +15,7 @@ namespace Simulator.Simulation
 
         }
 
-        public CollisionObject(Vector2 position, string textureName, float restitutionCoefficient) : base(position, textureName)
+        public CollisionObject(string name, Vector2 position, string textureName, float restitutionCoefficient) : base(name, position, textureName)
         {
             RestitutionCoefficient = restitutionCoefficient;
         }

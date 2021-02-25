@@ -32,7 +32,9 @@ namespace Simulator.UserInterface
             OpenFileDialog fileDialogue = new OpenFileDialog();
             fileDialogue.Title = "Open Simulation File";
             fileDialogue.DefaultExt = "sim";
-            fileDialogue.Multiselect = false;      
+            fileDialogue.Multiselect = false;
+            fileDialogue.CheckFileExists = true;
+            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {

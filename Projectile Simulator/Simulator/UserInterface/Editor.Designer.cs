@@ -41,8 +41,9 @@
             this.simulation.Location = new System.Drawing.Point(5, 52);
             this.simulation.MouseHoverUpdatesOnly = true;
             this.simulation.Name = "simulation";
+            this.simulation.Paused = false;
             this.simulation.Scale = 100F;
-            this.simulation.Size = new System.Drawing.Size(960, 540);
+            this.simulation.Size = new System.Drawing.Size(880, 540);
             this.simulation.TabIndex = 0;
             this.simulation.Text = "Simulation";
             // 
@@ -61,9 +62,10 @@
             // 
             this.inspector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.inspector.Location = new System.Drawing.Point(971, 51);
+            this.inspector.Location = new System.Drawing.Point(891, 51);
             this.inspector.Name = "inspector";
-            this.inspector.Size = new System.Drawing.Size(250, 542);
+            this.inspector.Object = null;
+            this.inspector.Size = new System.Drawing.Size(330, 542);
             this.inspector.TabIndex = 5;
             // 
             // Editor
@@ -76,7 +78,7 @@
             this.Controls.Add(this.simulation);
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "Editor";
-            this.Text = "Editor";
+            this.Text = "Projectile Simulator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Editor_FormClosing);
             this.Load += new System.EventHandler(this.Editor_Load);
             this.ResumeLayout(false);
