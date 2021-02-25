@@ -34,5 +34,15 @@ namespace Simulator.UserInterface
         {
             ButtonClicked?.Invoke(sender, e);
         }
+
+        public void Simulation_Paused(object sender, EventArgs e)
+        {
+            SimulationPaused = true;
+        }
+
+        public void Simulation_UnPaused(object sender, EventArgs e)
+        {
+            SimulationPaused = false;
+        }
     }
 }

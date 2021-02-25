@@ -16,6 +16,8 @@ namespace Simulator.UserInterface
     {
         protected List<SimulationObject> objects;
 
+        private bool paused;
+
         protected TimeSpan previousDelta;
         // Lag constant
         protected float timeTolerance = 2f;
@@ -34,7 +36,25 @@ namespace Simulator.UserInterface
 
         public Color BackgroundColour { get; set; }
 
-        public bool Paused { get; set; }
+        public bool Paused
+        {
+            get { return paused; }
+            set
+            {
+                paused = value;
+                if (value)
+                {
+                    SimulationPaused?.Invoke(this, new EventArgs());
+                }
+                else
+                {
+                    SimulationUnPaused?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+
+        public event EventHandler SimulationPaused;
+        public event EventHandler SimulationUnPaused;
 
         public Vector2 ScreenCentre
         {
@@ -91,7 +111,7 @@ namespace Simulator.UserInterface
             }
 
             if (!Paused)
-            {
+            {               
                 // Check for a percentage discrepancy in the elapsed game time to allow for lag (such as from window adjustments)
                 if (previousDelta == TimeSpan.Zero || gameTime.ElapsedGameTime.Duration() - previousDelta.Duration() < timeTolerance * previousDelta.Duration())
                 {

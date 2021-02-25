@@ -74,8 +74,10 @@ namespace Simulator
         private void Editor_Load(object sender, EventArgs e)
         {
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
+            simulation.SimulationPaused += toolbar.Simulation_Paused;
+            simulation.SimulationUnPaused += toolbar.Simulation_UnPaused;
 
-            toolbar.SimulationPaused = simulation.Paused;
+            simulation.Paused = false;
 
             // load objects
             foreach (var @object in objectsToLoad)
@@ -119,26 +121,32 @@ namespace Simulator
             switch (tag)
             {
                 case "newFile":
+                    simulation.Paused = true;
                     SaveFilePerformAction(NewFile);
                     break;
 
                 case "openFile":
+                    simulation.Paused = true;
                     SaveFilePerformAction(OpenFile);
                     break;
 
                 case "saveFile":
+                    simulation.Paused = true;
                     SaveFile();
                     break;
 
                 case "saveAs":
+                    simulation.Paused = true;
                     SaveAs();
                     break;
 
                 case "exit":
+                    simulation.Paused = true;
                     CloseEditor();
                     break;
 
                 case "screenshot":
+                    simulation.Paused = true;
                     Screenshot();
                     break;
 
@@ -169,6 +177,8 @@ namespace Simulator
         // Run on close
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
+            simulation.Paused = true;
+
             if (Filename == null)
             {
                 switch (ShowUnsavedFileMessage())
@@ -383,8 +393,12 @@ namespace Simulator
                 CloseEditor();
                 new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
             }
+            else
+            {
+                // Allows saving after cancelled load
+                Filename = null;
+            }
         }
-
         protected void OpenWebPage(string url)
         {
             var processStartInfo = new System.Diagnostics.ProcessStartInfo();
