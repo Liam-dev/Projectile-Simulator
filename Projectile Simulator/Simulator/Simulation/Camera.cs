@@ -52,7 +52,7 @@ namespace Simulator.Simulation
             }
         }
 
-        public void Update(Vector2 position)
+        public void ZoomUpdate(Vector2 position)
         {
             Matrix toPosition = Matrix.CreateTranslation(new Vector3(-position, 0));
             Matrix scale = Matrix.CreateScale(zoom / oldZoom);
@@ -61,6 +61,11 @@ namespace Simulator.Simulation
             Transform *= toPosition;
             Transform *= scale;
             Transform *= fromPosition;
+        }
+
+        public void Translate(Vector2 displacement)
+        {
+            Transform *= Matrix.CreateTranslation(new Vector3(displacement, 0));
         }
 
         public float GetZoom()

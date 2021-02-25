@@ -224,6 +224,8 @@ namespace Simulator.UserInterface
                 {
                     if (IsObjectSelected && selectedObject is IMovable movable)
                     {
+                        // Move object
+
                         if (mouseState.Position != lastMouseState.Position)
                         {
                             Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
@@ -234,6 +236,17 @@ namespace Simulator.UserInterface
                         else
                         {
                             movable.Moving = false;
+                        }
+                    }
+                    else
+                    {
+                        // Move camera
+
+                        if (mouseState.Position != lastMouseState.Position)
+                        {
+                            Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
+
+                            camera.Translate(mouseMovement);
                         }
                     }
                 }
@@ -255,12 +268,12 @@ namespace Simulator.UserInterface
             {
                 case ScrollDiretion.Up:
                     camera.ZoomIn();
-                    camera.Update(mousePosition);
+                    camera.ZoomUpdate(mousePosition);
                     break;
 
                 case ScrollDiretion.Down:
                     camera.ZoomOut();
-                    camera.Update(mousePosition);
+                    camera.ZoomUpdate(mousePosition);
                     break;
             }
         }
