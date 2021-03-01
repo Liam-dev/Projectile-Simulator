@@ -64,7 +64,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inspector.Location = new System.Drawing.Point(891, 51);
             this.inspector.Name = "inspector";
-            this.inspector.Object = null;
+            this.inspector.SelectedObject = null;
             this.inspector.Size = new System.Drawing.Size(330, 542);
             this.inspector.TabIndex = 5;
             // 

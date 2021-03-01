@@ -22,15 +22,16 @@ namespace Simulator.UserInterface
         // Lag constant
         protected float timeTolerance = 2f;
 
-        protected Camera camera;
-
         protected MouseState lastMouseState;
 
         protected ISelectable selectedObject;
 
+
         public bool IsObjectSelected { get; private set; }
 
         public event EventHandler SelectedObjectChanged;
+
+        public Camera Camera { get; set; }
 
         public float Scale { get; set; }
 
@@ -56,25 +57,13 @@ namespace Simulator.UserInterface
         public event EventHandler SimulationPaused;
         public event EventHandler SimulationUnPaused;
 
-        public Vector2 ScreenCentre
-        {
-            get { return camera.GetSimulationPostion(new Vector2(Width / 2, Height / 2)); }
-        }
+        public Vector2 ScreenCentre { get { return Camera.GetSimulationPostion(new Vector2(Width / 2, Height / 2)); } }
 
-        public new Vector2 MousePosition
-        {
-            get { return Mouse.GetState().Position.ToVector2(); }
-        }
+        public new Vector2 MousePosition { get { return Mouse.GetState().Position.ToVector2(); } }
 
-        public bool LeftMouseButtonPressed
-        {
-            get { return Mouse.GetState().LeftButton == ButtonState.Pressed; }
-        }
+        public bool LeftMouseButtonPressed { get { return Mouse.GetState().LeftButton == ButtonState.Pressed; } }
 
-        public bool RightMouseButtonPressed
-        {
-            get { return Mouse.GetState().RightButton == ButtonState.Pressed; }
-        }
+        public bool RightMouseButtonPressed { get { return Mouse.GetState().RightButton == ButtonState.Pressed; } }
 
         public event EventHandler<MouseScrollArgs> MouseScrolled;
 
@@ -89,7 +78,11 @@ namespace Simulator.UserInterface
             Scale = 100;
             BackgroundColour = Color.SkyBlue;
 
-            camera = new Camera();
+            if (Camera == null)
+            {
+                Camera = new Camera(1.1f, 8, -16);
+            }
+            
             lastMouseState = Mouse.GetState();
 
             MouseScrolled += Simulation_MouseScrolled;
@@ -144,12 +137,12 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : camera.Transform);
+            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
             {
-                @object.Draw(Editor.spriteBatch, camera.GetZoom());              
+                @object.Draw(Editor.spriteBatch, Camera.GetZoom());              
             }
 
             Editor.spriteBatch.End();
@@ -251,7 +244,7 @@ namespace Simulator.UserInterface
                             Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
 
                             movable.Moving = true;
-                            movable.Move(mouseMovement / camera.GetZoom());
+                            movable.Move(mouseMovement / Camera.GetZoom());
                         }
                         else
                         {
@@ -266,7 +259,7 @@ namespace Simulator.UserInterface
                         {
                             Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
 
-                            camera.Pan(mouseMovement);
+                            Camera.Pan(mouseMovement);
                         }
                     }
                 }
@@ -289,11 +282,11 @@ namespace Simulator.UserInterface
             switch (e.ScrollDiretion)
             {
                 case ScrollDiretion.Up:
-                    camera.ZoomIn(mousePosition);
+                    Camera.ZoomIn(mousePosition);
                     break;
 
                 case ScrollDiretion.Down:
-                    camera.ZoomOut(mousePosition);
+                    Camera.ZoomOut(mousePosition);
                     break;
             }
         }
@@ -304,7 +297,7 @@ namespace Simulator.UserInterface
 
             if (IsObjectSelected)
             {
-                if (!selectedObject.Intersects(camera.GetSimulationPostion(MousePosition)))
+                if (!selectedObject.Intersects(Camera.GetSimulationPostion(MousePosition)))
                 {
                     DeselectObject();
                 }
@@ -314,7 +307,7 @@ namespace Simulator.UserInterface
             {
                 if (@object is ISelectable selectable)
                 {
-                    Vector2 mouseSimulationPosition = camera.GetSimulationPostion(MousePosition);
+                    Vector2 mouseSimulationPosition = Camera.GetSimulationPostion(MousePosition);
                     if (selectable.Intersects(mouseSimulationPosition))
                     {
                         SelectObject(selectable);
@@ -404,6 +397,15 @@ namespace Simulator.UserInterface
         public List<SimulationObject> GetObjects()
         {
             return objects;
+        }
+
+        public List<object> GetObjectsToSave()
+        {
+            var list = new List<object>();
+            list.Add(Camera);
+            list.AddRange(objects);
+
+            return list;
         }
 
         //TEMP

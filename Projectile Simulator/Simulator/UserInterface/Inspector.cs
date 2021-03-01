@@ -12,9 +12,9 @@ namespace Simulator.UserInterface
 {
     public partial class Inspector : UserControl
     {
-        protected SimulationObject selectedObject;
+        protected object selectedObject;
 
-        public SimulationObject Object { get { return selectedObject; }  set { propertyGrid.SelectedObject = selectedObject = value; } }
+        public object SelectedObject { get { return selectedObject; }  set { propertyGrid.SelectedObject = selectedObject = value; } }
 
         public Inspector()
         {
@@ -34,7 +34,7 @@ namespace Simulator.UserInterface
 
         private void selectionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Object = (SimulationObject)selectionBox.SelectedItem;
+            //SelectedObject = selectionBox.SelectedItem;
         }
     }
 }

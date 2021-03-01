@@ -8,51 +8,61 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Simulator.Simulation
 {
-    public class Camera
+    public class Camera : IPersistent
     {
-        public Matrix Transform { get; protected set; }
+        public Matrix Transform { get; set; }
 
         public float ZoomMultiplier { get; set; }
         public int MaxZoomLevel { get; set; }
         public int MinZoomLevel { get; set; }
 
-        protected float zoom;
-        protected float oldZoom;
+        public float Zoom { get; set; }
+        public float OldZoom { get; set; }
 
         public Camera()
         {
-            Transform = Matrix.Identity;
-            zoom = 1;
-            oldZoom = 1;
+            
+        }
 
-            ZoomMultiplier = 1.1f;
-            MaxZoomLevel = 8;
-            MinZoomLevel = -16;
+        public Camera(float multiplier, int maxLevel, int minLevel)
+        {
+            Transform = Matrix.Identity;
+            Zoom = 1;
+            OldZoom = 1;
+
+            ZoomMultiplier = multiplier;
+            MaxZoomLevel = maxLevel;
+            MinZoomLevel = minLevel;
         }
 
         public void ZoomIn(Vector2 position)
         {
-            oldZoom = zoom;
-            zoom *= ZoomMultiplier;
+            OldZoom = Zoom;
+            Zoom *= ZoomMultiplier;
 
-            if (zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
+            if (Zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
             {
-                zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
+                Zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
             }
 
-            ZoomAtPoint(position, zoom / oldZoom);
+            ZoomAtPoint(position, Zoom / OldZoom);
         }
 
         public void ZoomOut(Vector2 position)
         {
-            oldZoom = zoom;
-            zoom /= ZoomMultiplier;
-            if (zoom < MathF.Pow(ZoomMultiplier, MinZoomLevel))
+            OldZoom = Zoom;
+            Zoom /= ZoomMultiplier;
+            if (Zoom < MathF.Pow(ZoomMultiplier, MinZoomLevel))
             {
-                zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
+                Zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
             }
 
-            ZoomAtPoint(position, zoom / oldZoom);
+            ZoomAtPoint(position, Zoom / OldZoom);
+        }
+
+        public void Pan(Vector2 translation)
+        {
+            Transform *= Matrix.CreateTranslation(new Vector3(translation, 0));
         }
 
         protected void ZoomAtPoint(Vector2 position, float scaleFactor)
@@ -66,18 +76,13 @@ namespace Simulator.Simulation
             Transform *= fromPosition;
         }
 
-        public void Pan(Vector2 translation)
-        {
-            Transform *= Matrix.CreateTranslation(new Vector3(translation, 0));
-        }
-
         public float GetZoom()
         {
             Vector3 _zoom;
             Quaternion _rotation;
             Vector3 _position;
             Transform.Decompose(out _zoom, out _rotation, out _position);
-            return zoom;
+            return Zoom;
         }
 
         public Vector2 GetSimulationPostion(Vector2 position)

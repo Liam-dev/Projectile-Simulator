@@ -13,7 +13,14 @@ namespace Simulator
     /// </summary>
     public static class FileSaver
     {
-        private static JsonSerializerOptions options = new JsonSerializerOptions { Converters = { new VectorJsonConverter() } };
+        private static JsonSerializerOptions options = new JsonSerializerOptions()
+        {
+            Converters =
+            {
+                new Vector2JsonConverter(),
+                new Vector3JsonConverter()
+            }
+        };
 
         public static void WriteJson<T>(string path, List<T> objects)
         {
@@ -26,7 +33,7 @@ namespace Simulator
                     string data = JsonSerializer.Serialize(@object, @object.GetType(), options);
                     writer.WriteLine(@object.GetType());
                     writer.WriteLine(data);
-                }             
+                }
             }
 
             writer.Close();

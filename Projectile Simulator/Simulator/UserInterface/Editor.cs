@@ -25,7 +25,7 @@ namespace Simulator.UserInterface
 
         public string Filename { get; protected set; }
 
-        private List<SimulationObject> objectsToLoad;
+        private List<object> objectsToLoad;
 
         public Editor()
         {
@@ -34,7 +34,7 @@ namespace Simulator.UserInterface
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
-            objectsToLoad = new List<SimulationObject>();
+            objectsToLoad = new List<object>();
 
             // Test objects for mouse zoom testing
             objectsToLoad.Add(new Box("box", new Vector2(0, -64), "crate", 0.95f, new Vector2(64, 64)));
@@ -63,7 +63,7 @@ namespace Simulator.UserInterface
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
-            objectsToLoad = FileSaver.ReadJson<SimulationObject>(filename);
+            objectsToLoad = FileSaver.ReadJson<object>(filename);
 
             if (!isTemplate)
             {
@@ -81,23 +81,32 @@ namespace Simulator.UserInterface
             simulation.Paused = false;
 
             // load objects
-            foreach (var @object in objectsToLoad)
+            foreach (object @object in objectsToLoad)
             {
-                simulation.AddObject(@object);
-
-                // Cannon test
-                if (@object is Cannon cannon)
+                if (@object is SimulationObject simulationObject)
                 {
-                    cannon.Fired += simulation.CannonFired;
+                    simulation.AddObject(simulationObject);
+
+                    // Cannon test
+                    if (@object is Cannon cannon)
+                    {
+                        cannon.Fired += simulation.CannonFired;
+                    }
+                }
+                else if (@object is Camera camera)
+                {
+                    simulation.Camera = camera;
+                    simulation.Camera.Transform =  Matrix.CreateScale(camera.Transform.M11) * Matrix.CreateTranslation(camera.Transform.Translation) * Matrix.Identity;
+                    inspector.SelectedObject = camera;
                 }
             }
-
+            
             inspector.SetDataSource(simulation.GetObjects());
         }
 
         private void Simulation_SelectedObjectChanged(object sender, EventArgs e)
         {
-            inspector.Object = (SimulationObject)sender;
+            inspector.SelectedObject = (SimulationObject)sender;
         }
 
         private void toolbar_ButtonClicked(object sender, EventArgs e)
@@ -267,7 +276,7 @@ namespace Simulator.UserInterface
             }
             else if (File.Exists(Filename))
             {
-                FileSaver.WriteJson(Filename, simulation.GetObjects());
+                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
             }
         }
 
@@ -292,7 +301,7 @@ namespace Simulator.UserInterface
                         }
                         else if (File.Exists(Filename))
                         {
-                            FileSaver.WriteJson(Filename, simulation.GetObjects());
+                            FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
                             action();
                         }
 
@@ -366,7 +375,7 @@ namespace Simulator.UserInterface
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 Filename = fileDialogue.FileName;
-                FileSaver.WriteJson(Filename, simulation.GetObjects());
+                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
                 return true;
             }
             else
