@@ -14,7 +14,7 @@ namespace Simulator.UserInterface
     {
         protected object selectedObject;
 
-        public object SelectedObject { get { return selectedObject; }  set { propertyGrid.SelectedObject = selectedObject = value; } }
+        public object SelectedObject { get { return selectedObject; }  set { selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value; } }
 
         public Inspector()
         {
@@ -28,13 +28,15 @@ namespace Simulator.UserInterface
 
         public void SetDataSource(List<SimulationObject> source)
         {
-            selectionBox.DataSource = source;
+            // Remove and re-add items to selection combo box
+            selectionBox.Items.Clear();
+            selectionBox.Items.AddRange(source.ToArray());
             selectionBox.DisplayMember = "Name";
         }
 
         private void selectionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //SelectedObject = selectionBox.SelectedItem;
+            SelectedObject = selectionBox.SelectedItem;
         }
     }
 }

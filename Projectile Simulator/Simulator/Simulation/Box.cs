@@ -5,25 +5,41 @@ using MonoGame.Forms.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
+using Simulator.Converters;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
-    public class Box : StaticObject, ISelectable
+    public class Box : StaticObject
     {
+        [Browsable(false)]
         public Vector2 Dimensions { get; set; }
 
+        [JsonIgnore]
+        [Browsable(true)]
+        [Category("Box")]
+        [DisplayName("Dimensions")]
+        [TypeConverter(typeof(System.Drawing.SizeFConverter))]
+        public System.Drawing.SizeF DiplayDimensions
+        {
+            get { return VectorSizeConverter.VectorToSize(ScaleConverter.ScaleVector(Dimensions, Scale, 1, true, 2)); }
+            set { Dimensions = ScaleConverter.InverseScaleVector(VectorSizeConverter.SizeToVector(value), Scale, 1); }
+        }
+
+        [JsonIgnore]
+        [Browsable(false)]
         public override Rectangle BoundingBox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y); }
         }
 
+        [JsonIgnore]
+        [Browsable(false)]
         public override Vector2 Centre
         {
             get { return Position + (Dimensions / 2); }
         }
-
-        public bool Selected { get ; set; }
-        public bool Selectable { get ; set; }
 
         public Box()
         {
@@ -44,11 +60,6 @@ namespace Simulator.Simulation
             {
                 DrawBorder(spriteBatch, zoom);
             }  
-        }
-
-        public bool Intersects(Vector2 point)
-        {
-            return BoundingBox.Contains(point);
         }
     }
 }

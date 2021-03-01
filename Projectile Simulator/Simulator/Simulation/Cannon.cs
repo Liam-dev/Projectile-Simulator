@@ -1,22 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.ComponentModel;
+using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
-    public class Cannon : SimulationObject, IPersistent, ISelectable
+    public class Cannon : SimulationObject, IPersistent
     {
         public event EventHandler<FiringArgs> Fired;
 
+        [Browsable(false)]
         public Vector2 FiringPosition { get; set; }
-        public float ProjectionAngle { get; set; }
-        public float Speed { get; set; }
-        public Projectile Projectile { get; set; }
 
-        public bool Selected { get; set; }
-        public bool Selectable { get; set; }
+        [Browsable(false)]
+        public float ProjectionAngle { get; set; }
+
+        [JsonIgnore]
+        [Browsable(true)]
+        [Category("Cannon")]
+        [DisplayName("Projection angle")]
+        public float DisplayProjectionAngle
+        {
+            get { return ProjectionAngle * 180 / MathF.PI; }
+            set { ProjectionAngle = value * MathF.PI / 180; }
+        }
+
+        [Browsable(false)]
+        [Category("Cannon")]
+        [DisplayName("Projection speed")]
+        public float Speed { get; set; }
+
+        [JsonIgnore]
+        [Browsable(true)]
+        [Category("Cannon")]
+        public float DisplaySpeed
+        {
+            get { return ScaleConverter.Scale(Speed, Scale, 1, true, 2); }
+            set { Speed = ScaleConverter.InverseScale(value, Scale, 1); }
+        }
+
+        [Browsable(true)]
+        [Category("Cannon")]
+        public Projectile Projectile { get; set; }
 
         public Cannon()
         {
@@ -39,21 +68,6 @@ namespace Simulator.Simulation
             Vector2 impulse = projectile.Mass * Speed * new Vector2(MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 
             Fired?.Invoke(this, new FiringArgs(projectile, impulse));
-        }
-
-        public override void Draw(SpriteBatch spriteBatch, float zoom)
-        {
-            base.Draw(spriteBatch, zoom);
-
-            if (Selected)
-            {
-                DrawBorder(spriteBatch, zoom);
-            }
-        }
-
-        public bool Intersects(Vector2 point)
-        {
-            return BoundingBox.Contains(point);
         }
     }
 

@@ -1,21 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Forms.Services;
 using System.ComponentModel;
+using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public class SimulationObject : IMovable
+    public class SimulationObject : ISelectable, IMovable
     {
-        public string Name { get; protected set; }
+        public static float Scale;
 
+        protected Texture2D texture;
+        protected Texture2D borderTexture;
+
+        [Browsable(true)]
+        [Category("Object")]
+        public string Name { get; set; }
+
+        [Browsable(false)]
         public Vector2 Position { get; set; }
 
+        [JsonIgnore]
+        [Browsable(true)]
+        [DisplayName("Position")]
+        [Category("Object")]        
+        public Vector2 DisplayPosition
+        {
+            get { return ScaleConverter.ScaleVector(Position, Scale, 1, true, 2); }
+            set { Position = ScaleConverter.InverseScaleVector(value, Scale, 1); }
+        }
+
+        [Browsable(false)]
+        public string TextureName { get; set; }
+
+        [JsonIgnore]
+        [Browsable(false)]
         public virtual Rectangle BoundingBox
         {
             get
@@ -31,6 +56,8 @@ namespace Simulator.Simulation
             }
         }
 
+        [JsonIgnore]
+        [Browsable(false)]
         public virtual Vector2 Centre
         {
             get
@@ -46,24 +73,32 @@ namespace Simulator.Simulation
             }
         }
 
-        public string TextureName { get; set; }
+        [Browsable(false)]
+        public bool Selected { get; set; }
 
+        [Browsable(true)]
+        [Category("Object")]
+        public bool Selectable { get; set; }
+
+        [JsonIgnore]
+        [Browsable(false)]
         public bool Moving { get; set; }
 
-        protected Texture2D texture;
-
-        protected Texture2D borderTexture;
+        [Browsable(true)]
+        [Category("Object")]
+        [DefaultValue(true)]
+        public bool Movable { get; set; }
 
         public SimulationObject()
         {
-
         }
 
         public SimulationObject(string name, Vector2 position, string textureName)
         {
             Name = name;
             Position = position;
-            TextureName = textureName; 
+            TextureName = textureName;
+            Movable = true;
         }
 
         public virtual void OnLoad(MonoGameService Editor)
@@ -82,6 +117,11 @@ namespace Simulator.Simulation
         public virtual void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, Position, Color.White);
+
+            if (Selected)
+            {
+                DrawBorder(spriteBatch, zoom);
+            }
         }
 
         public void SetTexture(string textureName, ContentManager content)
@@ -89,10 +129,15 @@ namespace Simulator.Simulation
             texture = content.Load<Texture2D>("Textures/" + textureName);
         }
 
+        public bool Intersects(Vector2 point)
+        {
+            return BoundingBox.Contains(point);
+        }
+
         public void Move(Vector2 displacement)
         {
             Position += displacement;
-        }
+        }     
 
         protected void DrawBorder(SpriteBatch spriteBatch, float zoom)
         {
@@ -119,6 +164,6 @@ namespace Simulator.Simulation
             {
                 spriteBatch.Draw(borderTexture, destinationRectangle: side, color: Color.White);
             }
-        }
+        }   
     }
 }

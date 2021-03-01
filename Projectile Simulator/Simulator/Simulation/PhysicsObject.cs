@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,6 +14,7 @@ namespace Simulator.Simulation
         protected Vector2 resultantForce;
         protected Vector2 impulse;
 
+        [Browsable(true)]
         public float Mass { get; set; }
         
         public PhysicsObject()

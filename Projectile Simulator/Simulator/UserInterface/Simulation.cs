@@ -26,7 +26,6 @@ namespace Simulator.UserInterface
 
         protected ISelectable selectedObject;
 
-
         public bool IsObjectSelected { get; private set; }
 
         public event EventHandler SelectedObjectChanged;
@@ -54,6 +53,8 @@ namespace Simulator.UserInterface
             }
         }
 
+        public event EventHandler ObjectAdded;
+
         public event EventHandler SimulationPaused;
         public event EventHandler SimulationUnPaused;
 
@@ -65,22 +66,29 @@ namespace Simulator.UserInterface
 
         public bool RightMouseButtonPressed { get { return Mouse.GetState().RightButton == ButtonState.Pressed; } }
 
+        public bool MiddleMouseButtonPressed { get { return Mouse.GetState().MiddleButton == ButtonState.Pressed; } }
+
         public event EventHandler<MouseScrollArgs> MouseScrolled;
 
         public event EventHandler LeftMouseButtonJustPressed;
         public event EventHandler LeftMouseButtonJustReleased;
         
         public event EventHandler RightMouseButtonJustPressed;
-        public event EventHandler RightMouseButtonJustReleased;       
-       
+        public event EventHandler RightMouseButtonJustReleased;
+
+        public event EventHandler MiddleMouseButtonJustPressed;
+        public event EventHandler MiddleMouseButtonJustReleased;
+
         protected override void Initialize()
         {
             Scale = 100;
+            SimulationObject.Scale = Scale;
+            
             BackgroundColour = Color.SkyBlue;
 
             if (Camera == null)
             {
-                Camera = new Camera(1.1f, 8, -16);
+                Camera = new Camera(1.1f, 8, -20);
             }
             
             lastMouseState = Mouse.GetState();
@@ -149,6 +157,53 @@ namespace Simulator.UserInterface
 
         }
 
+        /// <summary>
+        /// Add an object to the simulation
+        /// </summary>
+        /// <param name="object"></param>
+        public void AddObject(SimulationObject @object)
+        {
+            @object.OnLoad(Editor);
+            objects.Add(@object);
+            if (@object is ISelectable selectable && selectable.Selectable)
+            {
+                SelectObject(selectable);
+            }
+            if (@object is IPersistent)
+            {
+                ObjectAdded?.Invoke(this, new EventArgs());
+            }
+        }
+
+        public List<SimulationObject> GetObjects()
+        {
+            return objects;
+        }
+
+        public List<SimulationObject> GetObjectsToDisplay()
+        {
+            List<SimulationObject> list = new List<SimulationObject>();
+
+            foreach (SimulationObject @object in objects)
+            {
+                if (@object is IPersistent)
+                {
+                    list.Add(@object);
+                }
+            }
+
+            return list;
+        }
+
+        public List<object> GetObjectsToSave()
+        {
+            var list = new List<object>();
+            list.Add(Camera);
+            list.AddRange(objects);
+
+            return list;
+        }
+
         #region Input
 
         public enum ScrollDiretion
@@ -213,8 +268,29 @@ namespace Simulator.UserInterface
                 }
             }
 
-            // Scrolling
+            if (MiddleMouseButtonPressed)
+            {
+                // Middle button pressed
 
+                if (mouseState.MiddleButton != lastMouseState.MiddleButton)
+                {
+                    // Middle button just pressed
+                    MiddleMouseButtonJustPressed?.Invoke(this, new EventArgs());
+                }
+            }
+            else
+            {
+                // Middle button not pressed
+
+                if (mouseState.MiddleButton != lastMouseState.MiddleButton)
+                {
+                    // Middle button just released
+                    MiddleMouseButtonJustReleased?.Invoke(this, new EventArgs());
+                }
+            }
+
+
+            // Scrolling
             int newMouseScroll = mouseState.ScrollWheelValue;
 
             // Mouse wheel up
@@ -229,13 +305,12 @@ namespace Simulator.UserInterface
             }
 
 
-            // Object movement
-            
+            // Left button hold
             if (LeftMouseButtonPressed)
             {
                 if (lastMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if (IsObjectSelected && selectedObject is IMovable movable)
+                    if (IsObjectSelected && selectedObject is IMovable movable && movable.Movable)
                     {
                         // Move object
 
@@ -251,19 +326,26 @@ namespace Simulator.UserInterface
                             movable.Moving = false;
                         }
                     }
-                    else
+                }
+            }
+
+
+            // Middle button hold
+            else if (MiddleMouseButtonPressed)
+            {
+                if (lastMouseState.MiddleButton == ButtonState.Pressed)
+                {
+                    // Move camera
+
+                    if (mouseState.Position != lastMouseState.Position)
                     {
-                        // Move camera
+                        Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
 
-                        if (mouseState.Position != lastMouseState.Position)
-                        {
-                            Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
-
-                            Camera.Pan(mouseMovement);
-                        }
+                        Camera.Pan(mouseMovement);
                     }
                 }
             }
+ 
 
             // LAG LAG LAG BUG
             //SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
@@ -334,22 +416,26 @@ namespace Simulator.UserInterface
 
         public void SelectObject(ISelectable @object)
         {
-            DeselectObject();
+            if (@object != selectedObject)
+            {
+                DeselectObject();
 
-            @object.Selected = true;
-            selectedObject = @object;
-            IsObjectSelected = true;
-
-            
+                @object.Selected = true;
+                selectedObject = @object;
+                IsObjectSelected = true;
+                SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
+            }   
         }
 
         public void DeselectObject()
         {
             if (IsObjectSelected)
             {
+                
                 selectedObject.Selected = false;
                 selectedObject = null;
                 IsObjectSelected = false;
+                SelectedObjectChanged?.Invoke(null, new EventArgs());
             }
         }
 
@@ -377,35 +463,6 @@ namespace Simulator.UserInterface
             GraphicsDevice.SetRenderTarget(null);
 
             return renderTarget;
-        }
-
-        /// <summary>
-        /// Add an object to the simulation
-        /// </summary>
-        /// <param name="object"></param>
-        public void AddObject(SimulationObject @object)
-        {
-            @object.OnLoad(Editor);
-            objects.Add(@object);
-            if (@object is ISelectable selectable)
-            {
-                SelectObject(selectable);
-            }
-            
-        }
-
-        public List<SimulationObject> GetObjects()
-        {
-            return objects;
-        }
-
-        public List<object> GetObjectsToSave()
-        {
-            var list = new List<object>();
-            list.Add(Camera);
-            list.AddRange(objects);
-
-            return list;
         }
 
         //TEMP

@@ -63,6 +63,8 @@ namespace Simulator.UserInterface
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
+            WindowState = FormWindowState.Maximized;
+
             objectsToLoad = FileSaver.ReadJson<object>(filename);
 
             if (!isTemplate)
@@ -74,6 +76,7 @@ namespace Simulator.UserInterface
 
         private void Editor_Load(object sender, EventArgs e)
         {
+            simulation.ObjectAdded += Simulation_ObjectAdded;
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
             simulation.SimulationPaused += toolbar.Simulation_Paused;
             simulation.SimulationUnPaused += toolbar.Simulation_UnPaused;
@@ -97,16 +100,18 @@ namespace Simulator.UserInterface
                 {
                     simulation.Camera = camera;
                     simulation.Camera.Transform =  Matrix.CreateScale(camera.Transform.M11) * Matrix.CreateTranslation(camera.Transform.Translation) * Matrix.Identity;
-                    inspector.SelectedObject = camera;
                 }
             }
-            
-            inspector.SetDataSource(simulation.GetObjects());
+        }
+
+        private void Simulation_ObjectAdded(object sender, EventArgs e)
+        {
+            inspector.SetDataSource(simulation.GetObjectsToDisplay());
         }
 
         private void Simulation_SelectedObjectChanged(object sender, EventArgs e)
         {
-            inspector.SelectedObject = (SimulationObject)sender;
+            inspector.SelectedObject = sender;
         }
 
         private void toolbar_ButtonClicked(object sender, EventArgs e)

@@ -33,6 +33,8 @@ namespace Simulator.UserInterface
             {
                 new Thread(() => new Editor().ShowDialog()).Start();
             }
+            
+
             Application.ExitThread();
         }
 

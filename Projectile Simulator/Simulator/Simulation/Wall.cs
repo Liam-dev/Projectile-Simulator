@@ -4,13 +4,28 @@ using MonoGame.Forms.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
     class Wall : Box, IScalable
     {
+        [Browsable(false)]
+        [Category("Object")]
         public Color Colour { get; set; }
 
+        [JsonIgnore]
+        [Browsable(true)]
+        [Category("Box")]
+        [DisplayName("Colour")]
+        public System.Drawing.Color DisplayColour
+        {
+            get { return System.Drawing.Color.FromArgb(Colour.A, Colour.R, Colour.G, Colour.B); }
+            set { Colour = new Color(value.R, value.G, value.B, value.A); texture.SetData(new[] { Colour }); }
+        }
+
+        [Browsable(false)]
         public bool MaintainAspectRatio { get; set; }
 
         public Wall()

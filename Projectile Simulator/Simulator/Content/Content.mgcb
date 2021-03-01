@@ -19,6 +19,9 @@
 #begin Templates/Colourful Walls.sim
 /copy:Templates/Colourful Walls.sim
 
+#begin Templates/Simple cannon.sim
+/copy:Templates/Simple cannon.sim
+
 #begin Textures/ball.png
 /importer:TextureImporter
 /processor:TextureProcessor

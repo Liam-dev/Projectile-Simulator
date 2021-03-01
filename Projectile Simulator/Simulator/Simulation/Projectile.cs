@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +15,11 @@ namespace Simulator.Simulation
     {
         protected Trajectory trajectory;
 
+        [Browsable(true)]
+        [DisplayName("Drag coefficient")]
         public float DragCoefficient { get; set; }
+
+        [Browsable(false)]
         public float Radius
         {
             get
@@ -37,6 +43,7 @@ namespace Simulator.Simulation
         public Projectile(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(name, position, textureName, mass, restitutionCoefficient)
         {
             DragCoefficient = dragCoefficient;
+            Movable = false;
         }
 
         public override void OnLoad(MonoGameService Editor)

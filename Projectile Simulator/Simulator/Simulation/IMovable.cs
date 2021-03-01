@@ -7,6 +7,7 @@ namespace Simulator.Simulation
 {
     interface IMovable
     {
+        bool Movable { get; set; }
         bool Moving { get; set; }
         void Move(Vector2 displacement);
     }
