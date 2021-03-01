@@ -86,7 +86,7 @@ namespace Simulator.Simulation
 
         public void SetTexture(string textureName, ContentManager content)
         {
-            texture = content.Load<Texture2D>(textureName);
+            texture = content.Load<Texture2D>("Textures/" + textureName);
         }
 
         public void Move(Vector2 displacement)

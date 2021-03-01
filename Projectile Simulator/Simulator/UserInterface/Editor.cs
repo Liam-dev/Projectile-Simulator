@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
 
-
 namespace Simulator.UserInterface
 {
     /// <summary>
@@ -32,21 +31,20 @@ namespace Simulator.UserInterface
         {
             InitializeComponent();
 
-            objectsToLoad = new List<SimulationObject>();
-
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
-            // Test objects for mouse zoom testing
+            objectsToLoad = new List<SimulationObject>();
 
+            // Test objects for mouse zoom testing
             objectsToLoad.Add(new Box("box", new Vector2(0, -64), "crate", 0.95f, new Vector2(64, 64)));
             objectsToLoad.Add(new Box("box", new Vector2(0, 0), "crate", 0.95f, new Vector2(64, 64)));
             objectsToLoad.Add(new Box("box", new Vector2(100, 400), "crate", 0.95f, new Vector2(64, 64)));
             objectsToLoad.Add(new Box("box", new Vector2(400, 100), "crate", 0.95f, new Vector2(64, 64)));
             objectsToLoad.Add(new Box("box", new Vector2(400, 400), "crate", 0.95f, new Vector2(64, 64)));
 
-            objectsToLoad.Add(new Box("box", new Vector2(800, 100), "wall", 0.95f, new Vector2(20, 500)));
-            objectsToLoad.Add(new Box("box", new Vector2(320, 600), "wall", 0.95f, new Vector2(500, 20)));
+            objectsToLoad.Add(new Wall("wall", new Vector2(800, 100), Microsoft.Xna.Framework.Color.SaddleBrown, 0.95f, new Vector2(20, 500)));
+            objectsToLoad.Add(new Wall("floor", new Vector2(320, 600), Microsoft.Xna.Framework.Color.ForestGreen, 0.95f, new Vector2(500, 20)));
 
             Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 0.005f);
             objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
@@ -58,17 +56,20 @@ namespace Simulator.UserInterface
         /// Open Editor with  file
         /// </summary>
         /// <param name="filename"></param>
-        public Editor(string filename)
+        public Editor(string filename, bool isTemplate = false)
         {
             InitializeComponent();
-
-            Filename = filename;
-            ChangeFormTitle();
 
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
-            objectsToLoad = ObjectWriter.ReadJson<SimulationObject>(Filename);
+            objectsToLoad = FileSaver.ReadJson<SimulationObject>(filename);
+
+            if (!isTemplate)
+            {
+                Filename = filename;
+                ChangeFormTitle();
+            }    
         }
 
         private void Editor_Load(object sender, EventArgs e)
@@ -266,7 +267,7 @@ namespace Simulator.UserInterface
             }
             else if (File.Exists(Filename))
             {
-                ObjectWriter.WriteJson(Filename, simulation.GetObjects());
+                FileSaver.WriteJson(Filename, simulation.GetObjects());
             }
         }
 
@@ -291,7 +292,7 @@ namespace Simulator.UserInterface
                         }
                         else if (File.Exists(Filename))
                         {
-                            ObjectWriter.WriteJson(Filename, simulation.GetObjects());
+                            FileSaver.WriteJson(Filename, simulation.GetObjects());
                             action();
                         }
 
@@ -365,7 +366,7 @@ namespace Simulator.UserInterface
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 Filename = fileDialogue.FileName;
-                ObjectWriter.WriteJson(Filename, simulation.GetObjects());
+                FileSaver.WriteJson(Filename, simulation.GetObjects());
                 return true;
             }
             else
@@ -386,7 +387,7 @@ namespace Simulator.UserInterface
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 CloseEditor();
-                new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
+                new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
             }
             else
             {

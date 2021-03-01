@@ -36,11 +36,6 @@ namespace Simulator.Simulation
             RestitutionCoefficient = 0.95f;
         }
 
-        public override void OnLoad(MonoGameService Editor)
-        {
-            base.OnLoad(Editor);
-        }
-
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, BoundingBox, Color.White);

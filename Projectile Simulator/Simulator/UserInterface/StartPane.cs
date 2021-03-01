@@ -23,7 +23,16 @@ namespace Simulator.UserInterface
 
         private void newButton_Click(object sender, EventArgs e)
         {
-            new Thread(() => new Editor().ShowDialog()).Start();
+            if (templateList.SelectedItem != null)
+            {
+                string templateName = templateList.SelectedItem;
+                string path = "Content/Templates/" + templateName + ".sim";
+                new Thread(() => new Editor(path, true).ShowDialog()).Start();
+            }
+            else
+            {
+                new Thread(() => new Editor().ShowDialog()).Start();
+            }
             Application.ExitThread();
         }
 
@@ -38,7 +47,7 @@ namespace Simulator.UserInterface
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
-                new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
+                new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
                 Application.ExitThread();
             }        
         }
@@ -47,6 +56,5 @@ namespace Simulator.UserInterface
         {
             MessageBox.Show("Preferences opening");
         }
-       
     }
 }

@@ -33,6 +33,7 @@
             this.newButton = new Simulator.UserInterface.LargeMenuButton();
             this.loadButton = new Simulator.UserInterface.LargeMenuButton();
             this.preferencesButton = new Simulator.UserInterface.LargeMenuButton();
+            this.templateList = new Simulator.UserInterface.TemplateList();
             this.SuspendLayout();
             // 
             // title
@@ -84,17 +85,26 @@
             this.preferencesButton.TabIndex = 3;
             this.preferencesButton.Pressed += new System.EventHandler(this.preferencesButton_Click);
             // 
+            // templateList
+            // 
+            this.templateList.Location = new System.Drawing.Point(355, 56);
+            this.templateList.Name = "templateList";
+            this.templateList.Size = new System.Drawing.Size(380, 314);
+            this.templateList.TabIndex = 4;
+            this.templateList.ItemDoubleClicked += new System.EventHandler(this.newButton_Click);
+            // 
             // StartPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.Controls.Add(this.templateList);
             this.Controls.Add(this.preferencesButton);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.newButton);
             this.Controls.Add(this.title);
             this.Name = "StartPane";
-            this.Size = new System.Drawing.Size(330, 380);
+            this.Size = new System.Drawing.Size(750, 380);
             this.Load += new System.EventHandler(this.StartPane_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -107,5 +117,6 @@
         private LargeMenuButton newButton;
         private LargeMenuButton loadButton;
         private LargeMenuButton preferencesButton;
+        private TemplateList templateList;
     }
 }

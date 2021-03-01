@@ -266,7 +266,7 @@ namespace Simulator.UserInterface
                         {
                             Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
 
-                            camera.Translate(mouseMovement);
+                            camera.Pan(mouseMovement);
                         }
                     }
                 }
@@ -289,13 +289,11 @@ namespace Simulator.UserInterface
             switch (e.ScrollDiretion)
             {
                 case ScrollDiretion.Up:
-                    camera.ZoomIn();
-                    camera.ZoomUpdate(mousePosition);
+                    camera.ZoomIn(mousePosition);
                     break;
 
                 case ScrollDiretion.Down:
-                    camera.ZoomOut();
-                    camera.ZoomUpdate(mousePosition);
+                    camera.ZoomOut(mousePosition);
                     break;
             }
         }
@@ -454,20 +452,21 @@ namespace Simulator.UserInterface
                                 Vector2 collisionNormal = a.Centre - b.Centre;
 
                                 // Static
-                                if (overlap > 0)
-                                {
-                                    a.Position += overlap * Vector2.Normalize(collisionNormal);
-                                    b.Position -= overlap * Vector2.Normalize(collisionNormal);
+                                a.Position += overlap * Vector2.Normalize(collisionNormal);
+                                b.Position -= overlap * Vector2.Normalize(collisionNormal);
 
-                                    // Dynamic
-                                    Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
-                                    Vector2 impulse = -(1 + (a.RestitutionCoefficient * b.RestitutionCoefficient))
-                                        * Vector2.Dot(relativeVelocity, collisionNormal) * collisionNormal
-                                        / (collisionNormal.LengthSquared() * ((1 / a.Mass) + (1 / b.Mass)));
+                                // Dynamic
 
-                                    a.ApplyImpulse(impulse);
-                                    b.ApplyImpulse(-impulse);
-                                }   
+                                Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
+
+                                float restitution = a.RestitutionCoefficient * b.RestitutionCoefficient;
+
+                                Vector2 impulse = -(1 + restitution)
+                                    * Vector2.Dot(relativeVelocity, collisionNormal) * collisionNormal
+                                    / (collisionNormal.LengthSquared() * ((1 / a.Mass) + (1 / b.Mass)));
+
+                                a.ApplyImpulse(impulse);
+                                b.ApplyImpulse(-impulse);
                             }          
                         }
                         else if (j is Box c)
@@ -488,12 +487,15 @@ namespace Simulator.UserInterface
                                 a.Position -= overlap * Vector2.Normalize(collisionNormal);
 
                                 // Dynamic
-                                
-                                Vector2 impulse = -(1 + (a.RestitutionCoefficient * c.RestitutionCoefficient))
+
+                                float restitution = a.RestitutionCoefficient * c.RestitutionCoefficient;
+
+                                Vector2 impulse = -(1 + restitution)
                                     * Vector2.Dot(a.GetVelocity(), collisionNormal) * collisionNormal
                                     / (collisionNormal.LengthSquared() * (1 / a.Mass));
 
                                 a.ApplyImpulse(impulse);  
+
                             }                           
                         }
                     }

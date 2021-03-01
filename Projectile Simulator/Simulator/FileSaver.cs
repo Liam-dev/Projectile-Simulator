@@ -11,7 +11,7 @@ namespace Simulator
     /// <summary>
     /// Static class used to save objects to a file
     /// </summary>
-    public static class ObjectWriter
+    public static class FileSaver
     {
         private static JsonSerializerOptions options = new JsonSerializerOptions { Converters = { new VectorJsonConverter() } };
 

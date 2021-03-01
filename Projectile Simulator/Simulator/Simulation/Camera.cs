@@ -12,14 +12,12 @@ namespace Simulator.Simulation
     {
         public Matrix Transform { get; protected set; }
 
+        public float ZoomMultiplier { get; set; }
+        public int MaxZoomLevel { get; set; }
+        public int MinZoomLevel { get; set; }
+
         protected float zoom;
         protected float oldZoom;
-
-        protected float ZoomMultiplier;
-        protected int MaxZoomLevel;
-        protected int MinZoomLevel;
-
-        protected Vector2 centre { get; set; }
 
         public Camera()
         {
@@ -32,17 +30,20 @@ namespace Simulator.Simulation
             MinZoomLevel = -16;
         }
 
-        public void ZoomIn()
+        public void ZoomIn(Vector2 position)
         {
             oldZoom = zoom;
-            zoom *= ZoomMultiplier;          
+            zoom *= ZoomMultiplier;
+
             if (zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
             {
                 zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
             }
+
+            ZoomAtPoint(position, zoom / oldZoom);
         }
 
-        public void ZoomOut()
+        public void ZoomOut(Vector2 position)
         {
             oldZoom = zoom;
             zoom /= ZoomMultiplier;
@@ -50,12 +51,14 @@ namespace Simulator.Simulation
             {
                 zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
             }
+
+            ZoomAtPoint(position, zoom / oldZoom);
         }
 
-        public void ZoomUpdate(Vector2 position)
+        protected void ZoomAtPoint(Vector2 position, float scaleFactor)
         {
             Matrix toPosition = Matrix.CreateTranslation(new Vector3(-position, 0));
-            Matrix scale = Matrix.CreateScale(zoom / oldZoom);
+            Matrix scale = Matrix.CreateScale(scaleFactor);
             Matrix fromPosition = Matrix.CreateTranslation(new Vector3(position, 0));
 
             Transform *= toPosition;
@@ -63,9 +66,9 @@ namespace Simulator.Simulation
             Transform *= fromPosition;
         }
 
-        public void Translate(Vector2 displacement)
+        public void Pan(Vector2 translation)
         {
-            Transform *= Matrix.CreateTranslation(new Vector3(displacement, 0));
+            Transform *= Matrix.CreateTranslation(new Vector3(translation, 0));
         }
 
         public float GetZoom()
