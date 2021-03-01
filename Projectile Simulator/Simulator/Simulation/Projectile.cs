@@ -19,20 +19,21 @@ namespace Simulator.Simulation
         [DisplayName("Drag coefficient")]
         public float DragCoefficient { get; set; }
 
+        [Browsable(true)]
+        public float Radius { get; set; }
+
+        [JsonIgnore]
         [Browsable(false)]
-        public float Radius
+        public override Rectangle BoundingBox
         {
-            get
-            {
-                if (texture != null)
-                {
-                    return texture.Width / 2;
-                }
-                else
-                {
-                    return 0;
-                }              
-            }
+            get { return new Rectangle((int)Position.X, (int)Position.Y, (int)(2 * Radius), (int)(2 * Radius)); }
+        }
+
+        [JsonIgnore]
+        [Browsable(false)]
+        public override Vector2 Centre
+        {
+            get { return Position + new Vector2(Radius); }
         }
 
         public Projectile()
@@ -40,17 +41,22 @@ namespace Simulator.Simulation
 
         }
 
-        public Projectile(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient, float dragCoefficient) : base(name, position, textureName, mass, restitutionCoefficient)
+        public Projectile(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient, float radius, float dragCoefficient) : base(name, position, textureName, mass, restitutionCoefficient)
         {
+            Radius = radius;
             DragCoefficient = dragCoefficient;
             Movable = false;
         }
 
         public override void OnLoad(MonoGameService Editor)
         {
+            base.OnLoad(Editor);
+
+            //Radius = texture.Width / 2;
+
             trajectory = new Trajectory(Position);
 
-            base.OnLoad(Editor);
+            
         }
 
         public override void Update(TimeSpan delta)
@@ -69,7 +75,7 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            spriteBatch.Draw(texture, Position, Color.White);
+            spriteBatch.Draw(texture, new Rectangle(Position.ToPoint(), new Point((int)(2 * Radius))), Color.White);
         }
 
         protected Vector2 CalulateDrag()

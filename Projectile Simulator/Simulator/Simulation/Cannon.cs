@@ -63,7 +63,7 @@ namespace Simulator.Simulation
 
         public void Fire()
         {
-            Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.DragCoefficient);
+            Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
 
             Vector2 impulse = projectile.Mass * Speed * new Vector2(MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 

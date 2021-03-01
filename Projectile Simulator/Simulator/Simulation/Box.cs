@@ -19,12 +19,11 @@ namespace Simulator.Simulation
         [JsonIgnore]
         [Browsable(true)]
         [Category("Box")]
-        [DisplayName("Dimensions")]
-        [TypeConverter(typeof(System.Drawing.SizeFConverter))]
-        public System.Drawing.SizeF DiplayDimensions
+        [DisplayName("Size")]
+        public virtual float DiplaySize
         {
-            get { return VectorSizeConverter.VectorToSize(ScaleConverter.ScaleVector(Dimensions, Scale, 1, true, 2)); }
-            set { Dimensions = ScaleConverter.InverseScaleVector(VectorSizeConverter.SizeToVector(value), Scale, 1); }
+            get { return ScaleConverter.Scale(Dimensions.X, Scale, 1, true, 2); }
+            set { Dimensions = new Vector2(ScaleConverter.InverseScale(value, Scale, 1)); }
         }
 
         [JsonIgnore]

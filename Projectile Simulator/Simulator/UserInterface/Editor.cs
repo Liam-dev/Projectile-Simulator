@@ -46,7 +46,7 @@ namespace Simulator.UserInterface
             objectsToLoad.Add(new Wall("wall", new Vector2(800, 100), Microsoft.Xna.Framework.Color.SaddleBrown, 0.95f, new Vector2(20, 500)));
             objectsToLoad.Add(new Wall("floor", new Vector2(320, 600), Microsoft.Xna.Framework.Color.ForestGreen, 0.95f, new Vector2(500, 20)));
 
-            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 0.005f);
+            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
             objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
 
             objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line"/*, simulation.Editor.Content.Load<SpriteFont>("Label")*/));
