@@ -30,6 +30,12 @@ namespace Simulator.UserInterface
 
         public void SetDataSource(List<SimulationObject> source)
         {
+            // if object deleted from simulation then clear from inspector
+            if (!source.Contains((SimulationObject)SelectedObject))
+            {
+                SelectedObject = null;
+            }
+
             // Remove and re-add items to selection combo box
             selectionBox.Items.Clear();
             selectionBox.Items.AddRange(source.ToArray());

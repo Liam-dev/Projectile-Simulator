@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
+using System.Text.Json;
+using Simulator.Converters;
 
 namespace Simulator.UserInterface
 {
@@ -26,6 +28,8 @@ namespace Simulator.UserInterface
         public string Filename { get; protected set; }
 
         private List<object> objectsToLoad;
+
+        private SimulationObject clipboardObject;
 
         public Editor()
         {
@@ -104,12 +108,6 @@ namespace Simulator.UserInterface
                 if (@object is SimulationObject simulationObject)
                 {
                     simulation.AddObject(simulationObject);
-
-                    // Cannon test
-                    if (@object is Cannon cannon)
-                    {
-                        cannon.Fired += simulation.CannonFired;
-                    }
                 }
                 else if (@object is Camera camera)
                 {
@@ -185,8 +183,32 @@ namespace Simulator.UserInterface
                     Screenshot();
                     break;
 
+                case "cut":
+                    clipboardObject = (SimulationObject)simulation.SelectedObject;
+                    simulation.RemoveObject(clipboardObject);
+                    inspector.SetDataSource(simulation.GetObjectsToDisplay());
+                    break;
+
+                case "copy":
+                    clipboardObject = (SimulationObject)simulation.SelectedObject;
+                    break;
+
+                case "paste":
+                    JsonSerializerOptions options = new JsonSerializerOptions() { Converters = { new Vector2JsonConverter() } };
+
+                    SimulationObject @object = (SimulationObject)JsonSerializer.Deserialize(JsonSerializer.Serialize(clipboardObject, clipboardObject.GetType(), options), clipboardObject.GetType(), options);
+                    @object.Position = simulation.Camera.GetSimulationPostion(Microsoft.Xna.Framework.Input.Mouse.GetState().Position.ToVector2());
+                    simulation.AddObject(@object);
+                    break;
+
                 case "ball":
                     simulation.FireAllCannons();
+                    break;
+
+                case "deleteObject":
+                    SimulationObject selectedObject = (SimulationObject)simulation.SelectedObject;
+                    simulation.RemoveObject(selectedObject);
+                    inspector.SetDataSource(simulation.GetObjectsToDisplay());
                     break;
 
                 case "fireCannon":

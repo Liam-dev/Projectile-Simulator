@@ -91,7 +91,7 @@ namespace Simulator.Simulation
 
         protected Vector2 CalulateDrag()
         {
-            return 0.5f * DragCoefficient * velocity.Length() * -velocity / Radius;
+            return 0.5f * MathF.PI * DragCoefficient * Mass * velocity.Length() * -velocity / Radius;
         }
 
         protected Vector2 CalculateWeight()

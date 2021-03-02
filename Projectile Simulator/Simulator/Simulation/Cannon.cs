@@ -30,13 +30,13 @@ namespace Simulator.Simulation
         }
 
         [Browsable(false)]
-        [Category("Cannon")]
-        [DisplayName("Projection speed")]
+        [Category("Cannon")] 
         public float Speed { get; set; }
 
         [JsonIgnore]
         [Browsable(true)]
         [Category("Cannon")]
+        [DisplayName("Projection speed")]
         public float DisplaySpeed
         {
             get { return ScaleConverter.Scale(Speed, Scale, 1, true, 2); }

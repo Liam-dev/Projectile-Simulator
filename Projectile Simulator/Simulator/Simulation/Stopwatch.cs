@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Simulator.Simulation
 {
-    public class Stopwatch : SimulationObject
+    public class Stopwatch : SimulationObject, IPersistent
     {
         protected SpriteFont font;
 
@@ -16,6 +17,11 @@ namespace Simulator.Simulation
         public string FontName { get; set; }
 
         public TimeSpan Time { get; set; }
+
+        public Stopwatch()
+        {
+
+        }
 
         public Stopwatch(string name, Vector2 position, string textureName, string fontName) : base(name, position, textureName)
         {

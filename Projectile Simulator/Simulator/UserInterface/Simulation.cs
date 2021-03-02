@@ -171,10 +171,25 @@ namespace Simulator.UserInterface
             {
                 SelectObject(selectable);
             }
+
             if (@object is IPersistent)
             {
                 ObjectAdded?.Invoke(this, new EventArgs());
             }
+
+            // Cannon test
+            if (@object is Cannon cannon)
+            {
+                cannon.Fired += CannonFired;
+            }
+        }
+
+        public void RemoveObject(SimulationObject @object)
+        {
+            if (objects.Contains(@object))
+            {
+                objects.Remove(@object);
+            }           
         }
 
         public List<SimulationObject> GetObjects()

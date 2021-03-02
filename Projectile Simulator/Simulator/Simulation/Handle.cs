@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Simulator.Simulation
 {
@@ -12,6 +13,7 @@ namespace Simulator.Simulation
 
         protected float zoom;
 
+        [JsonIgnore]
         public override Rectangle BoundingBox
         {
             get
@@ -25,6 +27,11 @@ namespace Simulator.Simulation
                     return Rectangle.Empty;
                 }
             }
+        }
+
+        public Handle()
+        {
+
         }
 
         public Handle(string name, Vector2 position, string textureName) : base(name, position, textureName)

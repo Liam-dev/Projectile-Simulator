@@ -36,16 +36,16 @@ namespace Simulator.UserInterface
             if (value is Cannon)
             {
                 contextMenuStrip.Items.AddRange(new ToolStripItem[] {
-                fireCannonToolStripMenuItem });
+                fireCannonToolStripMenuItem,
+                toolStripSeparator2 });
             }
 
             // Simulation Object
             contextMenuStrip.Items.AddRange(new ToolStripItem[] {
-            toolStripSeparator1,
             cutToolStripMenuItem,
             copyToolStripMenuItem,
             pasteToolStripMenuItem,
-            toolStripSeparator2,
+            toolStripSeparator1,
             deleteToolStripMenuItem });
 
             // Stopwatch

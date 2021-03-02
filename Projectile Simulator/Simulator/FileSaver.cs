@@ -52,9 +52,9 @@ namespace Simulator
                 if (line.Length > 0)
                 {
                     Type dataType = Type.GetType(line);
-                    dynamic @object = JsonSerializer.Deserialize(reader.ReadLine(), dataType, options);
+                    T @object = (T)JsonSerializer.Deserialize(reader.ReadLine(), dataType, options);
                     objects.Add(@object);
-                }    
+                }
             }
 
             reader.Close();
