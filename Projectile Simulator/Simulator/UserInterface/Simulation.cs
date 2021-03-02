@@ -24,11 +24,13 @@ namespace Simulator.UserInterface
 
         protected MouseState lastMouseState;
 
-        protected ISelectable selectedObject;
+        public ISelectable SelectedObject { get; protected set; }
 
         public bool IsObjectSelected { get; private set; }
 
         public event EventHandler SelectedObjectChanged;
+
+        protected bool contextMenuOpen;
 
         public Camera Camera { get; set; }
 
@@ -310,7 +312,7 @@ namespace Simulator.UserInterface
             {
                 if (lastMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if (IsObjectSelected && selectedObject is IMovable movable && movable.Movable)
+                    if (IsObjectSelected && SelectedObject is IMovable movable && movable.Movable)
                     {
                         // Move object
 
@@ -375,28 +377,15 @@ namespace Simulator.UserInterface
 
         private void Simulation_LeftMouseButtonJustPressed(object sender, EventArgs e)
         {
-            // Object selection
-
-            if (IsObjectSelected)
+            if (!contextMenuOpen)
             {
-                if (!selectedObject.Intersects(Camera.GetSimulationPostion(MousePosition)))
-                {
-                    DeselectObject();
-                }
+                CheckSelectionIntersection();
             }
-
-            foreach (SimulationObject @object in objects)
+            else
             {
-                if (@object is ISelectable selectable)
-                {
-                    Vector2 mouseSimulationPosition = Camera.GetSimulationPostion(MousePosition);
-                    if (selectable.Intersects(mouseSimulationPosition))
-                    {
-                        SelectObject(selectable);
-                        break;
-                    }
-                }
+                contextMenuOpen = false;
             }
+            
         }
 
         private void Simulation_LeftMouseButtonJustReleased(object sender, EventArgs e)
@@ -414,16 +403,58 @@ namespace Simulator.UserInterface
 
         }
 
+        public object ContextMenuOpening()
+        {
+            contextMenuOpen = true;
+
+            if (CheckSelectionIntersection())
+            {
+                return SelectedObject;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected bool CheckSelectionIntersection()
+        {
+            // Object selection
+
+            if (IsObjectSelected)
+            {
+                if (!SelectedObject.Intersects(Camera.GetSimulationPostion(MousePosition)))
+                {
+                    DeselectObject();
+                }
+            }
+
+            foreach (SimulationObject @object in objects)
+            {
+                if (@object is ISelectable selectable && selectable.Selectable)
+                {
+                    Vector2 mouseSimulationPosition = Camera.GetSimulationPostion(MousePosition);
+                    if (selectable.Intersects(mouseSimulationPosition))
+                    {
+                        SelectObject(selectable);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public void SelectObject(ISelectable @object)
         {
-            if (@object != selectedObject)
+            if (@object != SelectedObject)
             {
                 DeselectObject();
 
                 @object.Selected = true;
-                selectedObject = @object;
+                SelectedObject = @object;
                 IsObjectSelected = true;
-                SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
+                SelectedObjectChanged?.Invoke(SelectedObject, new EventArgs());
             }   
         }
 
@@ -432,8 +463,8 @@ namespace Simulator.UserInterface
             if (IsObjectSelected)
             {
                 
-                selectedObject.Selected = false;
-                selectedObject = null;
+                SelectedObject.Selected = false;
+                SelectedObject = null;
                 IsObjectSelected = false;
                 SelectedObjectChanged?.Invoke(null, new EventArgs());
             }

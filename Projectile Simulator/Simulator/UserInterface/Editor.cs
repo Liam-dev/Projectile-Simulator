@@ -73,16 +73,23 @@ namespace Simulator.UserInterface
             objectsToLoad.Add(tapeMeasure.Start);
             objectsToLoad.Add(tapeMeasure.End);
 
+            objectsToLoad.Add(new Stopwatch("stopwatch", Vector2.Zero, "stopwatch", "SevenSegment"));
+
             if (!isTemplate)
             {
                 Filename = filename;
                 ChangeFormTitle();
-            }    
+            }
         }
 
         private void Editor_Load(object sender, EventArgs e)
         {
             inspector.SelectedObjectChanged += Inspector_SelectedObjectChanged;
+
+            // Right click context menu for simulation
+            simulationContextMenu.ButtonClicked += toolbar_ButtonClicked;
+            simulation.ContextMenuStrip = simulationContextMenu.contextMenuStrip;
+            simulationContextMenu.contextMenuStrip.Opening += ContextMenuStrip_Opening;
 
             simulation.ObjectAdded += Simulation_ObjectAdded;
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
@@ -110,6 +117,11 @@ namespace Simulator.UserInterface
                     simulation.Camera.Transform =  Matrix.CreateScale(camera.Transform.M11) * Matrix.CreateTranslation(camera.Transform.Translation) * Matrix.Identity;
                 }
             }
+        }
+
+        private void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            simulationContextMenu.SelectedObject = simulation.ContextMenuOpening();
         }
 
         private void Inspector_SelectedObjectChanged(object sender, EventArgs e)
@@ -175,6 +187,13 @@ namespace Simulator.UserInterface
 
                 case "ball":
                     simulation.FireAllCannons();
+                    break;
+
+                case "fireCannon":
+                    if (simulation.SelectedObject is Cannon cannon)
+                    {
+                        cannon.Fire();
+                    }
                     break;
 
                 case "newBox":
