@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
 using Simulator.Simulation;
+using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
@@ -17,10 +18,20 @@ namespace Simulator.Simulation
 
         [Browsable(true)]
         [DisplayName("Drag coefficient")]
+        // Dimensionless constant
         public float DragCoefficient { get; set; }
 
-        [Browsable(true)]
+        [Browsable(false)]
         public float Radius { get; set; }
+
+        [JsonIgnore]
+        [Browsable(true)]
+        [DisplayName("Radius")]
+        public float DisplayRadius
+        {
+            get { return ScaleConverter.Scale(Radius, Scale, 1, true, 2); }
+            set { Radius = ScaleConverter.InverseScale(value, Scale, 1); }
+        }
 
         [JsonIgnore]
         [Browsable(false)]
@@ -75,13 +86,12 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            spriteBatch.Draw(texture, new Rectangle(Position.ToPoint(), new Point((int)(2 * Radius))), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 2 * (int)Radius, 2 * (int)Radius), Color.White);
         }
 
         protected Vector2 CalulateDrag()
         {
-            //float area = texture.Height * texture.Width * MathF.PI * 0.25f;
-            return DragCoefficient * velocity.Length() * -velocity;
+            return 0.5f * DragCoefficient * velocity.Length() * -velocity / Radius;
         }
 
         protected Vector2 CalculateWeight()
