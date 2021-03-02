@@ -32,7 +32,7 @@ namespace Simulator.UserInterface
 
         public Camera Camera { get; set; }
 
-        public float Scale { get; set; }
+        public new float Scale { get; set; }
 
         public Color BackgroundColour { get; set; }
 

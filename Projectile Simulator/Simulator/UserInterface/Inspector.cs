@@ -16,6 +16,8 @@ namespace Simulator.UserInterface
 
         public object SelectedObject { get { return selectedObject; }  set { selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value; } }
 
+        public event EventHandler SelectedObjectChanged;
+
         public Inspector()
         {
             InitializeComponent();
@@ -37,6 +39,7 @@ namespace Simulator.UserInterface
         private void selectionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedObject = selectionBox.SelectedItem;
+            SelectedObjectChanged?.Invoke(SelectedObject, e);
         }
     }
 }

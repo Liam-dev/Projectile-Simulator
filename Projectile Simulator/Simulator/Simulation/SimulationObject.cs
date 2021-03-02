@@ -71,6 +71,14 @@ namespace Simulator.Simulation
                     return Vector2.Zero;
                 }
             }
+
+            set
+            {
+                if (texture != null)
+                {
+                    Position = value - (new Vector2(texture.Width, texture.Height) / 2);
+                }
+            }
         }
 
         [Browsable(false)]

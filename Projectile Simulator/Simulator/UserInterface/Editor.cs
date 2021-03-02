@@ -49,7 +49,7 @@ namespace Simulator.UserInterface
             Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
             objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
 
-            objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line"/*, simulation.Editor.Content.Load<SpriteFont>("Label")*/));
+            objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial"));
         }     
 
         /// <summary>
@@ -67,6 +67,12 @@ namespace Simulator.UserInterface
 
             objectsToLoad = FileSaver.ReadJson<object>(filename);
 
+            // TEMP Tape Measure
+            TapeMeasure tapeMeasure = new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial");
+            objectsToLoad.Add(tapeMeasure);
+            objectsToLoad.Add(tapeMeasure.Start);
+            objectsToLoad.Add(tapeMeasure.End);
+
             if (!isTemplate)
             {
                 Filename = filename;
@@ -76,6 +82,8 @@ namespace Simulator.UserInterface
 
         private void Editor_Load(object sender, EventArgs e)
         {
+            inspector.SelectedObjectChanged += Inspector_SelectedObjectChanged;
+
             simulation.ObjectAdded += Simulation_ObjectAdded;
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
             simulation.SimulationPaused += toolbar.Simulation_Paused;
@@ -102,6 +110,12 @@ namespace Simulator.UserInterface
                     simulation.Camera.Transform =  Matrix.CreateScale(camera.Transform.M11) * Matrix.CreateTranslation(camera.Transform.Translation) * Matrix.Identity;
                 }
             }
+        }
+
+        private void Inspector_SelectedObjectChanged(object sender, EventArgs e)
+        {
+            if (sender is ISelectable selectable)
+                simulation.SelectObject(selectable);
         }
 
         private void Simulation_ObjectAdded(object sender, EventArgs e)
