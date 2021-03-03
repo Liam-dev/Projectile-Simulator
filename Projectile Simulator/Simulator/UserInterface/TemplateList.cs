@@ -9,10 +9,19 @@ using System.Windows.Forms;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Control the lists simulation templates.
+    /// </summary>
     public partial class TemplateList : UserControl
     {
+        /// <summary>
+        /// Occurs when an item in the list is double clicked.
+        /// </summary>
         public event EventHandler ItemDoubleClicked;
 
+        /// <summary>
+        /// Gets the selected item in the list
+        /// </summary>
         public string SelectedItem { get { return (string)listBox.SelectedItem; } }
 
         public TemplateList()
@@ -22,6 +31,7 @@ namespace Simulator.UserInterface
 
         private void TemplateList_Load(object sender, EventArgs e)
         {
+            // If loaded into running application, display the built in simulation templates.
             if (!(Site != null && Site.DesignMode))
             {
                 string path = Directory.GetCurrentDirectory() + "/Content/Templates/";

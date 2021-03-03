@@ -9,6 +9,9 @@ using System.Threading;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Control that contains buttons that allow Editor to be opened in different ways.
+    /// </summary>
     public partial class StartPane : UserControl
     {
         public StartPane()
@@ -21,6 +24,7 @@ namespace Simulator.UserInterface
 
         }
 
+        // When new button is clicked, load the selected template simulation into Editor
         private void newButton_Click(object sender, EventArgs e)
         {
             if (templateList.SelectedItem != null)
@@ -31,15 +35,17 @@ namespace Simulator.UserInterface
             }
             else
             {
+                // No template selected
                 new Thread(() => new Editor().ShowDialog()).Start();
             }
-            
 
             Application.ExitThread();
         }
 
+        // When load button is clicked, open file dialogue to choose simulation to load into Editor
         private void loadButton_Click(object sender, EventArgs e)
         {
+            // Open OpenFileDialog for simulation files
             OpenFileDialog fileDialogue = new OpenFileDialog();
             fileDialogue.Title = "Open Simulation File";
             fileDialogue.DefaultExt = "sim";

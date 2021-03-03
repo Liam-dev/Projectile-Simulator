@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace Simulator.Converters
 {
+    /// <summary>
+    /// Converts Vector2 value to size.
+    /// </summary>
     static class VectorSizeConverter
     {
         public static SizeF VectorToSize(Vector2 value)

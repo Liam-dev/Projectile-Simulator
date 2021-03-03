@@ -9,10 +9,11 @@ using Simulator.Converters;
 namespace Simulator
 {
     /// <summary>
-    /// Static class used to save objects to a file
+    /// Static class used to serialize objects using JSON encoding and save to a file.
     /// </summary>
     public static class FileSaver
     {
+        // Custom converters for XNA Vector structures.
         private static JsonSerializerOptions options = new JsonSerializerOptions()
         {
             Converters =
@@ -22,6 +23,13 @@ namespace Simulator
             }
         };
 
+
+        /// <summary>
+        /// Writes a list of generic objects to a specified file path
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path">Path the save file to.</param>
+        /// <param name="objects"> List of objects to be saved.</param>
         public static void WriteJson<T>(string path, List<T> objects)
         {
             StreamWriter writer = new StreamWriter(path);
@@ -39,6 +47,12 @@ namespace Simulator
             writer.Close();
         }
 
+        /// <summary>
+        /// Reads a list of generic objects from a specified file path
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path">Path to file.</param>
+        /// <returns>List of deserialized generic objects</returns>
         public static List<T> ReadJson<T>(string path)
         { 
             StreamReader reader = new StreamReader(path);

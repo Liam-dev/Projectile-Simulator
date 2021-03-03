@@ -19,17 +19,23 @@ using Simulator.Converters;
 namespace Simulator.UserInterface
 {
     /// <summary>
-    /// Main editor form
+    /// Main application form for editing simulations.
     /// </summary>
     public partial class Editor : Form
     {
-        public delegate void SafeCallDelegate();
+        // Delegate used for thread-safe calling
+        private delegate void SafeCallDelegate();
 
-        public string Filename { get; protected set; }
-
+        // List of object to load into simulation when form is loaded
         private List<object> objectsToLoad;
 
+        // Object that is currently saved to clipboard
         private SimulationObject clipboardObject;
+
+        /// <summary>
+        /// Gets the filename of the file in the editor.
+        /// </summary>
+        public string Filename { get; protected set; }
 
         public Editor()
         {
@@ -40,6 +46,7 @@ namespace Simulator.UserInterface
 
             objectsToLoad = new List<object>();
 
+            // TEMPORARY
             // Test objects for mouse zoom testing
             objectsToLoad.Add(new Box("box", new Vector2(0, -64), "crate", 0.95f, new Vector2(64, 64)));
             objectsToLoad.Add(new Box("box", new Vector2(0, 0), "crate", 0.95f, new Vector2(64, 64)));
@@ -71,6 +78,7 @@ namespace Simulator.UserInterface
 
             objectsToLoad = FileSaver.ReadJson<object>(filename);
 
+            // TEMPORARY
             // TEMP Tape Measure
             TapeMeasure tapeMeasure = new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial");
             objectsToLoad.Add(tapeMeasure);
@@ -98,11 +106,11 @@ namespace Simulator.UserInterface
             simulation.ObjectAdded += Simulation_ObjectAdded;
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
             simulation.SimulationPaused += toolbar.Simulation_Paused;
-            simulation.SimulationUnPaused += toolbar.Simulation_UnPaused;
+            simulation.SimulationResumed += toolbar.Simulation_UnPaused;
 
             simulation.Paused = false;
 
-            // load objects
+            // Load objects into simulation
             foreach (object @object in objectsToLoad)
             {
                 if (@object is SimulationObject simulationObject)
@@ -111,6 +119,7 @@ namespace Simulator.UserInterface
                 }
                 else if (@object is Camera camera)
                 {
+                    // Load camera with correct transform matrix
                     simulation.Camera = camera;
                     simulation.Camera.Transform =  Matrix.CreateScale(camera.Transform.M11) * Matrix.CreateTranslation(camera.Transform.Translation) * Matrix.Identity;
                 }
@@ -138,8 +147,10 @@ namespace Simulator.UserInterface
             inspector.SelectedObject = sender;
         }
 
+        // When a button is clicked in the toolbar or context menu
         private void toolbar_ButtonClicked(object sender, EventArgs e)
         {
+            // Get tag of button
             string tag = string.Empty;
 
             if (sender is ToolStripButton button)
@@ -157,6 +168,7 @@ namespace Simulator.UserInterface
                 }
             }
 
+            // Get action to perform
             switch (tag)
             {
                 case "newFile":
@@ -197,7 +209,7 @@ namespace Simulator.UserInterface
                     JsonSerializerOptions options = new JsonSerializerOptions() { Converters = { new Vector2JsonConverter() } };
 
                     SimulationObject @object = (SimulationObject)JsonSerializer.Deserialize(JsonSerializer.Serialize(clipboardObject, clipboardObject.GetType(), options), clipboardObject.GetType(), options);
-                    @object.Position = simulation.Camera.GetSimulationPostion(Microsoft.Xna.Framework.Input.Mouse.GetState().Position.ToVector2());
+                    @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
                     simulation.AddObject(@object);
                     break;
 
@@ -238,15 +250,18 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Run on close
+        // Runs on closing of editor form
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
             simulation.Paused = true;
 
             if (Filename == null)
             {
+                // Unsaved file warning
+
                 switch (ShowUnsavedFileMessage())
                 {
+                    // Save file before closing
                     case DialogResult.Yes:
                         e.Cancel = true;
                         Thread thread = new Thread(() =>
@@ -259,16 +274,19 @@ namespace Simulator.UserInterface
                         thread.Start();
                         break;
 
-                    case DialogResult.No:
+                    // Close without saving
+                    case DialogResult.No:       
                         break;
 
-                    case DialogResult.Cancel:
+                    // Cancel
+                    case DialogResult.Cancel:        
                         e.Cancel = true;
                         break;
                 }
             }               
         }
 
+        // Closes Editor and opens new blank editor in new thread (does not save current file)
         private void NewFile()
         {
             // Open blank simulation
@@ -276,6 +294,7 @@ namespace Simulator.UserInterface
             new Thread(() => new Editor().ShowDialog()).Start();
         }
 
+        // Open open file dialogue in new thread (does not save current file)
         private void OpenFile()
         {
             // Open simulation
@@ -284,6 +303,7 @@ namespace Simulator.UserInterface
             thread.Start();
         }
 
+        // Saves current simulation to file in new thread
         private void SaveFile()
         {
             Thread thread = new Thread(Save);
@@ -291,6 +311,7 @@ namespace Simulator.UserInterface
             thread.Start();
         }
 
+        // Saves current simulation to new file in new thread
         private void SaveAs()
         {
             Thread thread = new Thread(() =>
@@ -302,6 +323,159 @@ namespace Simulator.UserInterface
             thread.Start();    
         }
 
+        // Writes simulation to file if already saved or shows dialogue for unnamed files
+        protected void Save()
+        {
+            if (Filename == null)
+            {
+                ShowSaveFileDialogue();
+                ChangeFormTitle();
+            }
+            else if (File.Exists(Filename))
+            {
+                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
+            }
+        }
+
+        // Saves file before performing another action
+        protected void SaveFilePerformAction(Action action)
+        {
+            // Unsaved file warning message
+
+            switch (ShowUnsavedFileMessage())
+            {
+                case DialogResult.Yes:
+
+                    // Save current simulation
+                    Thread saveThread = new Thread(() =>
+                    {
+                        // Save
+                        if (Filename == null || Filename == string.Empty)
+                        {
+                            if (ShowSaveFileDialogue())
+                            {
+                                ChangeFormTitle();
+
+                                // Perform action
+                                action();
+                            }
+                        }
+                        else if (File.Exists(Filename))
+                        {
+                            FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
+
+                            // Perform action
+                            action();
+                        }
+
+                    });
+
+                    saveThread.SetApartmentState(ApartmentState.STA);
+                    saveThread.Start();
+                    break;
+
+                case DialogResult.No:
+                    // Set dummy name to stop warning message
+                    Filename = string.Empty;
+
+                    // Perform action
+                    action();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // Thread-safe changing of Editor title
+        private void ChangeFormTitle()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SafeCallDelegate(ChangeFormTitle));
+            }
+            else
+            {
+                if (Filename != null)
+                {
+                    Text = Path.GetFileName(Filename) + " - Projectile Simulator";
+                }
+            }
+        }
+
+        // Thread-safe closing of Editor
+        private void CloseEditor()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new SafeCallDelegate(CloseEditor));
+            }
+            else
+            {
+                Close();
+            }
+        }
+
+        // Shows message warning box about unsaved file
+        protected DialogResult ShowUnsavedFileMessage()
+        {
+            string name = "Untitled Simulation";
+            
+            if (Filename != null && Filename != string.Empty)
+            {
+                name = Path.GetFileName(Filename);
+            }
+            string message = "Do you want to save your changes to \"" + name + "\" \n\n" +
+                             "If you click \"No\", your changes will be lost forever! (a long time!)";
+
+            return MessageBox.Show(message, "Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+        }
+
+        // Shows save file dialogue and saves simulation to file
+        protected bool ShowSaveFileDialogue()
+        {
+            SaveFileDialog fileDialogue = new SaveFileDialog();
+            fileDialogue.Title = "Save Simulation File";
+            fileDialogue.DefaultExt = "sim";
+            fileDialogue.AddExtension = true;
+            fileDialogue.CheckPathExists = true;
+            fileDialogue.Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*";
+
+            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            {
+                Filename = fileDialogue.FileName;
+                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // Shows open file dialogue and opens selected file in new thread and closes current Editor 
+        protected void ShowOpenFileDialogue()
+        {
+            OpenFileDialog fileDialogue = new OpenFileDialog();
+            fileDialogue.Title = "Open Simulation File";
+            fileDialogue.DefaultExt = "sim";
+            fileDialogue.Multiselect = false;
+            fileDialogue.CheckFileExists = true;
+            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
+
+            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            {
+                CloseEditor();
+                new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
+            }
+            else
+            {
+                // Allows saving after cancelled load
+                Filename = null;
+            }
+        }
+
+        // Takes a screenshot of the simulation window and saves it as a png image to a specified file
         protected void Screenshot()
         {
             Thread saveThread = new Thread(() =>
@@ -324,146 +498,10 @@ namespace Simulator.UserInterface
             });
 
             saveThread.SetApartmentState(ApartmentState.STA);
-            saveThread.Start();   
+            saveThread.Start();
         }
 
-        protected void Save()
-        {
-            if (Filename == null)
-            {
-                ShowSaveFileDialogue();
-                ChangeFormTitle();
-            }
-            else if (File.Exists(Filename))
-            {
-                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
-            }
-        }
-
-        protected void SaveFilePerformAction(Action action)
-        {
-            // Unsaved file warning message
-
-            switch (ShowUnsavedFileMessage())
-            {
-                case DialogResult.Yes:
-                    // Save current simulation
-                    Thread saveThread = new Thread(() =>
-                    {
-                        // Save
-                        if (Filename == null || Filename == string.Empty)
-                        {
-                            if (ShowSaveFileDialogue())
-                            {
-                                ChangeFormTitle();
-                                action();
-                            }
-                        }
-                        else if (File.Exists(Filename))
-                        {
-                            FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
-                            action();
-                        }
-
-                    });
-
-                    saveThread.SetApartmentState(ApartmentState.STA);
-                    saveThread.Start();
-                    break;
-
-                case DialogResult.No:
-                    // Set dummy name to stop warning message
-                    Filename = string.Empty;
-                    action();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void ChangeFormTitle()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new SafeCallDelegate(ChangeFormTitle));
-            }
-            else
-            {
-                if (Filename != null)
-                {
-                    Text = Path.GetFileName(Filename) + " - Projectile Simulator";
-                }
-            }
-        }
-
-        private void CloseEditor()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new SafeCallDelegate(CloseEditor));
-            }
-            else
-            {
-                Close();
-            }
-        }
-
-        protected DialogResult ShowUnsavedFileMessage()
-        {
-            string name = "Untitled Simulation";
-            
-            if (Filename != null && Filename != string.Empty)
-            {
-                name = Path.GetFileName(Filename);
-            }
-            string message = "Do you want to save your changes to \"" + name + "\" \n\n" +
-                             "If you click \"No\", your changes will be lost forever! (a long time!)";
-
-            return MessageBox.Show(message, "Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-        }
-
-        protected bool ShowSaveFileDialogue()
-        {
-            SaveFileDialog fileDialogue = new SaveFileDialog();
-            fileDialogue.Title = "Save Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.AddExtension = true;
-            fileDialogue.CheckPathExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*";
-
-            if (fileDialogue.ShowDialog() == DialogResult.OK)
-            {
-                Filename = fileDialogue.FileName;
-                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected void ShowOpenFileDialogue()
-        {
-            OpenFileDialog fileDialogue = new OpenFileDialog();
-            fileDialogue.Title = "Open Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.Multiselect = false;
-            fileDialogue.CheckFileExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
-
-            if (fileDialogue.ShowDialog() == DialogResult.OK)
-            {
-                CloseEditor();
-                new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
-            }
-            else
-            {
-                // Allows saving after cancelled load
-                Filename = null;
-            }
-        }
+        // Opens URL of web page in default browser 
         protected void OpenWebPage(string url)
         {
             var processStartInfo = new System.Diagnostics.ProcessStartInfo();
