@@ -11,21 +11,39 @@ using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// Base class for an object in a simulation.
+    /// </summary>
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class SimulationObject : ISelectable, IMovable
     {
-        public static float Scale;
-
+        // Texture of object
         protected Texture2D texture;
+
+        // Texture of selection border
         protected Texture2D borderTexture;
 
+        /// <summary>
+        /// Gets or sets the length scale the simulation is using to determine how many pixels represents one metre.
+        /// </summary>
+        public static float Scale { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the object.
+        /// </summary>
         [Browsable(true)]
         [Category("Object")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the position of the object.
+        /// </summary>
         [Browsable(false)]
         public Vector2 Position { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled position of the object. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [DisplayName("Position")]
@@ -36,9 +54,15 @@ namespace Simulator.Simulation
             set { Position = ScaleConverter.InverseScaleVector(value, Scale, 1); }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the objects texture.
+        /// </summary>
         [Browsable(false)]
         public string TextureName { get; set; }
 
+        /// <summary>
+        /// Gets the rectangular bounding box of the object.
+        /// </summary>
         [JsonIgnore]
         [Browsable(false)]
         public virtual Rectangle BoundingBox
@@ -56,6 +80,9 @@ namespace Simulator.Simulation
             }
         }
 
+        /// <summary>
+        /// Gets or sets the centre of the object.
+        /// </summary>
         [JsonIgnore]
         [Browsable(false)]
         public virtual Vector2 Centre
@@ -109,19 +136,34 @@ namespace Simulator.Simulation
             Movable = true;
         }
 
+        /// <summary>
+        /// Called when an object in loaded into a simulation.
+        /// </summary>
+        /// <param name="Editor">MonoGameServiceEditor</param>
         public virtual void OnLoad(MonoGameService Editor)
         {
+            // Load and apply texture
             SetTexture(TextureName, Editor.Content);
 
+            // Load border texture
             borderTexture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
             borderTexture.SetData(new[] { Color.White });
         }
 
+        /// <summary>
+        /// Updates the object over a certain timespan.
+        /// </summary>
+        /// <param name="delta">The time since the last update</param>
         public virtual void Update(TimeSpan delta)
         {
             
         }
 
+        /// <summary>
+        /// Draws the object to a spritebatch.
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw object to</param>
+        /// <param name="zoom">Simulation zoom level</param>
         public virtual void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, Position, Color.White);
@@ -132,7 +174,8 @@ namespace Simulator.Simulation
             }
         }
 
-        public void SetTexture(string textureName, ContentManager content)
+        // Sets the object's texture from a texture name
+        protected void SetTexture(string textureName, ContentManager content)
         {
             texture = content.Load<Texture2D>("Textures/" + textureName);
         }
@@ -147,6 +190,7 @@ namespace Simulator.Simulation
             Position += displacement;
         }     
 
+        // Draws a border outline around the object's bounding box
         protected void DrawBorder(SpriteBatch spriteBatch, float zoom)
         {
             // Border width
@@ -167,7 +211,7 @@ namespace Simulator.Simulation
                 new Rectangle(BoundingBox.Left, BoundingBox.Bottom, BoundingBox.Width + width, width)
             };
 
-
+            // Draw all sides
             foreach (Rectangle side in border)
             {
                 spriteBatch.Draw(borderTexture, destinationRectangle: side, color: Color.White);

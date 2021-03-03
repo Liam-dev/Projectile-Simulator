@@ -9,13 +9,23 @@ using System.Text.Json.Serialization;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A SimulationObject which can measure time in a simulation.
+    /// </summary>
     public class Stopwatch : SimulationObject, IPersistent
     {
+        // Font used for stopwatch display
         protected SpriteFont font;
 
+        /// <summary>
+        /// Gets or sets name of the stopwatch's font.
+        /// </summary>
         [Browsable(false)]
         public string FontName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the time stored in the stopwatch.
+        /// </summary>
         public TimeSpan Time { get; set; }
 
         public Stopwatch()

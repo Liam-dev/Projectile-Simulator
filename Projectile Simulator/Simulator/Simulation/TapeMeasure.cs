@@ -10,22 +10,40 @@ using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A SimulationObject used to measure distance in a simulation.
+    /// </summary>
     class TapeMeasure : SimulationObject, IPersistent
     {
+        // Font used for length display
         protected SpriteFont font;
 
+        /// <summary>
+        /// Gets or sets name of the tape measure's font.
+        /// </summary>
         [Browsable(false)]
         public string FontName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the start handle of the tape measure.
+        /// </summary>
         public Handle Start { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end handle of the tape measure.
+        /// </summary>
         public Handle End { get; set; }
 
+        // Position becomes position of start handle
         public new Vector2 Position
         {
             get { return Start.Position; }
             set { Start.Position = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the length of the tape measure.
+        /// </summary>
         [JsonIgnore]
         [Browsable(false)]
         public float Length
@@ -35,6 +53,9 @@ namespace Simulator.Simulation
             set { End.Centre = Start.Centre + Vector2.Normalize(Start.Centre - End.Centre) * value; }
         }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled length of the tape measure. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [Category("Measure")]
@@ -45,6 +66,9 @@ namespace Simulator.Simulation
             set { Length = ScaleConverter.InverseScale(value, Scale, 1); }
         }
 
+        /// <summary>
+        /// Gets or sets the thickness of the tape measure.
+        /// </summary>
         [Browsable(true)]
         public int Thickness { get; set; }
 
@@ -71,7 +95,7 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            // find angle (note negative y and negative for clockwise)
+            // Find angle (note negative y and negative angle for clockwise)
             float angle = -MathF.Atan2(-(End.Centre.Y - Start.Centre.Y), End.Centre.X - Start.Centre.X);
 
             // note power to scale

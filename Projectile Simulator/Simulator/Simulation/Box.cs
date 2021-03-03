@@ -11,11 +11,20 @@ using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A StaticObject which has rectangular axis-aligned dimensions.
+    /// </summary>
     public class Box : StaticObject
     {
+        /// <summary>
+        /// Gets or sets the dimensions of the box.
+        /// </summary>
         [Browsable(false)]
         public Vector2 Dimensions { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled linear dimensions of the box. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [Category("Box")]

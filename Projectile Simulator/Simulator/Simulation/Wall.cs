@@ -10,12 +10,21 @@ using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A Box with a scalable non-textured rectangular shape.
+    /// </summary>
     class Wall : Box, IScalable
     {
+        /// <summary>
+        /// Gets or sets the colour of the wall.
+        /// </summary>
         [Browsable(false)]
         [Category("Object")]
         public Color Colour { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed colour of the wall as a System.Drawing.Color. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [Category("Box")]
@@ -26,6 +35,9 @@ namespace Simulator.Simulation
             set { Colour = new Color(value.R, value.G, value.B, value.A); texture.SetData(new[] { Colour }); }
         }
 
+        /// <summary>
+        /// Gets or sets the displayed dimensions of the wall as a System.Drawing.SizeF. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [Category("Box")]

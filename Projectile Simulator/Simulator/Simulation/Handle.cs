@@ -7,11 +7,18 @@ using System.Text.Json.Serialization;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A SimulationObject that can be moved to manipulate other SimulationObjects.
+    /// </summary>
     public class Handle : SimulationObject
     {
-        public event EventHandler PositionChanged;
-
+        // The zoom of the simulation (used for drawing and selection)
         protected float zoom;
+
+        /// <summary>
+        /// Occurs when the position of the handle is changed.
+        /// </summary>
+        public event EventHandler PositionChanged;
 
         [JsonIgnore]
         public override Rectangle BoundingBox

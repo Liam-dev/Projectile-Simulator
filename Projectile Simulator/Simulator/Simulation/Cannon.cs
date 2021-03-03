@@ -9,16 +9,31 @@ using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A SimulationObject which is used to fire projectiles.
+    /// </summary>
     public class Cannon : SimulationObject, IPersistent
     {
+        /// <summary>
+        /// Occurs when the cannon is fired.
+        /// </summary>
         public event EventHandler<FiringArgs> Fired;
 
+        /// <summary>
+        /// Gets or sets the offset of firing position from position of cannon.
+        /// </summary>
         [Browsable(false)]
         public Vector2 FiringPosition { get; set; }
 
+        /// <summary>
+        /// Gets or sets the projectile angle of the cannon (in radians).
+        /// </summary>
         [Browsable(false)]
         public float ProjectionAngle { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed projectile angle of the object (in degrees). Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [Category("Cannon")]
@@ -29,10 +44,16 @@ namespace Simulator.Simulation
             set { ProjectionAngle = value * MathF.PI / 180; }
         }
 
+        /// <summary>
+        /// Gets or sets the projectile speed of the cannon.
+        /// </summary>
         [Browsable(false)]
         [Category("Cannon")] 
         public float Speed { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled projectile speed of the object. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [Category("Cannon")]
@@ -43,6 +64,9 @@ namespace Simulator.Simulation
             set { Speed = ScaleConverter.InverseScale(value, Scale, 1); }
         }
 
+        /// <summary>
+        /// Gets or sets the projectile that the cannon fires.
+        /// </summary>
         [Browsable(true)]
         [Category("Cannon")]
         public Projectile Projectile { get; set; }
@@ -61,6 +85,9 @@ namespace Simulator.Simulation
             FiringPosition = new Vector2(50, 50);
         }
 
+        /// <summary>
+        /// Fires the cannon's projectile from the cannon and its projection speed and projectile angle.
+        /// </summary>
         public void Fire()
         {
             Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
@@ -71,10 +98,19 @@ namespace Simulator.Simulation
         }
     }
 
+    /// <summary>
+    /// Event arguments for cannon firing.
+    /// </summary>
     public class FiringArgs : EventArgs
     {
+        /// <summary>
+        /// Gets the projectile that is fired.
+        /// </summary>
         public Projectile Projectile { get; protected set; }
 
+        /// <summary>
+        /// Gets the impulse to be applied the projectile.
+        /// </summary>
         public Vector2 Impulse { get; protected set; }
 
         public FiringArgs(Projectile projectile, Vector2 impulse)

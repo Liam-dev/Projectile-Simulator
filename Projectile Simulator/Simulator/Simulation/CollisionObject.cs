@@ -7,8 +7,14 @@ using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A SimulationObject which can collide with other objects.
+    /// </summary>
     public class CollisionObject : SimulationObject
     {
+        /// <summary>
+        /// Gets or sets the coefficient of restitution of the object
+        /// </summary>
         [Browsable(true)]
         [Category("Physics")]
         [DisplayName("Coefficient of restitution")]

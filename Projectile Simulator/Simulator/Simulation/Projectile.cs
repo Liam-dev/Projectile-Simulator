@@ -12,18 +12,31 @@ using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A PhysicsObject which is fired from a Cannon.
+    /// </summary>
     public class Projectile : PhysicsObject
     {
+        // Trajectory of projectile
         protected Trajectory trajectory;
 
+        /// <summary>
+        /// Gets or sets the drag coefficient of the projectile (quantity is dimensionless).
+        /// </summary>
         [Browsable(true)]
         [DisplayName("Drag coefficient")]
         // Dimensionless constant
         public float DragCoefficient { get; set; }
 
+        /// <summary>
+        /// Gets or sets the circular radius of the projectile
+        /// </summary>
         [Browsable(false)]
         public float Radius { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled radius of the object. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [DisplayName("Radius")]
@@ -32,6 +45,7 @@ namespace Simulator.Simulation
             get { return ScaleConverter.Scale(Radius, Scale, 1, true, 2); }
             set { Radius = ScaleConverter.InverseScale(value, Scale, 1); }
         }
+
 
         [JsonIgnore]
         [Browsable(false)]
@@ -63,11 +77,7 @@ namespace Simulator.Simulation
         {
             base.OnLoad(Editor);
 
-            //Radius = texture.Width / 2;
-
-            trajectory = new Trajectory(Position);
-
-            
+            trajectory = new Trajectory(Position);  
         }
 
         public override void Update(TimeSpan delta)

@@ -238,7 +238,7 @@ namespace Simulator.UserInterface
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
             {
-                @object.Draw(Editor.spriteBatch, Camera.GetZoom());              
+                @object.Draw(Editor.spriteBatch, Camera.Zoom);              
             }
 
             Editor.spriteBatch.End();
@@ -451,7 +451,7 @@ namespace Simulator.UserInterface
                             Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
 
                             movable.Moving = true;
-                            movable.Move(mouseMovement / Camera.GetZoom());
+                            movable.Move(mouseMovement / Camera.Zoom);
                         }
                         else
                         {
