@@ -12,12 +12,14 @@ namespace Simulator.Simulation
     /// <summary>
     /// A SimulationObject which is used to fire projectiles.
     /// </summary>
-    public class Cannon : SimulationObject, IPersistent
+    public class Cannon : SimulationObject, IPersistent, ITrigger
     {
         /// <summary>
         /// Occurs when the cannon is fired.
         /// </summary>
         public event EventHandler<FiringArgs> Fired;
+
+        public event EventHandler Triggered;
 
         /// <summary>
         /// Gets or sets the offset of firing position from position of cannon.
@@ -95,6 +97,7 @@ namespace Simulator.Simulation
             Vector2 impulse = projectile.Mass * Speed * new Vector2(MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 
             Fired?.Invoke(this, new FiringArgs(projectile, impulse));
+            Triggered?.Invoke(this, new EventArgs());
         }
     }
 

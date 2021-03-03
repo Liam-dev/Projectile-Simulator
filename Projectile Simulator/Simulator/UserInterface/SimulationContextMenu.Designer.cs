@@ -38,6 +38,9 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.fireCannonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.addStartTriggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addStopTriggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,16 +53,19 @@
             this.toolStripSeparator1,
             this.deleteToolStripMenuItem,
             this.toolStripSeparator2,
-            this.fireCannonToolStripMenuItem});
+            this.fireCannonToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.addStartTriggerToolStripMenuItem,
+            this.addStopTriggerToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(145, 126);
+            this.contextMenuStrip.Size = new System.Drawing.Size(185, 176);
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripMenuItem.Image")));
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
             this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.cutToolStripMenuItem.Tag = "cut";
             this.cutToolStripMenuItem.Text = "Cut";
             this.cutToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
@@ -69,7 +75,7 @@
             this.copyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripMenuItem.Image")));
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.copyToolStripMenuItem.Tag = "copy";
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
@@ -79,7 +85,7 @@
             this.pasteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripMenuItem.Image")));
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.pasteToolStripMenuItem.Tag = "paste";
             this.pasteToolStripMenuItem.Text = "Paste";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
@@ -87,14 +93,14 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem.Image")));
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.deleteToolStripMenuItem.Tag = "deleteObject";
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
@@ -102,16 +108,39 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(181, 6);
             // 
             // fireCannonToolStripMenuItem
             // 
             this.fireCannonToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("fireCannonToolStripMenuItem.Image")));
             this.fireCannonToolStripMenuItem.Name = "fireCannonToolStripMenuItem";
-            this.fireCannonToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.fireCannonToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.fireCannonToolStripMenuItem.Tag = "fireCannon";
             this.fireCannonToolStripMenuItem.Text = "Fire cannon";
             this.fireCannonToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
+            // 
+            // addStartTriggerToolStripMenuItem
+            // 
+            this.addStartTriggerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addStartTriggerToolStripMenuItem.Image")));
+            this.addStartTriggerToolStripMenuItem.Name = "addStartTriggerToolStripMenuItem";
+            this.addStartTriggerToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.addStartTriggerToolStripMenuItem.Tag = "addStartTrigger";
+            this.addStartTriggerToolStripMenuItem.Text = "Change start triggers";
+            this.addStartTriggerToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
+            // 
+            // addStopTriggerToolStripMenuItem
+            // 
+            this.addStopTriggerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addStopTriggerToolStripMenuItem.Image")));
+            this.addStopTriggerToolStripMenuItem.Name = "addStopTriggerToolStripMenuItem";
+            this.addStopTriggerToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.addStopTriggerToolStripMenuItem.Tag = "addStopTrigger";
+            this.addStopTriggerToolStripMenuItem.Text = "Change stop triggers";
+            this.addStopTriggerToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // SimulationContextMenu
             // 
@@ -135,5 +164,9 @@
         public System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem fireCannonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem addStartTriggerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addStopTriggerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addStopTriggersToolStripMenuItem;
     }
 }

@@ -17,6 +17,9 @@ namespace Simulator.Simulation
         // Font used for stopwatch display
         protected SpriteFont font;
 
+        // Records if stopwatch is advancing
+        protected bool running;
+
         /// <summary>
         /// Gets or sets name of the stopwatch's font.
         /// </summary>
@@ -26,7 +29,12 @@ namespace Simulator.Simulation
         /// <summary>
         /// Gets or sets the time stored in the stopwatch.
         /// </summary>
-        public TimeSpan Time { get; set; }
+        public TimeSpan Timer { get; set; }
+
+        /// <summary>
+        /// Gets or sets triggers for the stopwatch.
+        /// </summary>
+        public Dictionary<ITrigger, StopwatchInput> Triggers { get; set; }
 
         public Stopwatch()
         {
@@ -36,9 +44,12 @@ namespace Simulator.Simulation
         public Stopwatch(string name, Vector2 position, string textureName, string fontName) : base(name, position, textureName)
         {
             FontName = fontName;
+
+            Triggers = new Dictionary<ITrigger, StopwatchInput>();
+
             Selectable = true;
             Movable = true;
-            Time = TimeSpan.FromMilliseconds(3141);
+            Timer = TimeSpan.FromMilliseconds(3141);
         }
 
         public override void OnLoad(MonoGameService Editor)
@@ -48,15 +59,105 @@ namespace Simulator.Simulation
             font = Editor.Content.Load<SpriteFont>("Fonts/" + FontName);
         }
 
+        public override void Update(TimeSpan delta)
+        {
+            if (running)
+            {
+                // Add the update frame time to timer
+                Timer += delta;
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, Position, Color.White);
-            spriteBatch.DrawString(font, Time.ToString(@"ss\.fff"), Position + new Vector2(24, 8), Color.Black);
+            spriteBatch.DrawString(font, Timer.ToString(@"ss\.ff"), Position + new Vector2(24, 8), Color.Black);
 
             if (Selected)
             {
                 DrawBorder(spriteBatch, zoom);
             }
+        }
+
+        /// <summary>
+        /// Starts the stopwatches timer.
+        /// </summary>
+        public void TimerStart()
+        {
+            running = true;
+            Timer = TimeSpan.Zero;
+        }
+
+        /// <summary>
+        /// Stops the stopwatches timer.
+        /// </summary>
+        public void TimerStop()
+        {
+            running = false;
+        }
+
+        public enum StopwatchInput
+        {
+            Start,
+            Stop
+        }
+
+        /// <summary>
+        /// Adds a trigger to the stopwatch on a certain input.
+        /// </summary>
+        /// <param name="trigger">The trigger to add</param>
+        /// <param name="input">The input to add the trigger to</param>
+        public void AddTrigger(ITrigger trigger, StopwatchInput input)
+        {
+            if (Triggers.ContainsKey(trigger))
+            {
+                RemoveTrigger(trigger, input);
+            }
+
+            Triggers.Add(trigger, input);
+
+            switch (input)
+            {
+                case StopwatchInput.Start:
+                    trigger.Triggered += StartTrigger_Triggered;
+                    break;
+
+                case StopwatchInput.Stop:
+                    trigger.Triggered += StopTrigger_Triggered;
+                    break;
+            }
+            
+        }
+
+        /// <summary>
+        /// Removes a trigger to the stopwatch on a certain input.
+        /// </summary>
+        /// <param name="trigger">The trigger to remove</param>
+        /// <param name="input">The input to remove the trigger from</param>
+        public void RemoveTrigger(ITrigger trigger, StopwatchInput input)
+        {
+            Triggers.Remove(trigger);
+
+            switch (input)
+            {
+                case StopwatchInput.Start:
+                    trigger.Triggered -= StartTrigger_Triggered;
+                    break;
+
+                case StopwatchInput.Stop:
+                    trigger.Triggered -= StopTrigger_Triggered;
+                    break;
+            }
+        }
+
+        private void StartTrigger_Triggered(object sender, EventArgs e)
+        {
+            TimerStart();
+        }
+
+        private void StopTrigger_Triggered(object sender, EventArgs e)
+        {
+            TimerStop();
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace Simulator.Simulation
 {
-    interface ISelectable
+    public interface ISelectable
     {
         /// <summary>
         /// Gets or sets whether the object is currently selected.

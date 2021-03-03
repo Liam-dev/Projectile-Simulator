@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
 using System.Text.Json;
 using Simulator.Converters;
+using System.Linq;
 
 namespace Simulator.UserInterface
 {
@@ -242,6 +243,14 @@ namespace Simulator.UserInterface
                 case "pause":
                     simulation.Paused = true;
                     toolbar.SimulationPaused = true;
+                    break;
+
+                case "addStartTrigger":
+                    AddTriggerToStopwatch(simulation.SelectedObject, Stopwatch.StopwatchInput.Start);
+                    break;
+
+                case "addStopTrigger":
+                    AddTriggerToStopwatch(simulation.SelectedObject, Stopwatch.StopwatchInput.Stop);
                     break;
 
                 case "about":
@@ -499,6 +508,43 @@ namespace Simulator.UserInterface
 
             saveThread.SetApartmentState(ApartmentState.STA);
             saveThread.Start();
+        }
+
+        protected void AddTriggerToStopwatch(ISelectable selectable, Stopwatch.StopwatchInput input)
+        {
+            if (selectable is Stopwatch stopwatch)
+            {
+                List<object> allTriggers = new List<object>();
+                foreach (SimulationObject simulationObject in simulation.GetObjects())
+                {
+                    if (simulationObject is ITrigger)
+                    {
+                        allTriggers.Add(simulationObject);
+                    }
+                }
+
+                ITrigger[] currentTriggers = new ITrigger[stopwatch.Triggers.Keys.Count];
+                stopwatch.Triggers.Keys.CopyTo(currentTriggers, 0);
+
+                string title = "Select " + input.ToString().ToLower() +" triggers for " + stopwatch.Name;
+
+               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(allTriggers, new List<object>(currentTriggers), title, "Update triggers");
+
+                if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
+                {
+                    // Add new triggers
+                    foreach (ITrigger trigger in objectSelectionBox.CheckedObjects)
+                    {
+                        stopwatch.AddTrigger(trigger, input);
+                    }
+
+                    // Remove old triggers
+                    foreach (ITrigger trigger in allTriggers.Except(objectSelectionBox.CheckedObjects))
+                    {
+                        stopwatch.RemoveTrigger(trigger, input);
+                    }
+                }
+            }   
         }
 
         // Opens URL of web page in default browser 

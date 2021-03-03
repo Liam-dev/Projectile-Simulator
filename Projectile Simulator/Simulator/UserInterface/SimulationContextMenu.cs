@@ -50,6 +50,15 @@ namespace Simulator.UserInterface
                 toolStripSeparator2 });
             }
 
+            // Stopwatch
+            if (value is Stopwatch)
+            {
+                contextMenuStrip.Items.AddRange(new ToolStripItem[] {
+                addStartTriggerToolStripMenuItem,
+                addStopTriggerToolStripMenuItem,
+                toolStripSeparator3 });
+            }
+
             // Simulation Object
             contextMenuStrip.Items.AddRange(new ToolStripItem[] {
             cutToolStripMenuItem,
@@ -57,9 +66,6 @@ namespace Simulator.UserInterface
             pasteToolStripMenuItem,
             toolStripSeparator1,
             deleteToolStripMenuItem });
-
-            // Stopwatch
-
         }
     }
 }
