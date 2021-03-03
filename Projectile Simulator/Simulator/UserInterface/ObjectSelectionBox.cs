@@ -19,6 +19,8 @@ namespace Simulator.UserInterface
 
             CheckedObjects = checkedObjects;
 
+            checkedListBox.FormattingEnabled = true;
+
             // Adds already check objects
             checkedListBox.Items.AddRange(CheckedObjects.ToArray());
 

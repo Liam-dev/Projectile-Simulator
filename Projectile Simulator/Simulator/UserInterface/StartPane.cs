@@ -53,7 +53,7 @@ namespace Simulator.UserInterface
             fileDialogue.CheckFileExists = true;
             fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
 
-            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            if (fileDialogue.ShowDialog(this) == DialogResult.OK)
             {
                 new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
                 Application.ExitThread();
