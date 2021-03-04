@@ -5,7 +5,7 @@ using MonoGame.Forms.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Simulator.Converters;
 using System.ComponentModel;
 

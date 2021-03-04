@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Simulator.Simulation
 {
@@ -34,7 +34,30 @@ namespace Simulator.Simulation
         /// <summary>
         /// Gets or sets triggers for the stopwatch.
         /// </summary>
-        public Dictionary<ITrigger, StopwatchInput> Triggers { get; set; }
+        //[JsonIgnore]
+        public List<(ITrigger, StopwatchInput)> Triggers { get; set; }
+
+        /*
+        public List<(string, int)> SaveTriggers
+        {
+            get
+            {
+                List<(string, int)> result = new List<(string, int)>();
+                foreach (var pair in Triggers)
+                {
+                    result.Add((pair.Key.ToString(), (int)pair.Value));
+                }
+                return result;
+            }
+            set
+            {
+                foreach(var pair in value)
+                {
+                    Triggers.Add()
+                }
+            }
+        }
+        */
 
         public Stopwatch()
         {
@@ -45,7 +68,7 @@ namespace Simulator.Simulation
         {
             FontName = fontName;
 
-            Triggers = new Dictionary<ITrigger, StopwatchInput>();
+            Triggers = new List<(ITrigger, StopwatchInput)>();
 
             Selectable = true;
             Movable = true;
@@ -57,6 +80,21 @@ namespace Simulator.Simulation
             base.OnLoad(Editor);
 
             font = Editor.Content.Load<SpriteFont>("Fonts/" + FontName);
+
+            // Add triggers
+            foreach (var trigger in Triggers)
+            {
+                switch (trigger.Item2)
+                {
+                    case StopwatchInput.Start:
+                        trigger.Item1.Triggered += StartTrigger_Triggered;
+                        break;
+
+                    case StopwatchInput.Stop:
+                        trigger.Item1.Triggered += StopTrigger_Triggered;
+                        break;
+                };
+            }
         }
 
         public override void Update(TimeSpan delta)
@@ -109,12 +147,9 @@ namespace Simulator.Simulation
         /// <param name="input">The input to add the trigger to</param>
         public void AddTrigger(ITrigger trigger, StopwatchInput input)
         {
-            if (Triggers.ContainsKey(trigger))
-            {
-                RemoveTrigger(trigger, input);
-            }
+            RemoveTrigger(trigger, input);
 
-            Triggers.Add(trigger, input);
+            Triggers.Add((trigger, input));
 
             switch (input)
             {
@@ -136,7 +171,8 @@ namespace Simulator.Simulation
         /// <param name="input">The input to remove the trigger from</param>
         public void RemoveTrigger(ITrigger trigger, StopwatchInput input)
         {
-            Triggers.Remove(trigger);
+            Triggers.Remove((trigger,StopwatchInput.Start));
+            Triggers.Remove((trigger, StopwatchInput.Stop));
 
             switch (input)
             {

@@ -4,9 +4,9 @@ using MonoGame.Forms.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.ComponentModel;
 using Simulator.Converters;
+using Newtonsoft.Json;
 
 namespace Simulator.Simulation
 {

@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Simulator.Simulation;
 using System.Text.Json;
+using Newtonsoft.Json;
 using Simulator.Converters;
 using System.Linq;
 
@@ -207,9 +208,13 @@ namespace Simulator.UserInterface
                     break;
 
                 case "paste":
+                    /*
                     JsonSerializerOptions options = new JsonSerializerOptions() { Converters = { new Vector2JsonConverter() } };
-
                     SimulationObject @object = (SimulationObject)JsonSerializer.Deserialize(JsonSerializer.Serialize(clipboardObject, clipboardObject.GetType(), options), clipboardObject.GetType(), options);
+                    */
+                    JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
+                    string data = JsonConvert.SerializeObject(clipboardObject, Formatting.Indented, settings);
+                    SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
                     @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
                     simulation.AddObject(@object);
                     break;
@@ -523,12 +528,18 @@ namespace Simulator.UserInterface
                     }
                 }
 
-                ITrigger[] currentTriggers = new ITrigger[stopwatch.Triggers.Keys.Count];
-                stopwatch.Triggers.Keys.CopyTo(currentTriggers, 0);
+                List<object> currentTriggers = new List<object>();
+                foreach (var trigger in stopwatch.Triggers)
+                {
+                    if (trigger.Item2 == input)
+                    {
+                        currentTriggers.Add(trigger.Item1);
+                    }
+                }
 
                 string title = "Select " + input.ToString().ToLower() +" triggers for " + stopwatch.Name;
 
-               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(allTriggers, new List<object>(currentTriggers), title, "Update triggers");
+               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(allTriggers, currentTriggers, title, "Update triggers");
 
                 if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
                 {

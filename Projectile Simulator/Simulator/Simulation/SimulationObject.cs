@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -14,7 +14,7 @@ namespace Simulator.Simulation
     /// <summary>
     /// Base class for an object in a simulation.
     /// </summary>
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    //[TypeConverter(typeof(ExpandableObjectConverter))]
     public class SimulationObject : ISelectable, IMovable
     {
         // Texture of object
@@ -136,10 +136,12 @@ namespace Simulator.Simulation
             Movable = true;
         }
 
+        /*
         public override string ToString()
         {
             return Name;
         }
+        */
 
         /// <summary>
         /// Called when an object in loaded into a simulation.
