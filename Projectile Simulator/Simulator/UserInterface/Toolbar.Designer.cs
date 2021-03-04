@@ -48,6 +48,7 @@
             this.newCannonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTapeMeasureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newDetectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.zoomInToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.zoomOutToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -250,7 +251,8 @@
             this.newBoxToolStripMenuItem,
             this.newCannonToolStripMenuItem,
             this.newTapeMeasureToolStripMenuItem,
-            this.newStopwatchToolStripMenuItem});
+            this.newStopwatchToolStripMenuItem,
+            this.newDetectorToolStripMenuItem});
             this.newObjectToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newObjectToolStripButton.Image")));
             this.newObjectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newObjectToolStripButton.Name = "newObjectToolStripButton";
@@ -292,6 +294,15 @@
             this.newStopwatchToolStripMenuItem.Tag = "newStopwatch";
             this.newStopwatchToolStripMenuItem.Text = "New stopwatch";
             this.newStopwatchToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
+            // 
+            // newDetectorToolStripMenuItem
+            // 
+            this.newDetectorToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newDetectorToolStripMenuItem.Image")));
+            this.newDetectorToolStripMenuItem.Name = "newDetectorToolStripMenuItem";
+            this.newDetectorToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.newDetectorToolStripMenuItem.Tag = "newDetector";
+            this.newDetectorToolStripMenuItem.Text = "New detector";
+            this.newDetectorToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // toolStripSeparator8
             // 
@@ -691,5 +702,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripMenuItem newTapeMeasureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newStopwatchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newDetectorToolStripMenuItem;
     }
 }

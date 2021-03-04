@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using Simulator.Converters;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Simulator.Simulation
@@ -15,13 +17,28 @@ namespace Simulator.Simulation
             Vertical
         }
 
+        [Browsable(false)]
         public bool Detecting{ get; set; }
 
+        [Browsable(true)]
+        [Category("Detector")]
         public DetectionDirection Direction { get; set; }
 
+        [Browsable(false)]
         public float Separation { get; set; }
 
         [JsonIgnore]
+        [Browsable(true)]
+        [DisplayName("Separation")]
+        [Category("Detector")]
+        public float DisplaySeparation
+        {
+            get { return ScaleConverter.Scale(Separation, Scale, 1, false, 0); }
+            set { Separation = ScaleConverter.InverseScale(value, Scale, 1); }
+        }     
+
+        [JsonIgnore]
+        [Browsable(false)]
         public Rectangle DetectionArea
         {
             get
@@ -75,9 +92,9 @@ namespace Simulator.Simulation
 
         }
 
-        public Detector(string name, Vector2 position, string textureName) : base(name, position, textureName)
+        public Detector(string name, Vector2 position, string textureName, float separation) : base(name, position, textureName)
         {
-
+            Separation = separation;
         }
 
         public void OnObjectEntered(SimulationObject @object)

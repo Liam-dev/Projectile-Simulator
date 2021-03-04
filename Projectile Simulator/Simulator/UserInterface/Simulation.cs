@@ -242,7 +242,6 @@ namespace Simulator.UserInterface
             }
 
             Editor.spriteBatch.End();
-
         }
 
         /// <summary>

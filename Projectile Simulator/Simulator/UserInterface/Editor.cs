@@ -83,8 +83,6 @@ namespace Simulator.UserInterface
 
             objectsToLoad = FileSaver.ReadJson<object>(filename);
 
-            objectsToLoad.Add(new Detector("detector", Vector2.Zero, "detector"));
-
             if (!isTemplate)
             {
                 Filename = filename;
@@ -256,6 +254,7 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newDetector":
+                    simulation.AddObject(new Detector("detector", simulation.ScreenCentre, "detector", 150));
                     break;
 
                 case "play":
