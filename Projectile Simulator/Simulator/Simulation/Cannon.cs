@@ -14,6 +14,14 @@ namespace Simulator.Simulation
     /// </summary>
     public class Cannon : SimulationObject, IPersistent, ITrigger
     {
+        public enum FacingDirection
+        {
+            Right = 1,
+            Left = -1
+        }
+
+        public FacingDirection Facing { get; set; }
+
         /// <summary>
         /// Occurs when the cannon is fired.
         /// </summary>
@@ -82,6 +90,7 @@ namespace Simulator.Simulation
         {
             Projectile = projectile;
 
+            Facing = FacingDirection.Right;
             ProjectionAngle = 0.25f * MathF.PI;
             Speed = 1000;
             FiringPosition = new Vector2(50, 50);
@@ -94,10 +103,29 @@ namespace Simulator.Simulation
         {
             Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
 
-            Vector2 impulse = projectile.Mass * Speed * new Vector2(MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
+            // Takes into account facing direction
+            Vector2 impulse = projectile.Mass * Speed * new Vector2((int)Facing * MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 
             Fired?.Invoke(this, new FiringArgs(projectile, impulse));
             Triggered?.Invoke(this, new EventArgs());
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
+        {
+            // Flip if facing left
+            if (Facing == FacingDirection.Left)
+            {
+                spriteBatch.Draw(texture, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0.15f);
+            }
+            else
+            {
+                spriteBatch.Draw(texture, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.15f);
+            }
+            
+            if (Selected)
+            {
+                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
+            }
         }
     }
 

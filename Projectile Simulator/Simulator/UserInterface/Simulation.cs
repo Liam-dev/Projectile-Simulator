@@ -233,7 +233,7 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform);
+            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform, sortMode: SpriteSortMode.FrontToBack);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
