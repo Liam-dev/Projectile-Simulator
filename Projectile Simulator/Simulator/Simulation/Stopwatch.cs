@@ -34,30 +34,7 @@ namespace Simulator.Simulation
         /// <summary>
         /// Gets or sets triggers for the stopwatch.
         /// </summary>
-        //[JsonIgnore]
         public List<(ITrigger, StopwatchInput)> Triggers { get; set; }
-
-        /*
-        public List<(string, int)> SaveTriggers
-        {
-            get
-            {
-                List<(string, int)> result = new List<(string, int)>();
-                foreach (var pair in Triggers)
-                {
-                    result.Add((pair.Key.ToString(), (int)pair.Value));
-                }
-                return result;
-            }
-            set
-            {
-                foreach(var pair in value)
-                {
-                    Triggers.Add()
-                }
-            }
-        }
-        */
 
         public Stopwatch()
         {
@@ -72,7 +49,6 @@ namespace Simulator.Simulation
 
             Selectable = true;
             Movable = true;
-            Timer = TimeSpan.FromMilliseconds(3141);
         }
 
         public override void OnLoad(MonoGameService Editor)
@@ -113,7 +89,7 @@ namespace Simulator.Simulation
 
             if (Selected)
             {
-                DrawBorder(spriteBatch, zoom);
+                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
         }
 

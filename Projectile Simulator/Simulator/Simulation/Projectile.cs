@@ -70,6 +70,7 @@ namespace Simulator.Simulation
         {
             Radius = radius;
             DragCoefficient = dragCoefficient;
+            Selectable = false;
             Movable = false;
         }
 

@@ -38,8 +38,18 @@ namespace Simulator
         {
 
             StreamWriter writer = new StreamWriter(path);
-            
-            string data = JsonConvert.SerializeObject(objects, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
+
+            List<T> persistentObjects = new List<T>();
+
+            foreach (T @object in objects)
+            {
+                if (@object is IPersistent)
+                {
+                    persistentObjects.Add(@object);
+                }        
+            }
+
+            string data = JsonConvert.SerializeObject(persistentObjects, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
             writer.Write(data);
             
             /*

@@ -48,6 +48,7 @@ namespace Simulator.UserInterface
 
             objectsToLoad = new List<object>();
 
+            /*
             // TEMPORARY
             // Test objects for mouse zoom testing
             objectsToLoad.Add(new Box("box", new Vector2(0, -64), "crate", 0.95f, new Vector2(64, 64)));
@@ -63,12 +64,14 @@ namespace Simulator.UserInterface
             objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
 
             objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial"));
-        }     
+            */
+        }
 
         /// <summary>
         /// Open Editor with  file
         /// </summary>
         /// <param name="filename"></param>
+        /// <param name="isTemplate"></param>
         public Editor(string filename, bool isTemplate = false)
         {
             InitializeComponent();
@@ -80,14 +83,7 @@ namespace Simulator.UserInterface
 
             objectsToLoad = FileSaver.ReadJson<object>(filename);
 
-            // TEMPORARY
-            // TEMP Tape Measure
-            TapeMeasure tapeMeasure = new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial");
-            objectsToLoad.Add(tapeMeasure);
-            objectsToLoad.Add(tapeMeasure.Start);
-            objectsToLoad.Add(tapeMeasure.End);
-
-            objectsToLoad.Add(new Stopwatch("stopwatch", Vector2.Zero, "stopwatch", "SevenSegment"));
+            objectsToLoad.Add(new Detector("detector", Vector2.Zero, "detector"));
 
             if (!isTemplate)
             {
@@ -121,9 +117,8 @@ namespace Simulator.UserInterface
                 }
                 else if (@object is Camera camera)
                 {
-                    // Load camera with correct transform matrix
+                    // Load camera
                     simulation.Camera = camera;
-                    simulation.Camera.Transform =  Matrix.CreateScale(camera.Transform.M11) * Matrix.CreateTranslation(camera.Transform.Translation) * Matrix.Identity;
                 }
             }
         }
@@ -238,6 +233,29 @@ namespace Simulator.UserInterface
 
                 case "newBox":
                     simulation.AddObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
+                    break;
+
+                case "newWall":
+
+                    break;
+
+                case "newCannon":
+                    Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
+                    simulation.AddObject(new Cannon("cannon", simulation.ScreenCentre, "cannon", projectile));
+                    break;
+
+                case "newTapeMeasure":
+                    TapeMeasure tapeMeasure = new TapeMeasure("tape measure", simulation.ScreenCentre, simulation.ScreenCentre + new Vector2(100, 0), 8, "line", "Arial");
+                    simulation.AddObject(tapeMeasure);
+                    simulation.AddObject(tapeMeasure.Start);
+                    simulation.AddObject(tapeMeasure.End);
+                    break;
+
+                case "newStopwatch":
+                    simulation.AddObject(new Stopwatch("stopwatch", simulation.ScreenCentre, "stopwatch", "SevenSegment"));
+                    break;
+
+                case "newDetector":
                     break;
 
                 case "play":

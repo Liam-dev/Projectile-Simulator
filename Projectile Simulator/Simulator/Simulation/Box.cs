@@ -66,7 +66,7 @@ namespace Simulator.Simulation
 
             if (Selected)
             {
-                DrawBorder(spriteBatch, zoom);
+                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }  
         }
     }

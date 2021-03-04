@@ -26,6 +26,9 @@ namespace Simulator.UserInterface
         // Tolerance to how long a frame should be before the previous frame time is used
         protected float timeTolerance = 2f;
 
+        // Update frame time multiplier
+        protected float speed = 1.4f;
+
         // State of Mouse in the previous update frame
         protected MouseState lastMouseState;
 
@@ -168,11 +171,8 @@ namespace Simulator.UserInterface
             BackgroundColour = Color.SkyBlue;
 
             // If there is no camera, create a default one
-            if (Camera == null)
-            {
-                Camera = new Camera(1.1f, 8, -20);
-            }
-            
+            Camera = new Camera(1.1f, 8, -20);
+
             // Assign initial mouse state
             lastMouseState = Mouse.GetState();
 
@@ -202,13 +202,13 @@ namespace Simulator.UserInterface
                 // Check for a percentage discrepancy in the elapsed game time to allow for lag (such as from window adjustments)
                 if (previousDelta == TimeSpan.Zero || gameTime.ElapsedGameTime.Duration() - previousDelta.Duration() < timeTolerance * previousDelta.Duration())
                 {
-                    Simulate(gameTime.ElapsedGameTime);
+                    Simulate(speed * gameTime.ElapsedGameTime);
                     previousDelta = gameTime.ElapsedGameTime;
                 }
                 else
                 {
                     // If there is lag, then use elapsed time from previous update
-                    Simulate(previousDelta);
+                    Simulate(speed * previousDelta);
                 }
             }
         }
@@ -713,6 +713,21 @@ namespace Simulator.UserInterface
                             {
                                 ResolveProjectileToBoxCollision(a, c, nearestPoint, overlap);
                             }                           
+                        }
+                        else if (j is Detector d)
+                        {
+                            Vector2 nearestPoint = new Vector2()
+                            {
+                                X = MathF.Max(d.DetectionArea.Left, MathF.Min(a.Centre.X, d.DetectionArea.Right)),
+                                Y = MathF.Max(d.DetectionArea.Top, MathF.Min(a.Centre.Y, d.DetectionArea.Bottom))
+                            };
+
+                            float overlap = a.Radius - (nearestPoint - a.Centre).Length();
+
+                            if (overlap > 0)
+                            {
+                                d.OnObjectEntered(a);
+                            }
                         }
                     }
                 }

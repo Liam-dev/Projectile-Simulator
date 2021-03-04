@@ -133,6 +133,7 @@ namespace Simulator.Simulation
             Name = name;
             Position = position;
             TextureName = textureName;
+            Selectable = true;
             Movable = true;
         }
 
@@ -177,7 +178,7 @@ namespace Simulator.Simulation
 
             if (Selected)
             {
-                DrawBorder(spriteBatch, zoom);
+                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
         }
 
@@ -198,24 +199,24 @@ namespace Simulator.Simulation
         }     
 
         // Draws a border outline around the object's bounding box
-        protected void DrawBorder(SpriteBatch spriteBatch, float zoom)
+        protected void DrawBorder(SpriteBatch spriteBatch, float zoom, Rectangle rectangle, int width)
         {
             // Border width
-            int width = (int)MathF.Max(1, MathF.Round(4 / MathF.Pow(zoom, 0.5f), 0f));
+            int _width = (int)MathF.Max(1, MathF.Round(width / MathF.Pow(zoom, 0.5f), 0f));
 
             Rectangle[] border = new Rectangle[]
             {
                 // Left
-                new Rectangle(BoundingBox.Left - width, BoundingBox.Top - width, width, BoundingBox.Height + (2 * width)),
+                new Rectangle(rectangle.Left - _width, rectangle.Top - _width, _width, rectangle.Height + (2 * _width)),
 
                 // Right
-                new Rectangle(BoundingBox.Right, BoundingBox.Top, width, BoundingBox.Height + width),
+                new Rectangle(rectangle.Right, rectangle.Top, _width, rectangle.Height + _width),
 
                 // Top
-                new Rectangle(BoundingBox.Left - width, BoundingBox.Top - width, BoundingBox.Width + (2 * width), width),
+                new Rectangle(rectangle.Left - _width, rectangle.Top - _width, rectangle.Width + (2 * _width), _width),
 
                 // Bottom
-                new Rectangle(BoundingBox.Left, BoundingBox.Bottom, BoundingBox.Width + width, width)
+                new Rectangle(rectangle.Left, rectangle.Bottom, rectangle.Width + _width, _width)
             };
 
             // Draw all sides
