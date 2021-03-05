@@ -17,6 +17,9 @@ namespace Simulator.UserInterface
         // List of all simulation objects to be updated and drawn
         protected List<SimulationObject> objects;
 
+        // Loaded simulation state saved for OnLoad
+        protected SimulationState loadedState;
+
         // Determines if simulation objects are updated
         protected bool paused;
 
@@ -167,7 +170,14 @@ namespace Simulator.UserInterface
 
             // Apply scale to static property of SimulationObject
             SimulationObject.Scale = Scale;
-            
+
+            // Set pause to default false
+            Paused = false;
+
+            // Set default gravity of 9.8 N / kg
+            Projectile.GravitationalAcceleration = Scale * -9.8f * Vector2.UnitY;
+
+            // Apply default background colour
             BackgroundColour = Color.SkyBlue;
 
             // If there is no camera, create a default one
@@ -189,9 +199,31 @@ namespace Simulator.UserInterface
             base.Initialize();
         }
 
+        // Load settings for simulation from state
+        public void LoadState(SimulationState state)
+        {
+            loadedState = state;
+        }
+
+        protected void OnLoad()
+        {
+            if (loadedState != null)
+            {
+                Paused = loadedState.Paused;
+                BackgroundColour = loadedState.BackgroundColour;
+                Projectile.GravitationalAcceleration = loadedState.Gravity;
+            }
+        }
+
         // Updates the simulation
         protected override void Update(GameTime gameTime)
         {
+            if (gameTime.TotalGameTime <= gameTime.ElapsedGameTime)
+            {
+                // First update - load state
+                OnLoad();
+            }
+
             if (Focused)
             {
                 GetInput();
@@ -233,7 +265,7 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform, sortMode: SpriteSortMode.FrontToBack);
+            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform/*, sortMode: SpriteSortMode.FrontToBack*/);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
@@ -281,6 +313,20 @@ namespace Simulator.UserInterface
             {
                 objects.Remove(@object);
             }           
+        }
+
+        /// <summary>
+        /// Gets the state of the simulation.
+        /// </summary>
+        /// <returns></returns>
+        public SimulationState GetState()
+        {
+            return new SimulationState(GetObjectsToSave())
+            {
+                BackgroundColour = BackgroundColour,
+                Gravity = Projectile.GravitationalAcceleration,
+                Paused = Paused
+            };
         }
 
         /// <summary>

@@ -26,30 +26,18 @@ namespace Simulator
                 new Vector3JsonConverter()
             }
         };
-        
+
 
         /// <summary>
         /// Writes a list of generic objects to a specified file path
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path">Path the save file to.</param>
-        /// <param name="objects"> List of objects to be saved.</param>
-        public static void WriteJson<T>(string path, List<T> objects)
+        /// <param name="state"></param>
+        public static void WriteJson(string path, SimulationState state)
         {
-
             StreamWriter writer = new StreamWriter(path);
-
-            List<T> persistentObjects = new List<T>();
-
-            foreach (T @object in objects)
-            {
-                if (@object is IPersistent)
-                {
-                    persistentObjects.Add(@object);
-                }        
-            }
-
-            string data = JsonConvert.SerializeObject(persistentObjects, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
+            string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
             writer.Write(data);
             
             /*
@@ -74,16 +62,15 @@ namespace Simulator
         /// <param name="path">Path to file.</param>
         /// <returns>List of deserialized generic objects</returns>
         ///
-
-        public static List<T> ReadJson<T>(string path)
+        public static SimulationState ReadJson(string path)
         {
             StreamReader reader = new StreamReader(path);
 
-            List<T> objects = new List<T>();
+            SimulationState state;
 
-            string data = reader.ReadToEnd();
-            objects = JsonConvert.DeserializeObject<List<T>>(data, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
-
+            string text = reader.ReadToEnd();
+            state = JsonConvert.DeserializeObject<SimulationState>(text, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
+            
             /*
             while (!reader.EndOfStream)
             {
@@ -99,7 +86,7 @@ namespace Simulator
 
             reader.Close();
 
-            return objects;
+            return state;
         } 
     }
 }

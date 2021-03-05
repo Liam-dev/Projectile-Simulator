@@ -17,6 +17,9 @@ namespace Simulator.Simulation
     /// </summary>
     public class Projectile : PhysicsObject
     {
+        // The strength and direction of gravity
+        public static Vector2 GravitationalAcceleration { get; set; }
+
         // Trajectory of projectile
         protected Trajectory trajectory;
 
@@ -107,7 +110,7 @@ namespace Simulator.Simulation
 
         protected Vector2 CalculateWeight()
         {
-            return Mass * 980 * Vector2.UnitY;
+            return Mass * GravitationalAcceleration;
         }
 
         protected void ClampHorizontalSpeed()

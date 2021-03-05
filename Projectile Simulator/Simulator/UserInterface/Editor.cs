@@ -46,6 +46,8 @@ namespace Simulator.UserInterface
             // Re-enables updates for simulation (causes performance issues in designer)
             simulation.MouseHoverUpdatesOnly = false;
 
+            WindowState = FormWindowState.Maximized;
+
             objectsToLoad = new List<object>();
 
             /*
@@ -81,10 +83,14 @@ namespace Simulator.UserInterface
 
             WindowState = FormWindowState.Maximized;
 
-            objectsToLoad = FileSaver.ReadJson<object>(filename);
+            // Load simulation state from file
+            objectsToLoad = new List<object>();
+            SimulationState loadedState = FileSaver.ReadJson(filename);
+            objectsToLoad = loadedState.Objects;
+            simulation.LoadState(loadedState);
 
             if (!isTemplate)
-            {
+            { 
                 Filename = filename;
                 ChangeFormTitle();
             }
@@ -103,8 +109,6 @@ namespace Simulator.UserInterface
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
             simulation.SimulationPaused += toolbar.Simulation_Paused;
             simulation.SimulationResumed += toolbar.Simulation_UnPaused;
-
-            simulation.Paused = false;
 
             // Load objects into simulation
             foreach (object @object in objectsToLoad)
@@ -284,8 +288,6 @@ namespace Simulator.UserInterface
         // Runs on closing of editor form
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            simulation.Paused = true;
-
             if (Filename == null)
             {
                 // Unsaved file warning
@@ -364,7 +366,7 @@ namespace Simulator.UserInterface
             }
             else if (File.Exists(Filename))
             {
-                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
+                FileSaver.WriteJson(Filename, simulation.GetState());
             }
         }
 
@@ -393,7 +395,7 @@ namespace Simulator.UserInterface
                         }
                         else if (File.Exists(Filename))
                         {
-                            FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
+                            FileSaver.WriteJson(Filename, simulation.GetState());
 
                             // Perform action
                             action();
@@ -475,7 +477,7 @@ namespace Simulator.UserInterface
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 Filename = fileDialogue.FileName;
-                FileSaver.WriteJson(Filename, simulation.GetObjectsToSave());
+                FileSaver.WriteJson(Filename, simulation.GetState());
                 return true;
             }
             else
