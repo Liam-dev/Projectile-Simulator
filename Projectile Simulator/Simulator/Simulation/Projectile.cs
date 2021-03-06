@@ -81,7 +81,8 @@ namespace Simulator.Simulation
         {
             base.OnLoad(Editor);
 
-            trajectory = new Trajectory(Position);  
+            trajectory = new Trajectory(Name + "Trajectory", Position, "dot", 300, 50);
+            trajectory.OnLoad(Editor);
         }
 
         public override void Update(TimeSpan delta)
@@ -93,7 +94,7 @@ namespace Simulator.Simulation
 
             ClampHorizontalSpeed();
 
-            //trajectory.AddPoint(Position);
+            trajectory.AddPoint(Centre);
 
             base.Update(delta);
         }
@@ -101,6 +102,9 @@ namespace Simulator.Simulation
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 2 * (int)Radius, 2 * (int)Radius), Color.White);
+
+            // Trajectory
+            trajectory.Draw(spriteBatch, zoom);
         }
 
         protected Vector2 CalulateDrag()
