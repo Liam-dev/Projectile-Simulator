@@ -226,7 +226,7 @@ namespace Simulator.UserInterface
                     string data = JsonConvert.SerializeObject(clipboardObject, Formatting.Indented, settings);
                     SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
                     @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
-                    simulation.AddObject(@object);
+                    CreateNewObject(@object);
                     PerformedAction();
                     break;
 
@@ -245,7 +245,7 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newBox":
-                    simulation.AddObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
+                    CreateNewObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
                     PerformedAction();
                     break;
 
@@ -255,7 +255,7 @@ namespace Simulator.UserInterface
 
                 case "newCannon":
                     Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
-                    simulation.AddObject(new Cannon("cannon", simulation.ScreenCentre, "cannon", projectile));
+                    CreateNewObject(new Cannon("cannon", simulation.ScreenCentre, "cannon", projectile));
                     PerformedAction();
                     break;
 
@@ -268,12 +268,12 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newStopwatch":
-                    simulation.AddObject(new Stopwatch("stopwatch", simulation.ScreenCentre, "stopwatch", "SevenSegment"));
+                    CreateNewObject(new Stopwatch("stopwatch", simulation.ScreenCentre, "stopwatch", "SevenSegment"));
                     PerformedAction();
                     break;
 
                 case "newDetector":
-                    simulation.AddObject(new Detector("detector", simulation.ScreenCentre, "detector", 150));
+                    CreateNewObject(new Detector("detector", simulation.ScreenCentre, "detector", 150));
                     PerformedAction();
                     break;
 
@@ -310,6 +310,16 @@ namespace Simulator.UserInterface
                 case "about":
                     OpenWebPage("https://github.com/Liam-dev/Projectile-Simulator");
                     break;
+            }
+        }
+
+        private void CreateNewObject(SimulationObject @object)
+        {
+            ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
+            if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
+            {
+                @object.Name = objectCreationBox.ObjectName;
+                simulation.AddObject(@object);
             }
         }
 
