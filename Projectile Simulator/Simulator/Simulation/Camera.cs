@@ -8,54 +8,110 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Simulator.Simulation
 {
-    public class Camera
+    /// <summary>
+    /// Object which encapsulates the transformation of a simulation.
+    /// </summary>
+    public class Camera : IPersistent
     {
-        public Matrix Transform { get; protected set; }
+        /// <summary>
+        /// Gets or sets the matrix which represents the transformation of the camera.
+        /// </summary>
+        public Matrix Transform { get; set; }
 
-        protected float zoom;
-        protected float oldZoom;
+        /// <summary>
+        /// Gets or sets the factor to zoom the camera by.
+        /// </summary>
+        public float ZoomMultiplier { get; set; }
 
-        protected float ZoomMultiplier;
-        protected int MaxZoomLevel;
-        protected int MinZoomLevel;
+        /// <summary>
+        /// Gets or sets the maximum zoom level of the camera.
+        /// </summary>
+        public int MaxZoomLevel { get; set; }
 
-        protected Vector2 centre { get; set; }
+        /// <summary>
+        /// Gets or sets the minimum zoom level of the camera.
+        /// </summary>
+        public int MinZoomLevel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current zoom of the camera.
+        /// </summary>
+        public float Zoom { get; set; }
+
+        /// <summary>
+        /// Gets or sets the previous zoom of the camera.
+        /// </summary>
+        public float OldZoom { get; set; }
 
         public Camera()
         {
+            
+        }
+
+        public Camera(float multiplier, int maxLevel, int minLevel)
+        {
             Transform = Matrix.Identity;
-            zoom = 1;
-            oldZoom = 1;
+            Zoom = 1;
+            OldZoom = 1;
 
-            ZoomMultiplier = 1.1f;
-            MaxZoomLevel = 8;
-            MinZoomLevel = -16;
+            ZoomMultiplier = multiplier;
+            MaxZoomLevel = maxLevel;
+            MinZoomLevel = minLevel;
         }
 
-        public void ZoomIn()
+        /// <summary>
+        /// Zooms the camera in on a position.
+        /// </summary>
+        /// <param name="position">The position to zoom in on in simulation coordinates</param>
+        public void ZoomIn(Vector2 position)
         {
-            oldZoom = zoom;
-            zoom *= ZoomMultiplier;          
-            if (zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
+            OldZoom = Zoom;
+            Zoom *= ZoomMultiplier;
+
+            if (Zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
             {
-                zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
+                Zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
             }
+
+            ZoomAtPoint(position, Zoom / OldZoom);
         }
 
-        public void ZoomOut()
+        /// <summary>
+        /// Zooms the camera out on a position.
+        /// </summary>
+        /// <param name="position">The position to zoom out on in simulation coordinates</param>
+        public void ZoomOut(Vector2 position)
         {
-            oldZoom = zoom;
-            zoom /= ZoomMultiplier;
-            if (zoom < MathF.Pow(ZoomMultiplier, MinZoomLevel))
+            OldZoom = Zoom;
+            Zoom /= ZoomMultiplier;
+            if (Zoom < MathF.Pow(ZoomMultiplier, MinZoomLevel))
             {
-                zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
+                Zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
             }
+
+            ZoomAtPoint(position, Zoom / OldZoom);
         }
 
-        public void ZoomUpdate(Vector2 position)
+        /// <summary>
+        /// Pans the camera by a translation.
+        /// </summary>
+        /// <param name="translation">Translation vector</param>
+        public void Pan(Vector2 translation)
         {
+            Transform *= Matrix.CreateTranslation(new Vector3(translation, 0));
+        }
+
+        /// <summary>
+        /// Zooms the camera at a point by a scale factor.
+        /// </summary>
+        /// <param name="position">The position to zoom about simulation coordinates</param>
+        /// <param name="scaleFactor">The scale factor the zoom by</param>
+        protected void ZoomAtPoint(Vector2 position, float scaleFactor)
+        {
+            // Multiply matrix by new zoom transformation matrix
+
             Matrix toPosition = Matrix.CreateTranslation(new Vector3(-position, 0));
-            Matrix scale = Matrix.CreateScale(zoom / oldZoom);
+            Matrix scale = Matrix.CreateScale(scaleFactor);
             Matrix fromPosition = Matrix.CreateTranslation(new Vector3(position, 0));
 
             Transform *= toPosition;
@@ -63,26 +119,22 @@ namespace Simulator.Simulation
             Transform *= fromPosition;
         }
 
-        public void Translate(Vector2 displacement)
-        {
-            Transform *= Matrix.CreateTranslation(new Vector3(displacement, 0));
-        }
-
-        public float GetZoom()
-        {
-            Vector3 _zoom;
-            Quaternion _rotation;
-            Vector3 _position;
-            Transform.Decompose(out _zoom, out _rotation, out _position);
-            return zoom;
-        }
-
+        /// <summary>
+        /// Gets the simulation position of a screen location.
+        /// </summary>
+        /// <param name="position">The screen location to convert</param>
+        /// <returns>The corresponding simulation position</returns>
         public Vector2 GetSimulationPostion(Vector2 position)
         {
             Matrix inverse = Matrix.Invert(Transform);
             return Vector2.Transform(position, inverse);       
         }
 
+        /// <summary>
+        /// Gets the screen location of a simulation position.
+        /// </summary>
+        /// <param name="position">The simulation position to convert</param>
+        /// <returns>The corresponding screen location</returns>
         public Vector2 GetActualPosition(Vector2 position)
         {
             return Vector2.Transform(position, Transform);

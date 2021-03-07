@@ -1,0 +1,6 @@
+Simulator.Simulation.Camera
+{"Transform":{"Backward":"0,0,0.6209213","Down":"-0,-0.6209213,-0","Forward":"-0,-0,-0.6209213","Left":"-0.6209213,-0,-0","Right":"0.6209213,0,0","Translation":"-290.83246,365.62695,0","Up":"0,0.6209213,0"},"ZoomMultiplier":1.1,"MaxZoomLevel":8,"MinZoomLevel":-16,"Zoom":0.6209213,"OldZoom":0.5644739}
+Simulator.Simulation.Wall
+{"Colour":{"B":34,"G":139,"R":34,"A":255,"PackedValue":4280453922},"MaintainAspectRatio":false,"Dimensions":"3000,150","RestitutionCoefficient":0.95,"Name":"floor","Position":"320,800","TextureName":"wall","Selected":false,"Selectable":false,"Movable":false}
+Simulator.Simulation.Cannon
+{"FiringPosition":"50,50","ProjectionAngle":0.7853982,"Speed":1000,"Projectile":{"DragCoefficient":0,"Radius":16,"Mass":5,"RestitutionCoefficient":0.9,"Name":"redTempProjectile","Position":"0,0","TextureName":"ball","Selected":false,"Selectable":false,"Movable":false},"Name":"cannon","Position":"1070.0181,672.4907","TextureName":"cannon","Selected":false,"Selectable":false,"Movable":true}

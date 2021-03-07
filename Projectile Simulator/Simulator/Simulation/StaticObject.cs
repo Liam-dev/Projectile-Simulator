@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A CollisionObject that does not move.
+    /// </summary>
     public class StaticObject : CollisionObject, IPersistent
     {
         public StaticObject()

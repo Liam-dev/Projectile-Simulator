@@ -10,11 +10,23 @@ using Simulator.Simulation;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Control that allows the property editing of objects.
+    /// </summary>
     public partial class Inspector : UserControl
     {
-        protected SimulationObject selectedObject;
+        // The current selected object in the inspector
+        protected object selectedObject;
 
-        public SimulationObject Object { get { return selectedObject; }  set { propertyGrid.SelectedObject = selectedObject = value; } }
+        /// <summary>
+        /// Gets or sets the inspector's selected object.
+        /// </summary>
+        public object SelectedObject { get { return selectedObject; }  set { selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value; } }
+
+        /// <summary>
+        /// Occurs when the inspector's selected object is changed.
+        /// </summary>
+        public event EventHandler SelectedObjectChanged;
 
         public Inspector()
         {
@@ -26,15 +38,28 @@ namespace Simulator.UserInterface
 
         }
 
+        /// <summary>
+        /// Sets the data source for the inspector's selection box.
+        /// </summary>
+        /// <param name="source">List of objects to set as data source</param>
         public void SetDataSource(List<SimulationObject> source)
         {
-            selectionBox.DataSource = source;
+            // if object deleted from simulation then clear from inspector
+            if (!source.Contains((SimulationObject)SelectedObject))
+            {
+                SelectedObject = null;
+            }
+
+            // Remove and re-add items to selection combo box
+            selectionBox.Items.Clear();
+            selectionBox.Items.AddRange(source.ToArray());
             selectionBox.DisplayMember = "Name";
         }
 
         private void selectionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Object = (SimulationObject)selectionBox.SelectedItem;
+            SelectedObject = selectionBox.SelectedItem;
+            SelectedObjectChanged?.Invoke(SelectedObject, e);
         }
     }
 }

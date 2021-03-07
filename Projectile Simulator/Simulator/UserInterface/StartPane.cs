@@ -9,6 +9,9 @@ using System.Threading;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Control that contains buttons that allow Editor to be opened in different ways.
+    /// </summary>
     public partial class StartPane : UserControl
     {
         public StartPane()
@@ -21,14 +24,28 @@ namespace Simulator.UserInterface
 
         }
 
+        // When new button is clicked, load the selected template simulation into Editor
         private void newButton_Click(object sender, EventArgs e)
         {
-            new Thread(() => new Editor().ShowDialog()).Start();
+            if (templateList.SelectedItem != null)
+            {
+                string templateName = templateList.SelectedItem;
+                string path = "Content/Templates/" + templateName + ".sim";
+                new Thread(() => new Editor(path, true).ShowDialog()).Start();
+            }
+            else
+            {
+                // No template selected
+                new Thread(() => new Editor().ShowDialog()).Start();
+            }
+
             Application.ExitThread();
         }
 
+        // When load button is clicked, open file dialogue to choose simulation to load into Editor
         private void loadButton_Click(object sender, EventArgs e)
         {
+            // Open OpenFileDialog for simulation files
             OpenFileDialog fileDialogue = new OpenFileDialog();
             fileDialogue.Title = "Open Simulation File";
             fileDialogue.DefaultExt = "sim";
@@ -36,9 +53,9 @@ namespace Simulator.UserInterface
             fileDialogue.CheckFileExists = true;
             fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
 
-            if (fileDialogue.ShowDialog() == DialogResult.OK)
+            if (fileDialogue.ShowDialog(this) == DialogResult.OK)
             {
-                new Thread(() => new Editor(fileDialogue.FileName).ShowDialog()).Start();
+                new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
                 Application.ExitThread();
             }        
         }
@@ -47,6 +64,5 @@ namespace Simulator.UserInterface
         {
             MessageBox.Show("Preferences opening");
         }
-       
     }
 }

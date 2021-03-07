@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.title = new System.Windows.Forms.Label();
-            this.startPane1 = new Simulator.UserInterface.StartPane();
+            this.startPane = new Simulator.UserInterface.StartPane();
             this.SuspendLayout();
             // 
             // title
@@ -42,21 +42,21 @@
             this.title.TabIndex = 0;
             this.title.Text = "Projectile Simulator";
             // 
-            // startPane1
+            // startPane
             // 
-            this.startPane1.BackColor = System.Drawing.Color.Transparent;
-            this.startPane1.Location = new System.Drawing.Point(12, 113);
-            this.startPane1.Name = "startPane1";
-            this.startPane1.Size = new System.Drawing.Size(330, 380);
-            this.startPane1.TabIndex = 1;
+            this.startPane.BackColor = System.Drawing.Color.Transparent;
+            this.startPane.Location = new System.Drawing.Point(12, 112);
+            this.startPane.Name = "startPane";
+            this.startPane.Size = new System.Drawing.Size(700, 380);
+            this.startPane.TabIndex = 1;
             // 
             // Homepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.ClientSize = new System.Drawing.Size(824, 511);
-            this.Controls.Add(this.startPane1);
+            this.ClientSize = new System.Drawing.Size(784, 511);
+            this.Controls.Add(this.startPane);
             this.Controls.Add(this.title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Homepage";
@@ -70,6 +70,6 @@
         #endregion
 
         private System.Windows.Forms.Label title;
-        private StartPane startPane1;
+        private StartPane startPane;
     }
 }

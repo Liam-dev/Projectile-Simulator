@@ -5,25 +5,49 @@ using MonoGame.Forms.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using Simulator.Converters;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
-    public class Box : StaticObject, ISelectable
+    /// <summary>
+    /// A StaticObject which has rectangular axis-aligned dimensions.
+    /// </summary>
+    public class Box : StaticObject
     {
+        /// <summary>
+        /// Gets or sets the dimensions of the box.
+        /// </summary>
+        [Browsable(false)]
         public Vector2 Dimensions { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled linear dimensions of the box. Only to be used for display.
+        /// </summary>
+        [JsonIgnore]
+        [Browsable(true)]
+        [Category("Box")]
+        [DisplayName("Size")]
+        public virtual float DiplaySize
+        {
+            get { return ScaleConverter.Scale(Dimensions.X, Scale, 1, true, 2); }
+            set { Dimensions = new Vector2(ScaleConverter.InverseScale(value, Scale, 1)); }
+        }
+
+        [JsonIgnore]
+        [Browsable(false)]
         public override Rectangle BoundingBox
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, (int)Dimensions.X, (int)Dimensions.Y); }
         }
 
+        [JsonIgnore]
+        [Browsable(false)]
         public override Vector2 Centre
         {
             get { return Position + (Dimensions / 2); }
         }
-
-        public bool Selected { get ; set; }
-        public bool Selectable { get ; set; }
 
         public Box()
         {
@@ -36,24 +60,14 @@ namespace Simulator.Simulation
             RestitutionCoefficient = 0.95f;
         }
 
-        public override void OnLoad(MonoGameService Editor)
-        {
-            base.OnLoad(Editor);
-        }
-
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, BoundingBox, Color.White);
 
             if (Selected)
             {
-                DrawBorder(spriteBatch, zoom);
+                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }  
-        }
-
-        public bool Intersects(Vector2 point)
-        {
-            return BoundingBox.Contains(point);
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Simulator.UserInterface.Editor">
+    <Position X="0.75" Y="2" Width="3.75" />
+    <NestedTypes>
+      <Delegate Name="Simulator.UserInterface.Editor.SafeCallDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserInterface\Editor.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACAAAIAAACAAQBGAAAKAAAAKBAAAgkBEBBEgAQAQAAI=</HashCode>
+      <FileName>UserInterface\Editor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulator.UserInterface.Inspector">
+    <Position X="10.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAgAAACAAAAAkAACQAAgCCAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserInterface\Inspector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulator.UserInterface.Simulation">
+    <Position X="6.75" Y="1" Width="3" />
+    <NestedTypes>
+      <Enum Name="Simulator.UserInterface.Simulation.ScrollDiretion" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserInterface\Simulation.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="Simulator.UserInterface.Simulation.MouseScrollArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UserInterface\Simulation.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IQQiGFAAggAEQwAAJkIRBAAABQEAAECICAIAAAFCKBA=</HashCode>
+      <FileName>UserInterface\Simulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

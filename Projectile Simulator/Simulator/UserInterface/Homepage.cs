@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Form that is displayed when application begins.
+    /// </summary>
     public partial class Homepage : Form
     {
         public Homepage()

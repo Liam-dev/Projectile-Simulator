@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,6 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <ApplicationIcon></ApplicationIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
