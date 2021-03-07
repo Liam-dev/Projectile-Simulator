@@ -28,10 +28,13 @@ namespace Simulator.UserInterface
         protected float timeTolerance = 2f;
 
         // Update frame time multiplier
-        protected float speed = 1.4f;
+        protected float speed = 1.3f;
 
         // State of Mouse in the previous update frame
         protected MouseState lastMouseState;
+
+        // Fire cannon button
+        protected FireCannonButton fireCannonButton;
 
         // Records if the context menu for the simulation is open
         protected bool contextMenuOpen;
@@ -192,7 +195,16 @@ namespace Simulator.UserInterface
             LeftMouseButtonJustReleased += Simulation_LeftMouseButtonJustReleased;
             RightMouseButtonJustPressed += Simulation_RightMouseButtonJustPressed;
             RightMouseButtonJustReleased += Simulation_RightMouseButtonJustReleased;
-            
+
+            MouseHover += Simulation_MouseHover;
+
+            // Initialize fire cannon button
+            /*
+            fireCannonButton = new FireCannonButton();
+            fireCannonButton.Hide();
+            Controls.Add(fireCannonButton);
+            */
+
             // Instantiate object list 
             objects = new List<SimulationObject>();
 
@@ -202,12 +214,12 @@ namespace Simulator.UserInterface
         // Load settings for simulation from state
         public void LoadState(SimulationState state, bool initialLoad = false)
         {
-            Paused = state.Paused;
-            BackgroundColour = state.BackgroundColour;
-            Projectile.GravitationalAcceleration = state.Gravity;
-
             // Clear any old objects
             objects.Clear();
+
+            Paused = state.Paused;
+            BackgroundColour = state.BackgroundColour;
+            Projectile.GravitationalAcceleration = state.Gravity;          
 
             // Load objects into simulation
             foreach (object @object in state.Objects)
@@ -277,6 +289,15 @@ namespace Simulator.UserInterface
             }
 
             Editor.spriteBatch.End();
+
+            // Update fire button
+            /*
+            if (fireCannonButton.Visible)
+            {
+                Vector2 buttonPosition =  Camera.GetActualPosition(fireCannonButton.Cannon.Position + fireCannonButton.DrawOffset);
+                fireCannonButton.Location = new System.Drawing.Point((int)buttonPosition.X, (int)buttonPosition.Y);
+            }
+            */
         }
 
         /// <summary>
@@ -569,11 +590,17 @@ namespace Simulator.UserInterface
 
         private void Simulation_LeftMouseButtonJustReleased(object sender, EventArgs e)
         {
+            // Cannon fire
+            if (SelectedObject is Cannon cannon && !objectMoving)
+            {
+                cannon.Fire();
+            }
+
             if (objectMoving)
             {
                 objectMoving = false;
                 ObjectMoved?.Invoke(this, new EventArgs());
-            }
+            }  
         }
 
         private void Simulation_RightMouseButtonJustPressed(object sender, EventArgs e)
@@ -584,6 +611,31 @@ namespace Simulator.UserInterface
         private void Simulation_RightMouseButtonJustReleased(object sender, EventArgs e)
         {
 
+        }
+
+        private void Simulation_MouseHover(object sender, EventArgs e)
+        {
+            // Check for cannon to move fire button
+            /*
+            foreach (SimulationObject @object in objects)
+            {
+                if (@object is Cannon cannon)
+                {
+                    // Converts mouse position to simulation world position
+                    Vector2 mouseSimulationPosition = Camera.GetSimulationPostion(MousePosition);
+
+                    if (cannon.Intersects(mouseSimulationPosition))
+                    {
+                        fireCannonButton.Cannon = cannon;
+                        fireCannonButton.Clicked -= cannon.Fire;
+                        fireCannonButton.Clicked += cannon.Fire;
+                        fireCannonButton.DrawOffset = cannon.BoundingBox.Size.ToVector2() * 0.75f;
+                        fireCannonButton.Show();
+                        fireCannonButton.BringToFront();
+                    }
+                }
+            }
+            */
         }
 
         /// <summary>

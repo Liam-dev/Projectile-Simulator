@@ -230,10 +230,6 @@ namespace Simulator.UserInterface
                     PerformedAction();
                     break;
 
-                case "ball":
-                    simulation.FireAllCannons();
-                    break;
-
                 case "deleteObject":
                     SimulationObject selectedObject = (SimulationObject)simulation.SelectedObject;
                     simulation.RemoveObject(selectedObject);

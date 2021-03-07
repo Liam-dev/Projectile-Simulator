@@ -45,7 +45,6 @@
             this.playToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.pauseToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.ballToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.newObjectToolStripButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.newBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCannonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +111,6 @@
             this.playToolStripButton,
             this.pauseToolStripButton,
             this.toolStripSeparator10,
-            this.ballToolStripButton,
             this.newObjectToolStripButton,
             this.toolStripSeparator8,
             this.zoomInToolStripButton,
@@ -266,17 +264,6 @@
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
-            // 
-            // ballToolStripButton
-            // 
-            this.ballToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ballToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("ballToolStripButton.Image")));
-            this.ballToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ballToolStripButton.Name = "ballToolStripButton";
-            this.ballToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.ballToolStripButton.Tag = "ball";
-            this.ballToolStripButton.Text = "New Ball";
-            this.ballToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
             // newObjectToolStripButton
             // 
@@ -723,7 +710,6 @@
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton ballToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripButton zoomInToolStripButton;
         private System.Windows.Forms.ToolStripButton zoomOutToolStripButton;
