@@ -14,6 +14,8 @@ namespace Simulator.Simulation
     /// </summary>
     public class Cannon : SimulationObject, IPersistent, ITrigger
     {
+        protected List<Projectile> projectiles = new List<Projectile>();
+
         public enum FacingDirection
         {
             Right = 1,
@@ -101,7 +103,14 @@ namespace Simulator.Simulation
         /// </summary>
         public void Fire()
         {
+            // Clear other trajectories
+            foreach (Projectile p in projectiles)
+            {
+                p.RemoveTrajectory();
+            }
+
             Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
+            projectiles.Add(projectile);
 
             // Takes into account facing direction
             Vector2 impulse = projectile.Mass * Speed * new Vector2((int)Facing * MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));

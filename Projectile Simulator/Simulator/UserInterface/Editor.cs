@@ -29,10 +29,12 @@ namespace Simulator.UserInterface
         private delegate void SafeCallDelegate();
 
         // List of object to load into simulation when form is loaded
-        private List<object> objectsToLoad;
+        private SimulationState loadedState;
 
         // Object that is currently saved to clipboard
         private SimulationObject clipboardObject;
+
+        private UndoRedoStack<SimulationState> undoRedoStack = new UndoRedoStack<SimulationState>();
 
         /// <summary>
         /// Gets the filename of the file in the editor.
@@ -47,8 +49,6 @@ namespace Simulator.UserInterface
             simulation.MouseHoverUpdatesOnly = false;
 
             WindowState = FormWindowState.Maximized;
-
-            objectsToLoad = new List<object>();
 
             /*
             // TEMPORARY
@@ -84,10 +84,10 @@ namespace Simulator.UserInterface
             WindowState = FormWindowState.Maximized;
 
             // Load simulation state from file
-            objectsToLoad = new List<object>();
-            SimulationState loadedState = FileSaver.ReadJson(filename);
-            objectsToLoad = loadedState.Objects;
-            simulation.LoadState(loadedState);
+            loadedState = FileSaver.ReadJson(filename);
+
+            // Initialise undo redo stack
+            undoRedoStack.AddState(loadedState);
 
             if (!isTemplate)
             { 
@@ -109,20 +109,16 @@ namespace Simulator.UserInterface
             simulation.SelectedObjectChanged += Simulation_SelectedObjectChanged;
             simulation.SimulationPaused += toolbar.Simulation_Paused;
             simulation.SimulationResumed += toolbar.Simulation_UnPaused;
+            simulation.ObjectMoved += Simulation_ObjectMoved;
 
-            // Load objects into simulation
-            foreach (object @object in objectsToLoad)
-            {
-                if (@object is SimulationObject simulationObject)
-                {
-                    simulation.AddObject(simulationObject);
-                }
-                else if (@object is Camera camera)
-                {
-                    // Load camera
-                    simulation.Camera = camera;
-                }
-            }
+            toolbar.SetUndoButtonState(false, false);
+
+            simulation.LoadState(loadedState, true);
+        }
+
+        private void Simulation_ObjectMoved(object sender, EventArgs e)
+        {
+            PerformedAction();
         }
 
         private void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -144,6 +140,12 @@ namespace Simulator.UserInterface
         private void Simulation_SelectedObjectChanged(object sender, EventArgs e)
         {
             inspector.SelectedObject = sender;
+        }
+
+        private void PerformedAction()
+        {
+            undoRedoStack.AddState(simulation.GetState());
+            toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
         }
 
         // When a button is clicked in the toolbar or context menu
@@ -194,10 +196,21 @@ namespace Simulator.UserInterface
                     Screenshot();
                     break;
 
+                case "undo":
+                    simulation.LoadState(undoRedoStack.Undo());
+                    toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
+                    break;
+
+                case "redo":
+                    simulation.LoadState(undoRedoStack.Redo());
+                    toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
+                    break;
+
                 case "cut":
                     clipboardObject = (SimulationObject)simulation.SelectedObject;
                     simulation.RemoveObject(clipboardObject);
                     inspector.SetDataSource(simulation.GetObjectsToDisplay());
+                    PerformedAction();
                     break;
 
                 case "copy":
@@ -214,6 +227,7 @@ namespace Simulator.UserInterface
                     SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
                     @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
                     simulation.AddObject(@object);
+                    PerformedAction();
                     break;
 
                 case "ball":
@@ -224,6 +238,7 @@ namespace Simulator.UserInterface
                     SimulationObject selectedObject = (SimulationObject)simulation.SelectedObject;
                     simulation.RemoveObject(selectedObject);
                     inspector.SetDataSource(simulation.GetObjectsToDisplay());
+                    PerformedAction();
                     break;
 
                 case "fireCannon":
@@ -235,6 +250,7 @@ namespace Simulator.UserInterface
 
                 case "newBox":
                     simulation.AddObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
+                    PerformedAction();
                     break;
 
                 case "newWall":
@@ -244,6 +260,7 @@ namespace Simulator.UserInterface
                 case "newCannon":
                     Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
                     simulation.AddObject(new Cannon("cannon", simulation.ScreenCentre, "cannon", projectile));
+                    PerformedAction();
                     break;
 
                 case "newTapeMeasure":
@@ -251,32 +268,47 @@ namespace Simulator.UserInterface
                     simulation.AddObject(tapeMeasure);
                     simulation.AddObject(tapeMeasure.Start);
                     simulation.AddObject(tapeMeasure.End);
+                    PerformedAction();
                     break;
 
                 case "newStopwatch":
                     simulation.AddObject(new Stopwatch("stopwatch", simulation.ScreenCentre, "stopwatch", "SevenSegment"));
+                    PerformedAction();
                     break;
 
                 case "newDetector":
                     simulation.AddObject(new Detector("detector", simulation.ScreenCentre, "detector", 150));
+                    PerformedAction();
                     break;
 
                 case "play":
                     simulation.Paused = false;
                     toolbar.SimulationPaused = false;
+                    PerformedAction();
                     break;
 
                 case "pause":
                     simulation.Paused = true;
                     toolbar.SimulationPaused = true;
+                    PerformedAction();
                     break;
 
                 case "addStartTrigger":
                     AddTriggerToStopwatch(simulation.SelectedObject, Stopwatch.StopwatchInput.Start);
+                    PerformedAction();
                     break;
 
                 case "addStopTrigger":
                     AddTriggerToStopwatch(simulation.SelectedObject, Stopwatch.StopwatchInput.Stop);
+                    PerformedAction();
+                    break;
+
+                case "zoomIn":
+                    simulation.Camera.ZoomIn(simulation.Camera.GetSimulationPostion(0.25f * new Vector2(Width, Height)));
+                    break;
+
+                case "zoomOut":
+                    simulation.Camera.ZoomOut(simulation.Camera.GetSimulationPostion(0.25f * new Vector2(Width, Height)));
                     break;
 
                 case "about":

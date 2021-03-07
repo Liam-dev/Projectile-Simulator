@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,9 +17,6 @@ namespace Simulator.UserInterface
     {
         // List of all simulation objects to be updated and drawn
         protected List<SimulationObject> objects;
-
-        // Loaded simulation state saved for OnLoad
-        protected SimulationState loadedState;
 
         // Determines if simulation objects are updated
         protected bool paused;
@@ -37,6 +35,9 @@ namespace Simulator.UserInterface
 
         // Records if the context menu for the simulation is open
         protected bool contextMenuOpen;
+
+        // Record if an object is being moved by the mouse
+        protected bool objectMoving;
 
         /// <summary>
         /// Gets the current object that is selected in the simulation.
@@ -66,7 +67,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets or sets the colour of the simulation's background.
         /// </summary>
-        public Color BackgroundColour { get; set; }
+        public Color BackgroundColour { get; set; } = Color.SkyBlue;
 
         /// <summary>
         /// Gets or sets whether the simulation is paused or not.
@@ -163,25 +164,24 @@ namespace Simulator.UserInterface
         /// </summary>
         public event EventHandler MiddleMouseButtonJustReleased;
 
+        /// <summary>
+        /// Occurs when an object has been moved.
+        /// </summary>
+        public event EventHandler ObjectMoved;
+
         protected override void Initialize()
         {
             // Set simulation scale to 100 pixels per metre
             Scale = 100;
 
             // Apply scale to static property of SimulationObject
-            SimulationObject.Scale = Scale;
-
-            // Set pause to default false
-            Paused = false;
-
-            // Set default gravity of 9.8 N / kg
-            Projectile.GravitationalAcceleration = Scale * -9.8f * Vector2.UnitY;
-
-            // Apply default background colour
-            BackgroundColour = Color.SkyBlue;
+            SimulationObject.Scale = Scale; 
 
             // If there is no camera, create a default one
-            Camera = new Camera(1.1f, 8, -20);
+            if (Camera == null)
+            {
+                Camera = new Camera(1.1f, 8, -20);
+            }
 
             // Assign initial mouse state
             lastMouseState = Mouse.GetState();
@@ -200,30 +200,33 @@ namespace Simulator.UserInterface
         }
 
         // Load settings for simulation from state
-        public void LoadState(SimulationState state)
+        public void LoadState(SimulationState state, bool initialLoad = false)
         {
-            loadedState = state;
-        }
+            Paused = state.Paused;
+            BackgroundColour = state.BackgroundColour;
+            Projectile.GravitationalAcceleration = state.Gravity;
 
-        protected void OnLoad()
-        {
-            if (loadedState != null)
+            // Clear any old objects
+            objects.Clear();
+
+            // Load objects into simulation
+            foreach (object @object in state.Objects)
             {
-                Paused = loadedState.Paused;
-                BackgroundColour = loadedState.BackgroundColour;
-                Projectile.GravitationalAcceleration = loadedState.Gravity;
+                if (@object is SimulationObject simulationObject)
+                {
+                    AddObject(simulationObject);
+                }
+                else if (initialLoad && @object is Camera camera)
+                {
+                    // Load camera
+                    Camera = camera;
+                }
             }
         }
 
         // Updates the simulation
         protected override void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime <= gameTime.ElapsedGameTime)
-            {
-                // First update - load state
-                OnLoad();
-            }
-
             if (Focused)
             {
                 GetInput();
@@ -252,9 +255,9 @@ namespace Simulator.UserInterface
             CheckCollisions();
 
             // Update each of the objects
-            foreach (SimulationObject obj in objects)
+            foreach (SimulationObject @object in objects)
             {
-                obj.Update(delta);
+                @object.Update(delta);
             }
         }
 
@@ -299,6 +302,7 @@ namespace Simulator.UserInterface
             // Cannon test
             if (@object is Cannon cannon)
             {
+                cannon.Fired -= CannonFired;
                 cannon.Fired += CannonFired;
             }
         }
@@ -495,6 +499,7 @@ namespace Simulator.UserInterface
                             // Move object
                             Vector2 mouseMovement = mouseState.Position.ToVector2() - lastMouseState.Position.ToVector2();
 
+                            objectMoving = true;
                             movable.Moving = true;
                             movable.Move(mouseMovement / Camera.Zoom);
                         }
@@ -506,9 +511,8 @@ namespace Simulator.UserInterface
                 }
             }
 
-
             // Middle button hold
-            else if (MiddleMouseButtonPressed)
+            if (MiddleMouseButtonPressed && !LeftMouseButtonPressed)
             {
                 if (lastMouseState.MiddleButton == ButtonState.Pressed)
                 {
@@ -524,12 +528,6 @@ namespace Simulator.UserInterface
                     }
                 }
             }
- 
-
-            // LAG LAG LAG BUG
-            //SelectedObjectChanged?.Invoke(selectedObject, new EventArgs());
-            // LAG LAG LAG BUG
-
 
             // Reset relative mouse state
             lastMouseState = mouseState;
@@ -571,7 +569,11 @@ namespace Simulator.UserInterface
 
         private void Simulation_LeftMouseButtonJustReleased(object sender, EventArgs e)
         {
-
+            if (objectMoving)
+            {
+                objectMoving = false;
+                ObjectMoved?.Invoke(this, new EventArgs());
+            }
         }
 
         private void Simulation_RightMouseButtonJustPressed(object sender, EventArgs e)
@@ -710,17 +712,21 @@ namespace Simulator.UserInterface
         // When a cannon is fired in the simulation
         private void CannonFired(object sender, EventArgs e)
         {
-            if (e is FiringArgs args)
+            // Check if sender is present in the simulation
+            if (objects.Contains(sender))
             {
-                // Create new projectile to fire
-                Projectile projectile = args.Projectile;
+                if (e is FiringArgs args)
+                {
+                    // Create new projectile to fire
+                    Projectile projectile = args.Projectile;
 
-                // Give projectile momentum
-                projectile.ApplyImpulse(args.Impulse);
+                    // Give projectile momentum
+                    projectile.ApplyImpulse(args.Impulse);
 
-                // Add projectile to simulation
-                AddObject(projectile);
-            }
+                    // Add projectile to simulation
+                    AddObject(projectile);
+                }
+            } 
         }
 
 

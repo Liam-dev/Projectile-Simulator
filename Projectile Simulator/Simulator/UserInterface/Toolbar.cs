@@ -49,5 +49,11 @@ namespace Simulator.UserInterface
         {
             SimulationPaused = false;
         }
+
+        public void SetUndoButtonState(bool undo, bool redo)
+        {
+            undoToolStripButton.Enabled = undo;
+            redoToolStripButton.Enabled = redo;
+        }
     }
 }

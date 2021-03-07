@@ -35,6 +35,9 @@
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.screenshotToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.undoToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.redoToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cutToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -99,6 +102,9 @@
             this.saveToolStripButton,
             this.screenshotToolStripButton,
             this.toolStripSeparator6,
+            this.undoToolStripButton,
+            this.redoToolStripButton,
+            this.toolStripSeparator2,
             this.cutToolStripButton,
             this.copyToolStripButton,
             this.pasteToolStripButton,
@@ -167,6 +173,34 @@
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // undoToolStripButton
+            // 
+            this.undoToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.undoToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("undoToolStripButton.Image")));
+            this.undoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.undoToolStripButton.Name = "undoToolStripButton";
+            this.undoToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.undoToolStripButton.Tag = "undo";
+            this.undoToolStripButton.Text = "toolStripButton3";
+            this.undoToolStripButton.ToolTipText = "Undo";
+            this.undoToolStripButton.Click += new System.EventHandler(this.button_Click);
+            // 
+            // redoToolStripButton
+            // 
+            this.redoToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.redoToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripButton.Image")));
+            this.redoToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.redoToolStripButton.Name = "redoToolStripButton";
+            this.redoToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.redoToolStripButton.Tag = "redo";
+            this.redoToolStripButton.Text = "Redo";
+            this.redoToolStripButton.Click += new System.EventHandler(this.button_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // cutToolStripButton
             // 
@@ -316,6 +350,7 @@
             this.zoomInToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoomInToolStripButton.Name = "zoomInToolStripButton";
             this.zoomInToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.zoomInToolStripButton.Tag = "zoomIn";
             this.zoomInToolStripButton.Text = "Zoom In";
             this.zoomInToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
@@ -326,6 +361,7 @@
             this.zoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoomOutToolStripButton.Name = "zoomOutToolStripButton";
             this.zoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.zoomOutToolStripButton.Tag = "zoomOut";
             this.zoomOutToolStripButton.Text = "Zoom Out";
             this.zoomOutToolStripButton.Click += new System.EventHandler(this.button_Click);
             // 
@@ -451,14 +487,18 @@
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.undoToolStripMenuItem.Tag = "undo";
             this.undoToolStripMenuItem.Text = "&Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // redoToolStripMenuItem
             // 
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.redoToolStripMenuItem.Tag = "redo";
             this.redoToolStripMenuItem.Text = "&Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // toolStripSeparator3
             // 
@@ -703,5 +743,9 @@
         private System.Windows.Forms.ToolStripMenuItem newTapeMeasureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newStopwatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newDetectorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton undoToolStripButton;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton redoToolStripButton;
     }
 }

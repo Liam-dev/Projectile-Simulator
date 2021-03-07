@@ -17,8 +17,10 @@ namespace Simulator.Simulation
     /// </summary>
     public class Projectile : PhysicsObject
     {
-        // The strength and direction of gravity
-        public static Vector2 GravitationalAcceleration { get; set; }
+        /// <summary>
+        /// Gets or sets the strength and direction of gravity
+        /// </summary>
+        public static Vector2 GravitationalAcceleration { get; set; } = Scale * -9.8f * Vector2.UnitY;
 
         // Trajectory of projectile
         protected Trajectory trajectory;
@@ -92,9 +94,10 @@ namespace Simulator.Simulation
             ApplyForce(CalculateWeight());
             ApplyForce(CalulateDrag());
 
-            ClampHorizontalSpeed();
-
-            trajectory.AddPoint(Centre);
+            if (trajectory != null)
+            {
+                trajectory?.AddPoint(Centre);
+            }
 
             base.Update(delta);
         }
@@ -104,7 +107,10 @@ namespace Simulator.Simulation
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 2 * (int)Radius, 2 * (int)Radius), Color.White);
 
             // Trajectory
-            trajectory.Draw(spriteBatch, zoom);
+            if (trajectory != null)
+            {
+                trajectory.Draw(spriteBatch, zoom);
+            }   
         }
 
         protected Vector2 CalulateDrag()
@@ -117,12 +123,9 @@ namespace Simulator.Simulation
             return Mass * GravitationalAcceleration;
         }
 
-        protected void ClampHorizontalSpeed()
+        public void RemoveTrajectory()
         {
-            if (MathF.Abs(velocity.X) < 1)
-            {
-                velocity.X = 0;
-            }
+            trajectory = null;
         }
     }
 
