@@ -112,7 +112,7 @@ namespace Simulator.Simulation
         [Browsable(false)]
         public bool Selected { get; set; }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Category("Object")]
         public bool Selectable { get; set; }
 

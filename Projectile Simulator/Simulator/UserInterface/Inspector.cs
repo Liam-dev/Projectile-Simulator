@@ -50,6 +50,9 @@ namespace Simulator.UserInterface
                 SelectedObject = null;
             }
 
+            // Remove handle objects
+            source.RemoveAll(x => x is Handle);
+
             // Remove and re-add items to selection combo box
             selectionBox.Items.Clear();
             selectionBox.Items.AddRange(source.ToArray());

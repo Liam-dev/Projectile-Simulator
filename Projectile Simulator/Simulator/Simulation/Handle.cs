@@ -10,7 +10,7 @@ namespace Simulator.Simulation
     /// <summary>
     /// A SimulationObject that can be moved to manipulate other SimulationObjects.
     /// </summary>
-    public class Handle : SimulationObject
+    public class Handle : SimulationObject , IPersistent
     {
         // The zoom of the simulation (used for drawing and selection)
         protected float zoom;

@@ -29,11 +29,14 @@ namespace Simulator.Simulation
         /// <summary>
         /// Gets or sets the time stored in the stopwatch.
         /// </summary>
+        [Browsable(true)]
+        [DisplayName("Time recorded")]
         public TimeSpan Timer { get; set; }
 
         /// <summary>
         /// Gets or sets triggers for the stopwatch.
         /// </summary>
+        [Browsable(false)]
         public List<(ITrigger, StopwatchInput)> Triggers { get; set; }
 
         public Stopwatch()
@@ -150,16 +153,8 @@ namespace Simulator.Simulation
             Triggers.Remove((trigger,StopwatchInput.Start));
             Triggers.Remove((trigger, StopwatchInput.Stop));
 
-            switch (input)
-            {
-                case StopwatchInput.Start:
-                    trigger.Triggered -= StartTrigger_Triggered;
-                    break;
-
-                case StopwatchInput.Stop:
-                    trigger.Triggered -= StopTrigger_Triggered;
-                    break;
-            }
+            trigger.Triggered -= StartTrigger_Triggered;
+            trigger.Triggered -= StopTrigger_Triggered;
         }
 
         private void StartTrigger_Triggered(object sender, EventArgs e)

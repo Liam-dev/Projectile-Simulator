@@ -218,10 +218,6 @@ namespace Simulator.UserInterface
                     break;
 
                 case "paste":
-                    /*
-                    JsonSerializerOptions options = new JsonSerializerOptions() { Converters = { new Vector2JsonConverter() } };
-                    SimulationObject @object = (SimulationObject)JsonSerializer.Deserialize(JsonSerializer.Serialize(clipboardObject, clipboardObject.GetType(), options), clipboardObject.GetType(), options);
-                    */
                     JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
                     string data = JsonConvert.SerializeObject(clipboardObject, Formatting.Indented, settings);
                     SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
@@ -260,10 +256,14 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newTapeMeasure":
+                    
                     TapeMeasure tapeMeasure = new TapeMeasure("tape measure", simulation.ScreenCentre, simulation.ScreenCentre + new Vector2(100, 0), 8, "line", "Arial");
-                    simulation.AddObject(tapeMeasure);
-                    simulation.AddObject(tapeMeasure.Start);
-                    simulation.AddObject(tapeMeasure.End);
+                    bool created = CreateNewObject(tapeMeasure);
+                    if (created)
+                    {
+                        simulation.AddObject(tapeMeasure.Start);
+                        simulation.AddObject(tapeMeasure.End);
+                    }
                     PerformedAction();
                     break;
 
@@ -367,7 +367,7 @@ namespace Simulator.UserInterface
             simulation.LoadSettings(preferencesEditor.SimulationSettings);
         }
 
-        private void CreateNewObject(SimulationObject @object)
+        private bool CreateNewObject(SimulationObject @object)
         {
             if (preferences.AutoName)
             {
@@ -394,10 +394,15 @@ namespace Simulator.UserInterface
                 {
                     @object.Name = objectCreationBox.ObjectName;   
                 }
+                else
+                {
+                    return false;
+                }
             }
 
             simulation.AddObject(@object);
             inspector.SelectedObject = @object;
+            return true;
         }
 
         // Closes Editor and opens new blank editor in new thread (does not save current file)

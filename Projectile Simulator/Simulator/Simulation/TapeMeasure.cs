@@ -27,11 +27,13 @@ namespace Simulator.Simulation
         /// <summary>
         /// Gets or sets the start handle of the tape measure.
         /// </summary>
+        [Browsable(false)]
         public Handle Start { get; set; }
 
         /// <summary>
         /// Gets or sets the end handle of the tape measure.
         /// </summary>
+        [Browsable(false)]
         public Handle End { get; set; }
 
         // Position becomes position of start handle

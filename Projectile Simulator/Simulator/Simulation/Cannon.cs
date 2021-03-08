@@ -134,11 +134,11 @@ namespace Simulator.Simulation
             // Flip if facing left
             if (Facing == FacingDirection.Left)
             {
-                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, ProjectionAngle + 1.75f * MathF.PI, rotationCentre, 1, SpriteEffects.FlipHorizontally, 0.05f);
+                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, ProjectionAngle + 1.75f * MathF.PI, rotationCentre, 1, SpriteEffects.FlipHorizontally, 0.07f);
             }
             else
             {
-                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.05f);
+                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.07f);
             }
             
             if (Selected)
