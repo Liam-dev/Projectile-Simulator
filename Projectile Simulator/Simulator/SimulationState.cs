@@ -12,13 +12,13 @@ namespace Simulator
 
         public bool Paused { get; set; }
 
-        public Color BackgroundColour { get; set; }
+        public Color BackgroundColour { get; set; } = Color.SkyBlue;
 
         public Vector2 Gravity { get; set; }
 
         public SimulationState()
         {
-
+            Objects = new List<object>();
         }
 
         public SimulationState(List<object> objects)
