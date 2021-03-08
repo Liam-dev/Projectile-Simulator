@@ -14,7 +14,8 @@ namespace Simulator.Simulation
     /// <summary>
     /// Base class for an object in a simulation.
     /// </summary>
-    //[TypeConverter(typeof(ExpandableObjectConverter))]
+    [JsonObject]
+    [TypeConverter(typeof(SerializableExpandableObjectConverter))]
     public class SimulationObject : ISelectable, IMovable
     {
         // Texture of object
