@@ -81,8 +81,8 @@ namespace Simulator.Simulation
 
         public TapeMeasure(string name, Vector2 position, Vector2 end, int thickness, string textureName, string fontName) : base(name, position, textureName)
         {
-            Start = new Handle(name + "Start", position, "handle");
-            End = new Handle(name + "End", end, "handle");
+            Start = new Handle(name + "Start", position, "handle", this);
+            End = new Handle(name + "End", end, "handle", this);
 
             Thickness = thickness;
             FontName = fontName;
