@@ -9,6 +9,8 @@ namespace Simulator.Simulation
 {
     public class Trajectory : SimulationObject
     {
+        public static bool Visible { get; set; } = true;
+
         public int Length { get; set; }
 
         public int DrawInterval { get; set; }

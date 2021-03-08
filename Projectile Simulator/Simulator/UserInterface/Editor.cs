@@ -88,7 +88,8 @@ namespace Simulator.UserInterface
             {
                 preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
             }
-            
+
+            Trajectory.Visible = preferences.ShowTrajectories;
 
             if (!isTemplate)
             { 
@@ -141,12 +142,6 @@ namespace Simulator.UserInterface
         private void Simulation_SelectedObjectChanged(object sender, EventArgs e)
         {
             inspector.SelectedObject = sender;
-        }
-
-        private void PerformedAction()
-        {
-            undoRedoStack.AddState(simulation.GetState());
-            toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
         }
 
         // When a button is clicked in the toolbar or context menu
@@ -356,22 +351,53 @@ namespace Simulator.UserInterface
             }
         }
 
+        private void PerformedAction()
+        {
+            undoRedoStack.AddState(simulation.GetState());
+            toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
+        }
+
         private void OpenPreferences()
         {
             PreferencesEditor preferencesEditor = new PreferencesEditor(preferences, true, simulation.GetState());
             preferencesEditor.ShowDialog(this);
             preferences = preferencesEditor.Preferences;
+
+            Trajectory.Visible = preferences.ShowTrajectories;
             simulation.LoadSettings(preferencesEditor.SimulationSettings);
         }
 
         private void CreateNewObject(SimulationObject @object)
         {
-            ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
-            if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
+            if (preferences.AutoName)
             {
-                @object.Name = objectCreationBox.ObjectName;
-                simulation.AddObject(@object);
+                List<string> usedNames = new List<string>();
+                foreach (SimulationObject existingObject in simulation.GetObjects())
+                {
+                    usedNames.Add(existingObject.Name);
+                }
+
+                string name = @object.GetType().Name;
+                int i = 1;
+                while (usedNames.Contains(name))
+                {
+                    name = @object.GetType().Name + i.ToString();
+                    i++;
+                }
+
+                @object.Name = name;
             }
+            else
+            {
+                ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
+                if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
+                {
+                    @object.Name = objectCreationBox.ObjectName;   
+                }
+            }
+
+            simulation.AddObject(@object);
+            inspector.SelectedObject = @object;
         }
 
         // Closes Editor and opens new blank editor in new thread (does not save current file)
