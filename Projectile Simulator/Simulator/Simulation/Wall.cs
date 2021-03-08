@@ -73,5 +73,15 @@ namespace Simulator.Simulation
             texture.SetData(new[] { Colour });
         }
 
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
+        {
+            spriteBatch.Draw(texture, BoundingBox, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+
+            if (Selected)
+            {
+                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
+            }
+        }
+
     }
 }

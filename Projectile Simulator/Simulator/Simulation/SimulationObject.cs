@@ -223,7 +223,7 @@ namespace Simulator.Simulation
             // Draw all sides
             foreach (Rectangle side in border)
             {
-                spriteBatch.Draw(borderTexture, destinationRectangle: side, color: Color.White);
+                spriteBatch.Draw(borderTexture, side, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             }
         }   
     }

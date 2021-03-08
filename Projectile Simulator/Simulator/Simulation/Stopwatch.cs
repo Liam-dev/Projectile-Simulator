@@ -84,8 +84,8 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            spriteBatch.Draw(texture, Position, Color.White);
-            spriteBatch.DrawString(font, Timer.ToString(@"ss\.ff"), Position + new Vector2(24, 8), Color.Black);
+            spriteBatch.Draw(texture, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.09f);
+            spriteBatch.DrawString(font, Timer.ToString(@"ss\.ff"), Position + new Vector2(24, 8), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
 
             if (Selected)
             {

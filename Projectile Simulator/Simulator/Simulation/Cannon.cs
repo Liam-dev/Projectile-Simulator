@@ -18,7 +18,7 @@ namespace Simulator.Simulation
         protected List<Projectile> projectiles = new List<Projectile>();
 
         // The offset of firing position from position of cannon
-        protected Vector2 firingPosition = new Vector2(38, 78);
+        protected Vector2 firingPosition = new Vector2(40, 80);
 
         // The offset position to rotate around
         protected Vector2 rotationCentre = new Vector2(66, 95);
@@ -134,16 +134,16 @@ namespace Simulator.Simulation
             // Flip if facing left
             if (Facing == FacingDirection.Left)
             {
-                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, ProjectionAngle + 1.75f * MathF.PI, rotationCentre, 1, SpriteEffects.FlipHorizontally, 0.15f);
+                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, ProjectionAngle + 1.75f * MathF.PI, rotationCentre, 1, SpriteEffects.FlipHorizontally, 0.05f);
             }
             else
             {
-                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.15f);
+                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.05f);
             }
             
             if (Selected)
             {
-                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
+                //DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
         }
 

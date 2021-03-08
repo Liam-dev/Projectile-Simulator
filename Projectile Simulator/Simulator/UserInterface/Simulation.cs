@@ -33,9 +33,6 @@ namespace Simulator.UserInterface
         // State of Mouse in the previous update frame
         protected MouseState lastMouseState;
 
-        // Fire cannon button
-        protected FireCannonButton fireCannonButton;
-
         // Records if the context menu for the simulation is open
         protected bool contextMenuOpen;
 
@@ -286,7 +283,7 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform/*, sortMode: SpriteSortMode.FrontToBack*/);
+            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform, sortMode: SpriteSortMode.FrontToBack);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
@@ -295,15 +292,6 @@ namespace Simulator.UserInterface
             }
 
             Editor.spriteBatch.End();
-
-            // Update fire button
-            /*
-            if (fireCannonButton.Visible)
-            {
-                Vector2 buttonPosition =  Camera.GetActualPosition(fireCannonButton.Cannon.Position + fireCannonButton.DrawOffset);
-                fireCannonButton.Location = new System.Drawing.Point((int)buttonPosition.X, (int)buttonPosition.Y);
-            }
-            */
         }
 
         /// <summary>
@@ -314,7 +302,14 @@ namespace Simulator.UserInterface
         {
             @object.OnLoad(Editor);
 
-            objects.Add(@object);
+            if (@object is Wall)
+            {
+                objects.Add(@object); 
+            }
+            else
+            {
+                objects.Insert(0, @object);
+            }
 
             if (@object is ISelectable selectable && selectable.Selectable)
             {
@@ -621,27 +616,7 @@ namespace Simulator.UserInterface
 
         private void Simulation_MouseHover(object sender, EventArgs e)
         {
-            // Check for cannon to move fire button
-            /*
-            foreach (SimulationObject @object in objects)
-            {
-                if (@object is Cannon cannon)
-                {
-                    // Converts mouse position to simulation world position
-                    Vector2 mouseSimulationPosition = Camera.GetSimulationPostion(MousePosition);
 
-                    if (cannon.Intersects(mouseSimulationPosition))
-                    {
-                        fireCannonButton.Cannon = cannon;
-                        fireCannonButton.Clicked -= cannon.Fire;
-                        fireCannonButton.Clicked += cannon.Fire;
-                        fireCannonButton.DrawOffset = cannon.BoundingBox.Size.ToVector2() * 0.75f;
-                        fireCannonButton.Show();
-                        fireCannonButton.BringToFront();
-                    }
-                }
-            }
-            */
         }
 
         /// <summary>
@@ -755,18 +730,6 @@ namespace Simulator.UserInterface
             return renderTarget;
         }
 
-        //TEMP
-        public void FireAllCannons()
-        {
-            foreach (SimulationObject @object in objects.ToArray())
-            {
-                if (@object is Cannon cannon)
-                {
-                    cannon.Fire();
-                }
-            }
-        }
-
         // When a cannon is fired in the simulation
         private void CannonFired(object sender, EventArgs e)
         {
@@ -786,7 +749,6 @@ namespace Simulator.UserInterface
                 }
             } 
         }
-
 
         #region Collisions
 
