@@ -64,6 +64,7 @@ namespace Simulator.Simulation
         public override Vector2 Centre
         {
             get { return Position + new Vector2(Radius); }
+            set { Position = value - new Vector2(Radius); }
         }
 
         public Projectile()

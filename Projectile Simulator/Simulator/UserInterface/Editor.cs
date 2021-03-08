@@ -350,6 +350,10 @@ namespace Simulator.UserInterface
                         break;
                 }
             }
+            else
+            {
+                SaveFile();
+            }
         }
 
         private void OpenPreferences()
