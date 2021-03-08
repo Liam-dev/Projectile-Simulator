@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -45,11 +46,9 @@ namespace Simulator.UserInterface
 
         private void PreferencesBox_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Update preferences
-            //Preferences = new EditorPreferences() { AutoName = autoNameCheckBox.Checked, ShowTrajectories = trajectoryCheckBox.Checked };
-
             // Save preferences to file
-            FileSaver.WriteJson(Editor.preferencesPath, Preferences);
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + Editor.PreferencesPath;
+            FileSaver.WriteJson(path, Preferences);
         }
 
         private void button_Click(object sender, EventArgs e)

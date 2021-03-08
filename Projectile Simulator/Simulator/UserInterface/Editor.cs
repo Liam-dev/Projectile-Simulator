@@ -41,7 +41,7 @@ namespace Simulator.UserInterface
         private EditorPreferences preferences;
 
         // Path to save preferences file to
-        public static string preferencesPath = "preferences.json";
+        public static string PreferencesPath = "preferences.json";
 
         /// <summary>
         /// Gets the filename of the file in the editor.
@@ -79,9 +79,10 @@ namespace Simulator.UserInterface
             undoRedoStack.AddState(loadedState);
 
             // Read preferences
-            if (File.Exists(preferencesPath))
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + PreferencesPath;
+            if (File.Exists(path))
             {
-                preferences = FileSaver.ReadJson<EditorPreferences>(preferencesPath);
+                preferences = FileSaver.ReadJson<EditorPreferences>(path);
             }
             else
             {

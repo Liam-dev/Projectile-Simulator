@@ -66,9 +66,9 @@ namespace Simulator.UserInterface
             EditorPreferences preferences;
 
             // Read preferences
-            if (File.Exists(Editor.preferencesPath))
+            if (File.Exists(Editor.PreferencesPath))
             {
-                preferences = FileSaver.ReadJson<EditorPreferences>(Editor.preferencesPath);
+                preferences = FileSaver.ReadJson<EditorPreferences>(Editor.PreferencesPath);
             }
             else
             {
