@@ -255,7 +255,7 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newWall":
-
+                    CreateNewObject(new Wall("wall", simulation.ScreenCentre, Microsoft.Xna.Framework.Color.SaddleBrown, 0.95f, new Vector2(25, 300)));
                     break;
 
                 case "newCannon":

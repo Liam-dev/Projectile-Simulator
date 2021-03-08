@@ -47,6 +47,7 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.newObjectToolStripButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.newBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newWallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCannonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTapeMeasureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newStopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -270,6 +271,7 @@
             this.newObjectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.newObjectToolStripButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newBoxToolStripMenuItem,
+            this.newWallToolStripMenuItem,
             this.newCannonToolStripMenuItem,
             this.newTapeMeasureToolStripMenuItem,
             this.newStopwatchToolStripMenuItem,
@@ -288,6 +290,15 @@
             this.newBoxToolStripMenuItem.Tag = "newBox";
             this.newBoxToolStripMenuItem.Text = "New Box";
             this.newBoxToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
+            // 
+            // newWallToolStripMenuItem
+            // 
+            this.newWallToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newWallToolStripMenuItem.Image")));
+            this.newWallToolStripMenuItem.Name = "newWallToolStripMenuItem";
+            this.newWallToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.newWallToolStripMenuItem.Tag = "newWall";
+            this.newWallToolStripMenuItem.Text = "New wall";
+            this.newWallToolStripMenuItem.Click += new System.EventHandler(this.button_Click);
             // 
             // newCannonToolStripMenuItem
             // 
@@ -737,5 +748,6 @@
         private System.Windows.Forms.ToolStripButton redoToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newWallToolStripMenuItem;
     }
 }
