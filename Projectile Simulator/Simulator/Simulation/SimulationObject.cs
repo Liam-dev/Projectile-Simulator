@@ -138,12 +138,12 @@ namespace Simulator.Simulation
             Movable = true;
         }
 
-        /*
+        
         public override string ToString()
         {
             return Name;
         }
-        */
+        
 
         /// <summary>
         /// Called when an object in loaded into a simulation.

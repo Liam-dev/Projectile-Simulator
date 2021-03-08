@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using Simulator.Simulation;
 
 namespace Simulator.Converters
 {

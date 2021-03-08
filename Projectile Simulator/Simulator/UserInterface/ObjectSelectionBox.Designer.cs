@@ -35,7 +35,7 @@
             // 
             // addTriggersButton
             // 
-            this.addTriggersButton.Location = new System.Drawing.Point(60, 130);
+            this.addTriggersButton.Location = new System.Drawing.Point(89, 176);
             this.addTriggersButton.Name = "addTriggersButton";
             this.addTriggersButton.Size = new System.Drawing.Size(100, 23);
             this.addTriggersButton.TabIndex = 2;
@@ -49,7 +49,7 @@
             this.checkedListBox.FormattingEnabled = true;
             this.checkedListBox.Location = new System.Drawing.Point(12, 30);
             this.checkedListBox.Name = "checkedListBox";
-            this.checkedListBox.Size = new System.Drawing.Size(210, 94);
+            this.checkedListBox.Size = new System.Drawing.Size(260, 130);
             this.checkedListBox.TabIndex = 3;
             // 
             // label
@@ -65,7 +65,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 161);
+            this.ClientSize = new System.Drawing.Size(284, 211);
             this.Controls.Add(this.label);
             this.Controls.Add(this.checkedListBox);
             this.Controls.Add(this.addTriggersButton);

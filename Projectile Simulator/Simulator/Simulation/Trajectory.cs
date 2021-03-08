@@ -44,7 +44,7 @@ namespace Simulator.Simulation
 
             foreach (Vector2 point in points)
             {
-                spriteBatch.Draw(texture, point - radiusVector, Color.White);
+                spriteBatch.Draw(texture, point - radiusVector, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.3f);
             }
         }
 
