@@ -217,9 +217,8 @@ namespace Simulator.UserInterface
             // Clear any old objects
             objects.Clear();
 
-            Paused = state.Paused;
-            BackgroundColour = state.BackgroundColour;
-            Projectile.GravitationalAcceleration = state.Gravity;          
+            // Load settings
+            LoadSettings(state);        
 
             // Load objects into simulation
             foreach (object @object in state.Objects)
@@ -234,6 +233,13 @@ namespace Simulator.UserInterface
                     Camera = camera;
                 }
             }
+        }
+
+        public void LoadSettings(SimulationState state)
+        {
+            Paused = state.Paused;
+            BackgroundColour = state.BackgroundColour;
+            Projectile.GravitationalAcceleration = state.Gravity;
         }
 
         // Updates the simulation

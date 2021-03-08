@@ -34,7 +34,14 @@ namespace Simulator.UserInterface
         // Object that is currently saved to clipboard
         private SimulationObject clipboardObject;
 
+        // Object to save undo redo changes
         private UndoRedoStack<SimulationState> undoRedoStack = new UndoRedoStack<SimulationState>();
+
+        // Editor preferences
+        private EditorPreferences preferences;
+
+        // Path to save preferences file to
+        public static string preferencesPath = "preferences.json";
 
         /// <summary>
         /// Gets the filename of the file in the editor.
@@ -49,24 +56,6 @@ namespace Simulator.UserInterface
             simulation.MouseHoverUpdatesOnly = false;
 
             WindowState = FormWindowState.Maximized;
-
-            /*
-            // TEMPORARY
-            // Test objects for mouse zoom testing
-            objectsToLoad.Add(new Box("box", new Vector2(0, -64), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(0, 0), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(100, 400), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(400, 100), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(400, 400), "crate", 0.95f, new Vector2(64, 64)));
-
-            objectsToLoad.Add(new Wall("wall", new Vector2(800, 100), Microsoft.Xna.Framework.Color.SaddleBrown, 0.95f, new Vector2(20, 500)));
-            objectsToLoad.Add(new Wall("floor", new Vector2(320, 600), Microsoft.Xna.Framework.Color.ForestGreen, 0.95f, new Vector2(500, 20)));
-
-            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
-            objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
-
-            objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial"));
-            */
         }
 
         /// <summary>
@@ -84,10 +73,21 @@ namespace Simulator.UserInterface
             WindowState = FormWindowState.Maximized;
 
             // Load simulation state from file
-            loadedState = FileSaver.ReadJson(filename);
+            loadedState = FileSaver.ReadJson<SimulationState>(filename);
 
             // Initialise undo redo stack
             undoRedoStack.AddState(loadedState);
+
+            // Read preferences
+            if (File.Exists(preferencesPath))
+            {
+                preferences = FileSaver.ReadJson<EditorPreferences>(preferencesPath);
+            }
+            else
+            {
+                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
+            }
+            
 
             if (!isTemplate)
             { 
@@ -194,6 +194,10 @@ namespace Simulator.UserInterface
 
                 case "screenshot":
                     Screenshot();
+                    break;
+
+                case "preferences":
+                    OpenPreferences();
                     break;
 
                 case "undo":
@@ -313,16 +317,6 @@ namespace Simulator.UserInterface
             }
         }
 
-        private void CreateNewObject(SimulationObject @object)
-        {
-            ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
-            if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
-            {
-                @object.Name = objectCreationBox.ObjectName;
-                simulation.AddObject(@object);
-            }
-        }
-
         // Runs on closing of editor form
         private void Editor_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -346,15 +340,33 @@ namespace Simulator.UserInterface
                         break;
 
                     // Close without saving
-                    case DialogResult.No:       
+                    case DialogResult.No:
                         break;
 
                     // Cancel
-                    case DialogResult.Cancel:        
+                    case DialogResult.Cancel:
                         e.Cancel = true;
                         break;
                 }
-            }               
+            }
+        }
+
+        private void OpenPreferences()
+        {
+            PreferencesEditor preferencesEditor = new PreferencesEditor(preferences, true, simulation.GetState());
+            preferencesEditor.ShowDialog(this);
+            preferences = preferencesEditor.Preferences;
+            simulation.LoadSettings(preferencesEditor.SimulationSettings);
+        }
+
+        private void CreateNewObject(SimulationObject @object)
+        {
+            ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
+            if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
+            {
+                @object.Name = objectCreationBox.ObjectName;
+                simulation.AddObject(@object);
+            }
         }
 
         // Closes Editor and opens new blank editor in new thread (does not save current file)

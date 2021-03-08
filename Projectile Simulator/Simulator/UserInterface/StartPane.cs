@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO;
 
 namespace Simulator.UserInterface
 {
@@ -62,7 +63,19 @@ namespace Simulator.UserInterface
 
         private void preferencesButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Preferences opening");
+            EditorPreferences preferences;
+
+            // Read preferences
+            if (File.Exists(Editor.preferencesPath))
+            {
+                preferences = FileSaver.ReadJson<EditorPreferences>(Editor.preferencesPath);
+            }
+            else
+            {
+                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
+            }
+
+            new PreferencesEditor(preferences, false).ShowDialog(this);
         }
     }
 }

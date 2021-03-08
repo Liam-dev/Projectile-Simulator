@@ -16,25 +16,13 @@ namespace Simulator
     /// </summary>
     public static class FileSaver
     {
-        // Custom converters for XNA Vector structures.
-        
-        private static JsonSerializerOptions options = new JsonSerializerOptions()
-        {
-            Converters =
-            {
-                new Vector2JsonConverter(),
-                new Vector3JsonConverter()
-            }
-        };
-
-
         /// <summary>
-        /// Writes a list of generic objects to a specified file path
+        /// Writes a state object to a specified file path
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path">Path the save file to.</param>
         /// <param name="state"></param>
-        public static void WriteJson(string path, SimulationState state)
+        public static void WriteJson<T>(string path, T state)
         {
             StreamWriter writer = new StreamWriter(path);
             string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings()
@@ -55,16 +43,16 @@ namespace Simulator
         /// <param name="path">Path to file.</param>
         /// <returns>List of deserialized generic objects</returns>
         ///
-        public static SimulationState ReadJson(string path)
+        public static T ReadJson<T>(string path)
         {
             StreamReader reader = new StreamReader(path);
 
-            SimulationState state;
+            T state;
 
             try
             {
                 string text = reader.ReadToEnd();
-                state = JsonConvert.DeserializeObject<SimulationState>(text, new JsonSerializerSettings()
+                state = JsonConvert.DeserializeObject<T>(text, new JsonSerializerSettings()
                 {
                     TypeNameHandling = TypeNameHandling.All,
                     PreserveReferencesHandling = PreserveReferencesHandling.All
@@ -72,8 +60,8 @@ namespace Simulator
             }
             catch (JsonReaderException e)
             {
-                MessageBox.Show("File could not be loaded. Loading blank simulation instead.", "File invalid!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return new SimulationState();
+                MessageBox.Show("File could not be loaded. Loading default file instead.", "File invalid!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return default;
             }           
 
             reader.Close();
