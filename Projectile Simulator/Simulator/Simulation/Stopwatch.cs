@@ -133,10 +133,12 @@ namespace Simulator.Simulation
             switch (input)
             {
                 case StopwatchInput.Start:
+                    trigger.Triggered -= StartTrigger_Triggered;
                     trigger.Triggered += StartTrigger_Triggered;
                     break;
 
                 case StopwatchInput.Stop:
+                    trigger.Triggered -= StopTrigger_Triggered;
                     trigger.Triggered += StopTrigger_Triggered;
                     break;
             }
@@ -153,8 +155,16 @@ namespace Simulator.Simulation
             Triggers.Remove((trigger,StopwatchInput.Start));
             Triggers.Remove((trigger, StopwatchInput.Stop));
 
-            trigger.Triggered -= StartTrigger_Triggered;
-            trigger.Triggered -= StopTrigger_Triggered;
+            switch (input)
+            {
+                case StopwatchInput.Start:
+                    trigger.Triggered -= StartTrigger_Triggered;
+                    break;
+
+                case StopwatchInput.Stop:
+                    trigger.Triggered -= StopTrigger_Triggered;
+                    break;
+            }    
         }
 
         private void StartTrigger_Triggered(object sender, EventArgs e)
