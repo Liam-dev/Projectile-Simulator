@@ -5,7 +5,7 @@ using System.Text;
 namespace Simulator.Simulation
 {
     /// <summary>
-    /// A trigger to trigger an ITriggerable.
+    /// An interface to trigger an triggerable object.
     /// </summary>
     public interface ITrigger
     {

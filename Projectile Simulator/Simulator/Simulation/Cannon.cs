@@ -15,20 +15,33 @@ namespace Simulator.Simulation
     /// </summary>
     public class Cannon : SimulationObject, IPersistent, ITrigger
     {
+        /// <summary>
+        /// List of projectiles that the cannon has fired.
+        /// </summary>
         protected List<Projectile> projectiles = new List<Projectile>();
 
-        // The offset of firing position from position of cannon
+        /// <summary>
+        /// The offset of firing position from position of cannon
+        /// </summary>
         protected Vector2 firingPosition = new Vector2(40, 80);
 
-        // The offset position to rotate around
+        /// <summary>
+        /// The offset position to rotate around
+        /// </summary>
         protected Vector2 rotationCentre = new Vector2(66, 95);
 
+        /// <summary>
+        /// An enumeration of the horizontal direction a cannon is facing.
+        /// </summary>
         public enum FacingDirection
         {
             Right = 1,
             Left = -1
         }
 
+        /// <summary>
+        /// Gets or sets the horizontal direction the cannon is facing.
+        /// </summary>
         [Browsable(true)]
         [Category("Cannon")]
         [DisplayName("Facing direction")]
@@ -87,11 +100,21 @@ namespace Simulator.Simulation
 
         public event EventHandler Triggered;
 
+        /// <summary>
+        /// Parameterless constructor for Cannon.
+        /// </summary>
         public Cannon()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for Cannon.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="projectile">The projectile the cannon will fire.</param>
         public Cannon(string name, Vector2 position, string textureName, Projectile projectile) : base(name, position, textureName)
         {
             Projectile = projectile;
@@ -147,7 +170,10 @@ namespace Simulator.Simulation
             }
         }
 
-        // Gets the transformed position of the cannon's firing position
+        /// <summary>
+        /// Gets the transformed position of the cannon's firing position
+        /// </summary>
+        /// <returns>Global position of transformed firing position</returns>
         protected Vector2 DetermineFiringPosition()
         {
             Matrix transform = Matrix.Identity;
@@ -184,6 +210,11 @@ namespace Simulator.Simulation
         /// </summary>
         public Vector2 Impulse { get; protected set; }
 
+        /// <summary>
+        /// Constructor for FiringArgs.
+        /// </summary>
+        /// <param name="projectile">Projectile that is being fired.</param>
+        /// <param name="impulse">Impulse to apply to projectile when fired.</param>
         public FiringArgs(Projectile projectile, Vector2 impulse)
         {
             Projectile = projectile;

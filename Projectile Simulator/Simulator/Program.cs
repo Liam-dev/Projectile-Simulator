@@ -12,7 +12,7 @@ namespace Simulator
     {
         /// <summary>
         ///  The main entry point for the application.
-        ///  If arguments contain a filename, then an Editor will open the specified file
+        ///  If arguments contain a filename, then an Editor will open the specified file.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
@@ -23,6 +23,7 @@ namespace Simulator
 
             if (args != null && args.Length > 0)
             {
+                // Gets filename argument
                 string filename = args[0];
                 if (File.Exists(filename))
                 {

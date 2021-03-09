@@ -9,24 +9,42 @@ using System.Text;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// A SimulationObject which detects projectiles.
+    /// </summary>
     public class Detector : SimulationObject, IPersistent, ITrigger
     {
+        /// <summary>
+        /// Enumeration of the horizontal and verical directions.
+        /// </summary>
         public enum DetectionDirection
         {
             Horizontal,
             Vertical
         }
 
+        /// <summary>
+        /// Gets or sets whether the detector can detect objects.
+        /// </summary>
         [Browsable(false)]
         public bool Detecting{ get; set; }
 
+        /// <summary>
+        /// Gets or sets the direction the detector is detecting in.
+        /// </summary>
         [Browsable(true)]
         [Category("Detector")]
         public DetectionDirection Direction { get; set; }
 
+        /// <summary>
+        /// Gets or sets the length of the detector.
+        /// </summary>
         [Browsable(false)]
         public float Separation { get; set; }
 
+        /// <summary>
+        /// Gets or sets the displayed scaled separation of the detector. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Browsable(true)]
         [DisplayName("Separation")]
@@ -37,6 +55,9 @@ namespace Simulator.Simulation
             set { Separation = ScaleConverter.InverseScale(value, Scale, 1); }
         }     
 
+        /// <summary>
+        /// Gets the area rectangle in which projectiles can be detected.
+        /// </summary>
         [JsonIgnore]
         [Browsable(false)]
         public Rectangle DetectionArea
@@ -82,21 +103,34 @@ namespace Simulator.Simulation
                     return Rectangle.Empty;
                 }
             }
-        }
-        
+        }     
 
         public event EventHandler Triggered;
 
+        /// <summary>
+        /// Parameterless constructor for Detector.
+        /// </summary>
         public Detector()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for Detector.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="separation">Detection length of the detector.</param>
         public Detector(string name, Vector2 position, string textureName, float separation) : base(name, position, textureName)
         {
             Separation = separation;
         }
 
+        /// <summary>
+        /// Triggers the detector with an object.
+        /// </summary>
+        /// <param name="object">Object detected.</param>
         public void OnObjectEntered(SimulationObject @object)
         {
             Triggered?.Invoke(this, new EventArgs());

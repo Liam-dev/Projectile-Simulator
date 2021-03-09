@@ -9,12 +9,22 @@ using Simulator.Simulation;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Form used to name and create a new object.
+    /// </summary>
     public partial class ObjectCreationBox : Form
     {
-        List<string> usedNames = new List<string>();
+        private List<string> usedNames = new List<string>();
 
-        public string ObjectName { get; set; }
+        /// <summary>
+        /// Gets the name of the created object.
+        /// </summary>
+        public string ObjectName { get; private set; }
 
+        /// <summary>
+        /// Constructor for ObjectCreationBox.
+        /// </summary>
+        /// <param name="objects">Objects that have already been created.</param>
         public ObjectCreationBox(List<object> objects)
         {
             InitializeComponent();

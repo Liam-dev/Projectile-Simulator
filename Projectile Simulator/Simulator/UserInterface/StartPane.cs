@@ -15,6 +15,9 @@ namespace Simulator.UserInterface
     /// </summary>
     public partial class StartPane : UserControl
     {
+        /// <summary>
+        /// Constructor for StartPane.
+        /// </summary>
         public StartPane()
         {
             InitializeComponent();
@@ -47,12 +50,14 @@ namespace Simulator.UserInterface
         private void loadButton_Click(object sender, EventArgs e)
         {
             // Open OpenFileDialog for simulation files
-            OpenFileDialog fileDialogue = new OpenFileDialog();
-            fileDialogue.Title = "Open Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.Multiselect = false;
-            fileDialogue.CheckFileExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
+            OpenFileDialog fileDialogue = new OpenFileDialog
+            {
+                Title = "Open Simulation File",
+                DefaultExt = "sim",
+                Multiselect = false,
+                CheckFileExists = true,
+                Filter = "Simulation files (*.sim)|*.sim"
+            };
 
             if (fileDialogue.ShowDialog(this) == DialogResult.OK)
             {

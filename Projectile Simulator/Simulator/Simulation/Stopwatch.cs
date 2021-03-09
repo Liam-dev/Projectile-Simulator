@@ -15,10 +15,14 @@ namespace Simulator.Simulation
     /// </summary>
     public class Stopwatch : SimulationObject, IPersistent
     {
-        // Font used for stopwatch display
+        /// <summary>
+        /// Font used for stopwatch display.
+        /// </summary>
         protected SpriteFont font;
 
-        // Records if stopwatch is advancing
+        /// <summary>
+        /// Records if stopwatch is advancing in time.
+        /// </summary>
         protected bool running;
 
         /// <summary>
@@ -35,9 +39,8 @@ namespace Simulator.Simulation
         public TimeSpan Timer { get; set; }
 
         /// <summary>
-        /// Gets or sets triggers for the stopwatch.
+        /// Gets the dictionary of trigger and stopwatch input pairs.
         /// </summary>
-
         [Browsable(false)]
         [JsonIgnore]
         public Dictionary<ITrigger, StopwatchInput> TriggerDictionary
@@ -54,17 +57,27 @@ namespace Simulator.Simulation
             }
         }
 
+        /// <summary>
+        /// Gets or sets the list of triggers for the stopwatch.
+        /// </summary>
         [Browsable(false)]
         public List<(ITrigger, StopwatchInput)> Triggers { get; set; }
 
-        [Browsable(false)]
-        public List<ITrigger> TestTriggers { get; set; } = new List<ITrigger>();
-
+        /// <summary>
+        /// Parameterless constructor for Stopwatch.
+        /// </summary>
         public Stopwatch()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for Stopwatch.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="fontName">Name of font to load.</param>
         public Stopwatch(string name, Vector2 position, string textureName, string fontName) : base(name, position, textureName)
         {
             FontName = fontName;
@@ -135,6 +148,9 @@ namespace Simulator.Simulation
             running = false;
         }
 
+        /// <summary>
+        /// Enumeration of the input that triggers can control a stopwatch on.
+        /// </summary>
         public enum StopwatchInput
         {
             Start,
@@ -144,8 +160,8 @@ namespace Simulator.Simulation
         /// <summary>
         /// Adds a trigger to the stopwatch on a certain input.
         /// </summary>
-        /// <param name="trigger">The trigger to add</param>
-        /// <param name="input">The input to add the trigger to</param>
+        /// <param name="trigger">The trigger to add.</param>
+        /// <param name="input">The input to add the trigger to.</param>
         public void AddTrigger(ITrigger trigger, StopwatchInput input)
         {
             RemoveTrigger(trigger);
@@ -166,10 +182,9 @@ namespace Simulator.Simulation
         }
 
         /// <summary>
-        /// Removes a trigger to the stopwatch on a certain input.
+        /// Removes a certain trigger to the stopwatch.
         /// </summary>
-        /// <param name="trigger">The trigger to remove</param>
-        /// <param name="input">The input to remove the trigger from</param>
+        /// <param name="trigger">The trigger to remove.</param>
         public void RemoveTrigger(ITrigger trigger)
         {
             Triggers.RemoveAll(x => x.Item1 == trigger);

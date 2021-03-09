@@ -56,10 +56,22 @@ namespace Simulator.Simulation
         [Browsable(false)]
         public bool MaintainAspectRatio { get; set; }
 
+        /// <summary>
+        /// Parameterless constructor for Wall.
+        /// </summary>
         public Wall()
         {
+
         }
 
+        /// <summary>
+        /// Constructor for Wall.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="colour">Colour of the object's texture.</param>
+        /// <param name="restitutionCoefficient">Coefficient of restitution of the object.</param>
+        /// <param name="dimensions">The width and height of the wall.</param>
         public Wall(string name, Vector2 position, Color colour, float restitutionCoefficient, Vector2 dimensions) : base(name, position, "wall", restitutionCoefficient, dimensions)
         {
             Colour = colour;

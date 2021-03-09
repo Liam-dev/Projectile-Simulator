@@ -20,10 +20,13 @@ namespace Simulator.UserInterface
         public event EventHandler ItemDoubleClicked;
 
         /// <summary>
-        /// Gets the selected item in the list
+        /// Gets the selected item in the list.
         /// </summary>
         public string SelectedItem { get { return (string)listBox.SelectedItem; } }
 
+        /// <summary>
+        /// Constructor for TemplateList.
+        /// </summary>
         public TemplateList()
         {
             InitializeComponent();

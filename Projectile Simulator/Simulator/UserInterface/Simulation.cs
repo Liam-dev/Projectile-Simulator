@@ -11,7 +11,7 @@ using Simulator.Simulation;
 namespace Simulator.UserInterface
 {
     /// <summary>
-    /// XNA controlled simulation window
+    /// XNA controlled simulation window.
     /// </summary>
     class Simulation : MonoGameControl
     {
@@ -195,20 +195,17 @@ namespace Simulator.UserInterface
 
             MouseHover += Simulation_MouseHover;
 
-            // Initialize fire cannon button
-            /*
-            fireCannonButton = new FireCannonButton();
-            fireCannonButton.Hide();
-            Controls.Add(fireCannonButton);
-            */
-
             // Instantiate object list 
             objects = new List<SimulationObject>();
 
             base.Initialize();
         }
 
-        // Load settings for simulation from state
+        /// <summary>
+        /// Loads settings for simulation from SimulationState
+        /// </summary>
+        /// <param name="state">State to load.</param>
+        /// <param name="initialLoad">Is this the initial load of the simulation.</param>
         public void LoadState(SimulationState state, bool initialLoad = false)
         {
             // Clear any old objects
@@ -232,6 +229,10 @@ namespace Simulator.UserInterface
             }
         }
 
+        /// <summary>
+        /// Load settings from SimulationState.
+        /// </summary>
+        /// <param name="state">TState to load from.</param>
         public void LoadSettings(SimulationState state)
         {
             Paused = state.Paused;
@@ -263,7 +264,10 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Updates all of the simulation objects and also checks for object collisions
+        /// <summary>
+        /// Updates all of the simulation objects and also checks for object collisions.
+        /// </summary>
+        /// <param name="delta">The time since the last simulation update.</param>
         protected void Simulate(TimeSpan delta)
         {
             // Collisions
@@ -276,7 +280,7 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Draws the simulation
+        // Draws the simulation to the screen using the camera's transform.
         protected override void Draw()
         {
             // Reset and clear the simulation window
@@ -297,7 +301,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Loads and adds an object to the simulation.
         /// </summary>
-        /// <param name="object">Object to add to simulation</param>
+        /// <param name="object">Object to add to simulation.</param>
         public void AddObject(SimulationObject @object)
         {
             @object.OnLoad(Editor);
@@ -332,7 +336,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Removes an object from the simulation.
         /// </summary>
-        /// <param name="object">Object to remove from simulation</param>
+        /// <param name="object">Object to remove from simulation.</param>
         public void RemoveObject(SimulationObject @object)
         {
             if (objects.Contains(@object))
@@ -344,7 +348,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets the state of the simulation.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The SimulationState of the simulation.</returns>
         public SimulationState GetState()
         {
             return new SimulationState(GetObjectsToSave())
@@ -358,7 +362,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets all objects in the simulation.
         /// </summary>
-        /// <returns>All objects in simulation</returns>
+        /// <returns>All objects in simulation.</returns>
         public List<SimulationObject> GetObjects()
         {
             return objects;
@@ -367,7 +371,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets all objects that are to be displayed to user.
         /// </summary>
-        /// <returns>All persistent objects in the simulation</returns>
+        /// <returns>All persistent objects in the simulation.</returns>
         public List<SimulationObject> GetObjectsToDisplay()
         {
             List<SimulationObject> list = new List<SimulationObject>();
@@ -386,10 +390,10 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets all objects that are to be saved to a file.
         /// </summary>
-        /// <returns>All persistent objects in the simulation and also the simulation's camera</returns>
+        /// <returns>All persistent objects in the simulation and also the simulation's camera.</returns>
         public List<object> GetObjectsToSave()
         {
-            var list = new List<object>();
+            List<object> list = new List<object>();
             list.Add(Camera);
             list.AddRange(objects);
 
@@ -423,7 +427,9 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Determines the input into the simulation
+        /// <summary>
+        /// Determines the input into the simulation.
+        /// </summary>
         protected void GetInput()
         {
             MouseState mouseState = Mouse.GetState();
@@ -622,7 +628,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Get selected object for context menu selection.
         /// </summary>
-        /// <returns>Object selected by cursor</returns>
+        /// <returns>Object selected by cursor.</returns>
         public object ContextMenuOpening()
         {
             contextMenuOpen = true;
@@ -637,7 +643,10 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Gets if the cursor is intersecting an object in the simulation and selects it if possible
+        /// <summary>
+        /// Gets if the cursor is intersecting an object in the simulation and selects it if possible
+        /// </summary>
+        /// <returns></returns>
         protected bool CheckSelectionIntersection()
         {
             // Object selection
@@ -671,7 +680,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Selects an object in the simulation.
         /// </summary>
-        /// <param name="object">Object to select</param>
+        /// <param name="object">Object to select.</param>
         public void SelectObject(ISelectable @object)
         {
             if (@object != SelectedObject)
@@ -704,7 +713,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets a render of drawn simulation.
         /// </summary>
-        /// <returns>Render of simulation</returns>
+        /// <returns>Render of simulation.</returns>
         public RenderTarget2D GetDrawCapture()
         {
             // Create new render target
@@ -752,7 +761,9 @@ namespace Simulator.UserInterface
 
         #region Collisions
 
-        // Check for collisions between objects
+        /// <summary>
+        /// Checks for collisions between collision objects in the simulation.
+        /// </summary>
         protected void CheckCollisions()
         {
             foreach (SimulationObject i in objects)
@@ -805,7 +816,11 @@ namespace Simulator.UserInterface
             }
         }
 
-        //Resolves static and dynamic collision between two projectiles
+        /// <summary>
+        /// Resolves the static and dynamic collisions between two projectiles.
+        /// </summary>
+        /// <param name="a">First colliding projectile.</param>
+        /// <param name="b">Second colliding projectile.</param>
         protected void ResolveProjectileToProjectileCollision(Projectile a, Projectile b)
         {
             float distance = MathF.Sqrt(MathF.Pow(a.Centre.X - b.Centre.X, 2) + MathF.Pow(a.Centre.Y - b.Centre.Y, 2));
@@ -830,7 +845,13 @@ namespace Simulator.UserInterface
             b.ApplyImpulse(-impulse);
         }
 
-        // Resolves static and dynamic collision between projectile and box
+        /// <summary>
+        /// Resolves the static and dynamic collision between a projectile and a box.
+        /// </summary>
+        /// <param name="p">Colliding projectile.</param>
+        /// <param name="b">Colliding box.</param>
+        /// <param name="collisionPoint">Point of collision.</param>
+        /// <param name="overlap">Overlap of collision.</param>
         protected void ResolveProjectileToBoxCollision(Projectile p, Box b, Vector2 collisionPoint, float overlap)
         {
             Vector2 collisionNormal = collisionPoint - p.Centre;

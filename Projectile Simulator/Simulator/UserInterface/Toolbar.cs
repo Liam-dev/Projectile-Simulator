@@ -30,6 +30,9 @@ namespace Simulator.UserInterface
             }
         }
 
+        /// <summary>
+        /// Constructor for Toolbar.
+        /// </summary>
         public Toolbar()
         {
             InitializeComponent();
@@ -50,6 +53,11 @@ namespace Simulator.UserInterface
             SimulationPaused = false;
         }
 
+        /// <summary>
+        /// Sets the button if the undo and redo button are enabled.
+        /// </summary>
+        /// <param name="undo">Is undo enabled.</param>
+        /// <param name="redo">Is redo enabled.</param>
         public void SetUndoButtonState(bool undo, bool redo)
         {
             undoToolStripButton.Enabled = undo;

@@ -6,6 +6,9 @@ using Simulator.Simulation;
 
 namespace Simulator.Converters
 {
+    /// <summary>
+    /// Converter for expandable objects which can be serialized.
+    /// </summary>
     class SerializableExpandableObjectConverter : ExpandableObjectConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

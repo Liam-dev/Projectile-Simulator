@@ -130,7 +130,7 @@
             this.Controls.Add(this.propertiesPanel);
             this.Controls.Add(this.preferencesPanel);
             this.Name = "PreferencesEditor";
-            this.Text = "PreferencesBox";
+            this.Text = "Preferences";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreferencesBox_FormClosing);
             this.preferencesPanel.ResumeLayout(false);
             this.preferencesPanel.PerformLayout();

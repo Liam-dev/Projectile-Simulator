@@ -36,7 +36,9 @@ namespace Simulator.Simulation
         [Browsable(false)]
         public Handle End { get; set; }
 
-        // Position becomes position of start handle
+        /// <summary>
+        /// Gets or sets the position of the tape measure's start handle.
+        /// </summary>
         public new Vector2 Position
         {
             get { return Start.Position; }
@@ -74,11 +76,23 @@ namespace Simulator.Simulation
         [Browsable(true)]
         public int Thickness { get; set; }
 
+        /// <summary>
+        /// Parameterless constructor for TapeMeasure.
+        /// </summary>
         public TapeMeasure()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for TapeMeasure
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place start of tape measure.</param>
+        /// <param name="end">Position to place end of tape measure.</param>
+        /// <param name="thickness">Thickness of tape measure.</param>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="fontName">Name of font to load.</param>
         public TapeMeasure(string name, Vector2 position, Vector2 end, int thickness, string textureName, string fontName) : base(name, position, textureName)
         {
             Start = new Handle(name + "Start", position, "handle", this);

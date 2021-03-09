@@ -27,6 +27,9 @@ namespace Simulator.UserInterface
             set { SetMenuItems((SimulationObject)value); }
         }
 
+        /// <summary>
+        /// Constructor for SimulationContextMenu.
+        /// </summary>
         public SimulationContextMenu()
         {
             InitializeComponent();

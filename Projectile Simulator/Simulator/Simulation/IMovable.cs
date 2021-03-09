@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 namespace Simulator.Simulation
 {
     /// <summary>
-    /// 
+    /// An interface for moving selected objects.
     /// </summary>
     interface IMovable
     {

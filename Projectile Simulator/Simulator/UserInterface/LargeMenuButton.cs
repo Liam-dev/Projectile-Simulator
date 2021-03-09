@@ -45,6 +45,9 @@ namespace Simulator.UserInterface
             set { icon.Image = value; }
         }
 
+        /// <summary>
+        /// Constructor for LargeMenuButton.
+        /// </summary>
         public LargeMenuButton()
         {
             InitializeComponent();

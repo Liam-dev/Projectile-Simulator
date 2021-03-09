@@ -18,12 +18,14 @@ namespace Simulator.Simulation
     public class Projectile : PhysicsObject
     {
         /// <summary>
-        /// Gets or sets the strength and direction of gravity
+        /// The trajectory of the projectile.
+        /// </summary>
+        protected Trajectory trajectory;
+
+        /// <summary>
+        /// Gets or sets the strength and direction of gravity.
         /// </summary>
         public static Vector2 GravitationalAcceleration { get; set; } = Scale * -9.8f * Vector2.UnitY;
-
-        // Trajectory of projectile
-        protected Trajectory trajectory;
 
         /// <summary>
         /// Gets or sets the drag coefficient of the projectile (quantity is dimensionless).
@@ -51,7 +53,6 @@ namespace Simulator.Simulation
             set { Radius = ScaleConverter.InverseScale(value, Scale, 1); }
         }
 
-
         [JsonIgnore]
         [Browsable(false)]
         public override Rectangle BoundingBox
@@ -67,11 +68,24 @@ namespace Simulator.Simulation
             set { Position = value - new Vector2(Radius); }
         }
 
+        /// <summary>
+        /// Parameterless constructor for Projectile.
+        /// </summary>
         public Projectile()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for Projectile
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="mass">The mass of the object.</param>
+        /// <param name="restitutionCoefficient">Coefficient of restitution of the object.</param>
+        /// <param name="radius">The radius of the circular projectile.</param>
+        /// <param name="dragCoefficient">The drag coefficient of the projectile.</param>
         public Projectile(string name, Vector2 position, string textureName, float mass, float restitutionCoefficient, float radius, float dragCoefficient) : base(name, position, textureName, mass, restitutionCoefficient)
         {
             Radius = radius;
@@ -114,16 +128,27 @@ namespace Simulator.Simulation
             }   
         }
 
+        /// <summary>
+        /// Gets the drag due to air resistance of the object.
+        /// </summary>
+        /// <returns>Drag force vector.</returns>
         protected Vector2 CalulateDrag()
         {
             return 0.5f * MathF.PI * DragCoefficient * Mass * velocity.Length() * -velocity / Radius;
         }
 
+        /// <summary>
+        /// Gets the weight of the object.
+        /// </summary>
+        /// <returns>Weight vector of object.</returns>
         protected Vector2 CalculateWeight()
         {
             return Mass * GravitationalAcceleration;
         }
 
+        /// <summary>
+        /// Clears the projectile's trajectory.
+        /// </summary>
         public void RemoveTrajectory()
         {
             trajectory = null;

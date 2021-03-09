@@ -29,7 +29,7 @@ namespace Simulator.UserInterface
         private delegate void SafeCallDelegate();
 
         // List of object to load into simulation when form is loaded
-        private SimulationState loadedState;
+        private SimulationState loadedState = new SimulationState();
 
         // Object that is currently saved to clipboard
         private SimulationObject clipboardObject;
@@ -40,14 +40,19 @@ namespace Simulator.UserInterface
         // Editor preferences
         private EditorPreferences preferences;
 
-        // Path to save preferences file to
+        /// <summary>
+        /// Path to save the Editor preferences file to.
+        /// </summary>
         public static string PreferencesPath = "preferences.json";
 
         /// <summary>
         /// Gets the filename of the file in the editor.
         /// </summary>
-        public string Filename { get; protected set; }
+        public string Filename { get; private set; }
 
+        /// <summary>
+        /// Parameterless constructor for Editor to open with no file.
+        /// </summary>
         public Editor()
         {
             InitializeComponent();
@@ -59,10 +64,10 @@ namespace Simulator.UserInterface
         }
 
         /// <summary>
-        /// Open Editor with  file
+        /// Constructor for Editor to open with a file.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="isTemplate"></param>
+        /// <param name="filename">Name of file to load into editor.</param>
+        /// <param name="isTemplate">Whether the file is to be used as template.</param>
         public Editor(string filename, bool isTemplate = false)
         {
             InitializeComponent();
@@ -443,7 +448,7 @@ namespace Simulator.UserInterface
         }
 
         // Writes simulation to file if already saved or shows dialogue for unnamed files
-        protected void Save()
+        private void Save()
         {
             if (Filename == null)
             {
@@ -457,7 +462,7 @@ namespace Simulator.UserInterface
         }
 
         // Saves file before performing another action
-        protected void SaveFilePerformAction(Action action)
+        private void SaveFilePerformAction(Action action)
         {
             // Unsaved file warning message
 
@@ -536,7 +541,7 @@ namespace Simulator.UserInterface
         }
 
         // Shows message warning box about unsaved file
-        protected DialogResult ShowUnsavedFileMessage()
+        private DialogResult ShowUnsavedFileMessage()
         {
             string name = "Untitled Simulation";
             
@@ -551,14 +556,16 @@ namespace Simulator.UserInterface
         }
 
         // Shows save file dialogue and saves simulation to file
-        protected bool ShowSaveFileDialogue()
+        private bool ShowSaveFileDialogue()
         {
-            SaveFileDialog fileDialogue = new SaveFileDialog();
-            fileDialogue.Title = "Save Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.AddExtension = true;
-            fileDialogue.CheckPathExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*";
+            SaveFileDialog fileDialogue = new SaveFileDialog
+            {
+                Title = "Save Simulation File",
+                DefaultExt = "sim",
+                AddExtension = true,
+                CheckPathExists = true,
+                Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*"
+            };
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
@@ -573,14 +580,16 @@ namespace Simulator.UserInterface
         }
 
         // Shows open file dialogue and opens selected file in new thread and closes current Editor 
-        protected void ShowOpenFileDialogue()
+        private void ShowOpenFileDialogue()
         {
-            OpenFileDialog fileDialogue = new OpenFileDialog();
-            fileDialogue.Title = "Open Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.Multiselect = false;
-            fileDialogue.CheckFileExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
+            OpenFileDialog fileDialogue = new OpenFileDialog
+            {
+                Title = "Open Simulation File",
+                DefaultExt = "sim",
+                Multiselect = false,
+                CheckFileExists = true,
+                Filter = "Simulation files (*.sim)|*.sim"
+            };
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
@@ -595,18 +604,20 @@ namespace Simulator.UserInterface
         }
 
         // Takes a screenshot of the simulation window and saves it as a png image to a specified file
-        protected void Screenshot()
+        private void Screenshot()
         {
             Thread saveThread = new Thread(() =>
             {
                 RenderTarget2D screenshot = simulation.GetDrawCapture();
 
-                SaveFileDialog fileDialogue = new SaveFileDialog();
-                fileDialogue.Title = "Save Screenshot";
-                fileDialogue.DefaultExt = "png";
-                fileDialogue.AddExtension = true;
-                fileDialogue.CheckPathExists = true;
-                fileDialogue.Filter = "Portable Graphics Format (*.png)|*.png|All files (*.*)|*.*";
+                SaveFileDialog fileDialogue = new SaveFileDialog
+                {
+                    Title = "Save Screenshot",
+                    DefaultExt = "png",
+                    AddExtension = true,
+                    CheckPathExists = true,
+                    Filter = "Portable Graphics Format (*.png)|*.png|All files (*.*)|*.*"
+                };
 
                 if (fileDialogue.ShowDialog() == DialogResult.OK)
                 {
@@ -620,7 +631,7 @@ namespace Simulator.UserInterface
             saveThread.Start();
         }
 
-        protected void AddTriggerToStopwatch(ISelectable selectable, Stopwatch.StopwatchInput input)
+        private void AddTriggerToStopwatch(ISelectable selectable, Stopwatch.StopwatchInput input)
         {
             if (selectable is Stopwatch stopwatch)
             {
@@ -676,11 +687,13 @@ namespace Simulator.UserInterface
         }
 
         // Opens URL of web page in default browser 
-        protected void OpenWebPage(string url)
+        private void OpenWebPage(string url)
         {
-            var processStartInfo = new System.Diagnostics.ProcessStartInfo();
-            processStartInfo.UseShellExecute = true;
-            processStartInfo.FileName = url;
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = url
+            };
             System.Diagnostics.Process.Start(processStartInfo);
         }
     }

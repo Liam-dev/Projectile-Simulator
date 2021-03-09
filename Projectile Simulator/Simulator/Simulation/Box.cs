@@ -49,11 +49,22 @@ namespace Simulator.Simulation
             get { return Position + (Dimensions / 2); }
         }
 
+        /// <summary>
+        /// Parameterless constructor for Box.
+        /// </summary>
         public Box()
         {
 
         }
 
+        /// <summary>
+        /// Constructor for Box.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="position"></param>
+        /// <param name="textureName"></param>
+        /// <param name="restitutionCoefficient"></param>
+        /// <param name="dimensions"></param>
         public Box(string name, Vector2 position, string textureName, float restitutionCoefficient, Vector2 dimensions) : base(name, position, textureName, restitutionCoefficient)
         {
             Dimensions = dimensions;

@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// An interface for selecable objects.
+    /// </summary>
     public interface ISelectable
     {
         /// <summary>

@@ -9,10 +9,23 @@ using System.Windows.Forms;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// A Form used to select and check objects from a list.
+    /// </summary>
     public partial class ObjectSelectionBox : Form
     {
+        /// <summary>
+        /// Gets or sets the objects which are checked.
+        /// </summary>
         public List<object> CheckedObjects { get; set; }
 
+        /// <summary>
+        /// Constructor for ObjectSelectionBox.
+        /// </summary>
+        /// <param name="objects">List of all available objects to select from.</param>
+        /// <param name="checkedObjects">List of objects which are already checked.</param>
+        /// <param name="title">Title of the form.</param>
+        /// <param name="buttonPrompt">Prompt to display on the button.</param>
         public ObjectSelectionBox(List<object> objects, List<object> checkedObjects, string title, string buttonPrompt)
         {
             InitializeComponent();

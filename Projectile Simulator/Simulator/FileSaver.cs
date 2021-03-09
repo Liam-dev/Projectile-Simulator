@@ -17,14 +17,15 @@ namespace Simulator
     public static class FileSaver
     {
         /// <summary>
-        /// Writes a state object to a specified file path
+        /// Writes a generic state object to a specified file path.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Type of object to write.</typeparam>
         /// <param name="path">Path the save file to.</param>
-        /// <param name="state"></param>
+        /// <param name="state">State to write to file.</param>
         public static void WriteJson<T>(string path, T state)
         {
             StreamWriter writer = new StreamWriter(path);
+
             string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.All,
@@ -37,18 +38,18 @@ namespace Simulator
         }
 
         /// <summary>
-        /// Reads a list of generic objects from a specified file path
+        /// Reads a generic state object from a specified file path.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Type to deserialize to.</typeparam>
         /// <param name="path">Path to file.</param>
-        /// <returns>List of deserialized generic objects</returns>
-        ///
+        /// <returns>Deserialized generic state.</returns>
         public static T ReadJson<T>(string path)
         {
             StreamReader reader = new StreamReader(path);
 
             T state;
 
+            // Attempt to open file
             try
             {
                 string text = reader.ReadToEnd();
@@ -58,8 +59,9 @@ namespace Simulator
                     PreserveReferencesHandling = PreserveReferencesHandling.All
                 });
             }
-            catch (JsonReaderException e)
+            catch (JsonReaderException)
             {
+                // Catch invalid or corrupted file
                 MessageBox.Show("File could not be loaded. Loading default file instead.", "File invalid!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return default;
             }           

@@ -16,7 +16,7 @@ namespace Simulator.UserInterface
     public partial class Inspector : UserControl
     {
         // The current selected object in the inspector
-        protected object selectedObject;
+        private object selectedObject;
 
         /// <summary>
         /// Gets or sets the inspector's selected object.
@@ -43,6 +43,9 @@ namespace Simulator.UserInterface
         /// </summary>
         public event EventHandler SelectedObjectChanged;
 
+        /// <summary>
+        /// Constructor for Inspector.
+        /// </summary>
         public Inspector()
         {
             InitializeComponent();
@@ -56,7 +59,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Sets the data source for the inspector's selection box.
         /// </summary>
-        /// <param name="source">List of objects to set as data source</param>
+        /// <param name="source">List of objects to set as data source.</param>
         public void SetDataSource(List<SimulationObject> source)
         {
             // if object deleted from simulation then clear from inspector
