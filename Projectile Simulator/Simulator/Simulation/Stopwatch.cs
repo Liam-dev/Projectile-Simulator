@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Newtonsoft.Json;
+using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
@@ -36,8 +37,28 @@ namespace Simulator.Simulation
         /// <summary>
         /// Gets or sets triggers for the stopwatch.
         /// </summary>
+
+        [Browsable(false)]
+        [JsonIgnore]
+        public Dictionary<ITrigger, StopwatchInput> TriggerDictionary
+        {
+            get
+            {
+                Dictionary<ITrigger, StopwatchInput> result = new Dictionary<ITrigger, StopwatchInput>();
+                foreach (var trigger in Triggers)
+                {
+                    result.Add(trigger.Item1, trigger.Item2);
+                }
+
+                return result;
+            }
+        }
+
         [Browsable(false)]
         public List<(ITrigger, StopwatchInput)> Triggers { get; set; }
+
+        [Browsable(false)]
+        public List<ITrigger> TestTriggers { get; set; } = new List<ITrigger>();
 
         public Stopwatch()
         {
@@ -61,16 +82,17 @@ namespace Simulator.Simulation
             font = Editor.Content.Load<SpriteFont>("Fonts/" + FontName);
 
             // Add triggers
-            foreach (var trigger in Triggers)
+
+            foreach (var trigger in TriggerDictionary)
             {
-                switch (trigger.Item2)
+                switch (trigger.Value)
                 {
                     case StopwatchInput.Start:
-                        trigger.Item1.Triggered += StartTrigger_Triggered;
+                        trigger.Key.Triggered += StartTrigger_Triggered;
                         break;
 
                     case StopwatchInput.Stop:
-                        trigger.Item1.Triggered += StopTrigger_Triggered;
+                        trigger.Key.Triggered += StopTrigger_Triggered;
                         break;
                 };
             }
@@ -126,19 +148,17 @@ namespace Simulator.Simulation
         /// <param name="input">The input to add the trigger to</param>
         public void AddTrigger(ITrigger trigger, StopwatchInput input)
         {
-            RemoveTrigger(trigger, input);
+            RemoveTrigger(trigger);
 
             Triggers.Add((trigger, input));
 
             switch (input)
             {
                 case StopwatchInput.Start:
-                    trigger.Triggered -= StartTrigger_Triggered;
                     trigger.Triggered += StartTrigger_Triggered;
                     break;
 
                 case StopwatchInput.Stop:
-                    trigger.Triggered -= StopTrigger_Triggered;
                     trigger.Triggered += StopTrigger_Triggered;
                     break;
             }
@@ -150,21 +170,12 @@ namespace Simulator.Simulation
         /// </summary>
         /// <param name="trigger">The trigger to remove</param>
         /// <param name="input">The input to remove the trigger from</param>
-        public void RemoveTrigger(ITrigger trigger, StopwatchInput input)
+        public void RemoveTrigger(ITrigger trigger)
         {
-            Triggers.Remove((trigger,StopwatchInput.Start));
-            Triggers.Remove((trigger, StopwatchInput.Stop));
+            Triggers.RemoveAll(x => x.Item1 == trigger);
 
-            switch (input)
-            {
-                case StopwatchInput.Start:
-                    trigger.Triggered -= StartTrigger_Triggered;
-                    break;
-
-                case StopwatchInput.Stop:
-                    trigger.Triggered -= StopTrigger_Triggered;
-                    break;
-            }    
+            trigger.Triggered -= StartTrigger_Triggered;
+            trigger.Triggered -= StopTrigger_Triggered;  
         }
 
         private void StartTrigger_Triggered(object sender, EventArgs e)

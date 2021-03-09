@@ -624,27 +624,39 @@ namespace Simulator.UserInterface
         {
             if (selectable is Stopwatch stopwatch)
             {
-                List<object> allTriggers = new List<object>();
+                List<object> availableTriggers = new List<object>();
+                List<object> currentTriggers = new List<object>();
+
                 foreach (SimulationObject simulationObject in simulation.GetObjects())
                 {
-                    if (simulationObject is ITrigger)
+                    if (simulationObject is ITrigger trigger)
                     {
-                        allTriggers.Add(simulationObject);
+                        if (stopwatch.TriggerDictionary.ContainsKey(trigger))
+                        {
+                            if (stopwatch.TriggerDictionary[trigger] == input)
+                            {
+                                availableTriggers.Add(trigger);
+                            }
+                        }
+                        else
+                        {
+                            availableTriggers.Add(trigger);
+                        }
+                        
                     }
                 }
-
-                List<object> currentTriggers = new List<object>();
-                foreach (var trigger in stopwatch.Triggers)
+                
+                foreach (var trigger in stopwatch.TriggerDictionary)
                 {
-                    if (trigger.Item2 == input)
+                    if (trigger.Value == input)
                     {
-                        currentTriggers.Add(trigger.Item1);
+                        currentTriggers.Add(trigger.Key);
                     }
                 }
 
                 string title = "Select " + input.ToString().ToLower() +" triggers for " + stopwatch.Name;
 
-               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(allTriggers, currentTriggers, title, "Update triggers");
+               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
 
                 if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
                 {
@@ -655,9 +667,9 @@ namespace Simulator.UserInterface
                     }
 
                     // Remove old triggers
-                    foreach (ITrigger trigger in allTriggers.Except(objectSelectionBox.CheckedObjects))
+                    foreach (ITrigger trigger in availableTriggers.Except(objectSelectionBox.CheckedObjects))
                     {
-                        stopwatch.RemoveTrigger(trigger, input);
+                        stopwatch.RemoveTrigger(trigger);
                     }
                 }
             }   
