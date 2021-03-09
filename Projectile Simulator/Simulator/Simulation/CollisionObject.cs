@@ -1,8 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 
 namespace Simulator.Simulation
@@ -25,7 +21,6 @@ namespace Simulator.Simulation
         /// </summary>
         public CollisionObject()
         {
-
         }
 
         /// <summary>

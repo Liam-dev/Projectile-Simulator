@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Simulator.Simulation
 {
@@ -43,7 +40,6 @@ namespace Simulator.Simulation
         /// </summary>
         public PhysicsObject()
         {
-
         }
 
         /// <summary>

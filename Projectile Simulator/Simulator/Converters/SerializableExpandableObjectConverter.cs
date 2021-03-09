@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using Simulator.Simulation;
 
 namespace Simulator.Converters
 {
     /// <summary>
     /// Converter for expandable objects which can be serialized.
     /// </summary>
-    class SerializableExpandableObjectConverter : ExpandableObjectConverter
+    internal class SerializableExpandableObjectConverter : ExpandableObjectConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
@@ -20,7 +17,7 @@ namespace Simulator.Converters
             else
             {
                 return base.CanConvertTo(context, destinationType);
-            } 
+            }
         }
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)

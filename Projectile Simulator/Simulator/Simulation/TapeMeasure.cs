@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
 using MonoGame.Forms.Services;
+using Newtonsoft.Json;
 using Simulator.Converters;
+using System;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
     /// <summary>
     /// A SimulationObject used to measure distance in a simulation.
     /// </summary>
-    class TapeMeasure : SimulationObject, IPersistent
+    internal class TapeMeasure : SimulationObject, IPersistent
     {
         // Font used for length display
         protected SpriteFont font;
@@ -81,7 +79,6 @@ namespace Simulator.Simulation
         /// </summary>
         public TapeMeasure()
         {
-
         }
 
         /// <summary>

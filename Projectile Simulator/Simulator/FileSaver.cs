@@ -1,12 +1,6 @@
-﻿using System.IO;
-using System.Collections.Generic;
-using System;
-using System.Text.Json;
-//using System.Text.Json.Serialization;
+﻿//using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Microsoft.Xna.Framework;
-using Simulator.Converters;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Simulator
@@ -33,7 +27,7 @@ namespace Simulator
             });
 
             writer.Write(data);
-            
+
             writer.Close();
         }
 
@@ -64,11 +58,11 @@ namespace Simulator
                 // Catch invalid or corrupted file
                 MessageBox.Show("File could not be loaded. Loading default file instead.", "File invalid!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return default;
-            }           
+            }
 
             reader.Close();
 
             return state;
-        } 
+        }
     }
 }

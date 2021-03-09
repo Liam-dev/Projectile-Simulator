@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using Newtonsoft.Json;
-using Simulator.Converters;
 
 namespace Simulator.Simulation
 {
@@ -68,7 +66,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Stopwatch()
         {
-
         }
 
         /// <summary>
@@ -178,7 +175,6 @@ namespace Simulator.Simulation
                     trigger.Triggered += StopTrigger_Triggered;
                     break;
             }
-            
         }
 
         /// <summary>
@@ -190,7 +186,7 @@ namespace Simulator.Simulation
             Triggers.RemoveAll(x => x.Item1 == trigger);
 
             trigger.Triggered -= StartTrigger_Triggered;
-            trigger.Triggered -= StopTrigger_Triggered;  
+            trigger.Triggered -= StopTrigger_Triggered;
         }
 
         private void StartTrigger_Triggered(object sender, EventArgs e)

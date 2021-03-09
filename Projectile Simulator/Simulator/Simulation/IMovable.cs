@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Simulator.Simulation
 {
     /// <summary>
     /// An interface for moving selected objects.
     /// </summary>
-    interface IMovable
+    internal interface IMovable
     {
         /// <summary>
         /// Gets or sets whether the object is currently moving.

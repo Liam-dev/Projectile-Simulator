@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Simulator.Simulation;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Simulator.Simulation;
 
 namespace Simulator.UserInterface
 {
@@ -34,9 +29,9 @@ namespace Simulator.UserInterface
                 else
                 {
                     selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value;
-                } 
+                }
             }
-        }           
+        }
 
         /// <summary>
         /// Occurs when the inspector's selected object is changed.
@@ -53,7 +48,6 @@ namespace Simulator.UserInterface
 
         private void Inspector_Load(object sender, EventArgs e)
         {
-
         }
 
         /// <summary>

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Forms.Controls;
 using Simulator.Simulation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Simulator.UserInterface
 {
     /// <summary>
     /// XNA controlled simulation window.
     /// </summary>
-    class Simulation : MonoGameControl
+    internal class Simulation : MonoGameControl
     {
         // List of all simulation objects to be updated and drawn
         protected List<SimulationObject> objects;
@@ -175,7 +174,7 @@ namespace Simulator.UserInterface
             Scale = 100;
 
             // Apply scale to static property of SimulationObject
-            SimulationObject.Scale = Scale; 
+            SimulationObject.Scale = Scale;
 
             // If there is no camera, create a default one
             if (Camera == null)
@@ -195,7 +194,7 @@ namespace Simulator.UserInterface
 
             MouseHover += Simulation_MouseHover;
 
-            // Instantiate object list 
+            // Instantiate object list
             objects = new List<SimulationObject>();
 
             base.Initialize();
@@ -212,7 +211,7 @@ namespace Simulator.UserInterface
             objects.Clear();
 
             // Load settings
-            LoadSettings(state);        
+            LoadSettings(state);
 
             // Load objects into simulation
             foreach (object @object in state.Objects)
@@ -287,12 +286,12 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform, sortMode: SpriteSortMode.FrontToBack);
+            Editor.spriteBatch.Begin(transformMatrix: Camera.Transform, sortMode: SpriteSortMode.FrontToBack);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
             {
-                @object.Draw(Editor.spriteBatch, Camera.Zoom);              
+                @object.Draw(Editor.spriteBatch, Camera.Zoom);
             }
 
             Editor.spriteBatch.End();
@@ -308,7 +307,7 @@ namespace Simulator.UserInterface
 
             if (@object is Wall)
             {
-                objects.Add(@object); 
+                objects.Add(@object);
             }
             else
             {
@@ -342,7 +341,7 @@ namespace Simulator.UserInterface
             if (objects.Contains(@object))
             {
                 objects.Remove(@object);
-            }           
+            }
         }
 
         /// <summary>
@@ -497,7 +496,6 @@ namespace Simulator.UserInterface
                 }
             }
 
-
             // Scrolling
             int newMouseScroll = mouseState.ScrollWheelValue;
 
@@ -511,7 +509,6 @@ namespace Simulator.UserInterface
             {
                 MouseScrolled?.Invoke(this, new MouseScrollArgs(MouseScrollDiretion.Down));
             }
-
 
             // Left button hold
             if (LeftMouseButtonPressed)
@@ -592,7 +589,6 @@ namespace Simulator.UserInterface
             {
                 contextMenuOpen = false;
             }
-            
         }
 
         private void Simulation_LeftMouseButtonJustReleased(object sender, EventArgs e)
@@ -607,22 +603,19 @@ namespace Simulator.UserInterface
             {
                 objectMoving = false;
                 ObjectMoved?.Invoke(this, new EventArgs());
-            }  
+            }
         }
 
         private void Simulation_RightMouseButtonJustPressed(object sender, EventArgs e)
         {
-
         }
 
         private void Simulation_RightMouseButtonJustReleased(object sender, EventArgs e)
         {
-
         }
 
         private void Simulation_MouseHover(object sender, EventArgs e)
         {
-
         }
 
         /// <summary>
@@ -691,7 +684,7 @@ namespace Simulator.UserInterface
                 SelectedObject = @object;
                 IsObjectSelected = true;
                 SelectedObjectChanged?.Invoke(SelectedObject, new EventArgs());
-            }   
+            }
         }
 
         /// <summary>
@@ -708,7 +701,7 @@ namespace Simulator.UserInterface
             }
         }
 
-        #endregion
+        #endregion Input
 
         /// <summary>
         /// Gets a render of drawn simulation.
@@ -756,7 +749,7 @@ namespace Simulator.UserInterface
                     // Add projectile to simulation
                     AddObject(projectile);
                 }
-            } 
+            }
         }
 
         #region Collisions
@@ -779,7 +772,7 @@ namespace Simulator.UserInterface
                             if (colliding)
                             {
                                 ResolveProjectileToProjectileCollision(a, b);
-                            }          
+                            }
                         }
                         else if (j is Box c)
                         {
@@ -787,14 +780,14 @@ namespace Simulator.UserInterface
                             {
                                 X = MathF.Max(c.Position.X, MathF.Min(a.Centre.X, c.Position.X + c.Dimensions.X)),
                                 Y = MathF.Max(c.Position.Y, MathF.Min(a.Centre.Y, c.Position.Y + c.Dimensions.Y))
-                            };          
-                            
+                            };
+
                             float overlap = a.Radius - (nearestPoint - a.Centre).Length();
 
                             if (overlap > 0)
                             {
                                 ResolveProjectileToBoxCollision(a, c, nearestPoint, overlap);
-                            }                           
+                            }
                         }
                         else if (j is Detector d)
                         {
@@ -869,6 +862,6 @@ namespace Simulator.UserInterface
             p.ApplyImpulse(impulse);
         }
 
-        #endregion
+        #endregion Collisions
     }
 }

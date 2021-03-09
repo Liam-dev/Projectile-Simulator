@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
 using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Simulator.UserInterface
 {
@@ -25,7 +20,6 @@ namespace Simulator.UserInterface
 
         private void StartPane_Load(object sender, EventArgs e)
         {
-
         }
 
         // When new button is clicked, load the selected template simulation into Editor
@@ -63,7 +57,7 @@ namespace Simulator.UserInterface
             {
                 new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
                 Application.ExitThread();
-            }        
+            }
         }
 
         private void preferencesButton_Click(object sender, EventArgs e)

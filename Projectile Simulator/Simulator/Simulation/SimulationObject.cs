@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
-using System.ComponentModel;
+using Newtonsoft.Json;
 using Simulator.Converters;
+using System;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
@@ -52,7 +50,7 @@ namespace Simulator.Simulation
         [JsonIgnore]
         [Browsable(true)]
         [DisplayName("Position")]
-        [Category("Object")]        
+        [Category("Object")]
         public Vector2 DisplayPosition
         {
             get { return ScaleConverter.ScaleVector(Position, Scale, 1, true, 2); }
@@ -134,7 +132,6 @@ namespace Simulator.Simulation
         /// </summary>
         public SimulationObject()
         {
-
         }
 
         /// <summary>
@@ -159,7 +156,7 @@ namespace Simulator.Simulation
         public override string ToString()
         {
             return Name;
-        }      
+        }
 
         /// <summary>
         /// Called when an object in loaded into a simulation.
@@ -181,7 +178,6 @@ namespace Simulator.Simulation
         /// <param name="delta">The time since the last update.</param>
         public virtual void Update(TimeSpan delta)
         {
-            
         }
 
         /// <summary>
@@ -252,6 +248,6 @@ namespace Simulator.Simulation
             {
                 spriteBatch.Draw(borderTexture, side, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             }
-        }   
+        }
     }
 }

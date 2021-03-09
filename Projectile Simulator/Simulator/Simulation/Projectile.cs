@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
-using Simulator.Simulation;
+using Newtonsoft.Json;
 using Simulator.Converters;
+using System;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
@@ -73,7 +69,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Projectile()
         {
-
         }
 
         /// <summary>
@@ -105,7 +100,7 @@ namespace Simulator.Simulation
         public override void Update(TimeSpan delta)
         {
             resultantForce = Vector2.Zero;
-            
+
             ApplyForce(CalculateWeight());
             ApplyForce(CalulateDrag());
 
@@ -125,7 +120,7 @@ namespace Simulator.Simulation
             if (trajectory != null && Trajectory.Visible)
             {
                 trajectory.Draw(spriteBatch, zoom);
-            }   
+            }
         }
 
         /// <summary>
@@ -154,5 +149,4 @@ namespace Simulator.Simulation
             trajectory = null;
         }
     }
-
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Xna.Framework;
 
 namespace Simulator.Converters
 {
@@ -15,7 +13,7 @@ namespace Simulator.Converters
         public override Vector2 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string value = reader.GetString();
-            
+
             // Split into components
             string[] components = value.Split(',');
             return new Vector2(float.Parse(components[0]), float.Parse(components[1]));

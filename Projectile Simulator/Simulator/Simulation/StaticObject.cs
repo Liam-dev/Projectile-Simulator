@@ -1,8 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Simulator.Simulation
 {
@@ -16,7 +12,6 @@ namespace Simulator.Simulation
         /// </summary>
         public StaticObject()
         {
-
         }
 
         /// <summary>
@@ -28,7 +23,6 @@ namespace Simulator.Simulation
         /// <param name="restitutionCoefficient">Coefficient of restitution of the object.</param>
         public StaticObject(string name, Vector2 position, string textureName, float restitutionCoefficient) : base(name, position, textureName, restitutionCoefficient)
         {
-
         }
     }
 }

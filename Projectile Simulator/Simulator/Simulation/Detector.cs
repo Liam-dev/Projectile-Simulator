@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Simulator.Converters;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Simulator.Simulation
 {
@@ -27,7 +25,7 @@ namespace Simulator.Simulation
         /// Gets or sets whether the detector can detect objects.
         /// </summary>
         [Browsable(false)]
-        public bool Detecting{ get; set; }
+        public bool Detecting { get; set; }
 
         /// <summary>
         /// Gets or sets the direction the detector is detecting in.
@@ -53,7 +51,7 @@ namespace Simulator.Simulation
         {
             get { return ScaleConverter.Scale(Separation, Scale, 1, false, 0); }
             set { Separation = ScaleConverter.InverseScale(value, Scale, 1); }
-        }     
+        }
 
         /// <summary>
         /// Gets the area rectangle in which projectiles can be detected.
@@ -73,7 +71,7 @@ namespace Simulator.Simulation
                     else
                     {
                         return new Rectangle((int)Position.X + 30, (int)Position.Y + 23, 3, (int)Separation);
-                    }        
+                    }
                 }
                 else
                 {
@@ -103,7 +101,7 @@ namespace Simulator.Simulation
                     return Rectangle.Empty;
                 }
             }
-        }     
+        }
 
         public event EventHandler Triggered;
 
@@ -112,7 +110,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Detector()
         {
-
         }
 
         /// <summary>
@@ -153,7 +150,7 @@ namespace Simulator.Simulation
             Rectangle start = new Rectangle(0, 0, 23, texture.Height);
             Rectangle middle = new Rectangle(24, 0, 1, texture.Height);
             Rectangle end = new Rectangle(73, 0, 23, texture.Height);
-            
+
             if (Direction == DetectionDirection.Horizontal)
             {
                 spriteBatch.Draw(texture, new Rectangle(Position.ToPoint(), start.Size), start, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);

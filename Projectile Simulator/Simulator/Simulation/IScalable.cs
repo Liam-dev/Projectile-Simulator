@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Simulator.Simulation
+﻿namespace Simulator.Simulation
 {
-    interface IScalable
+    internal interface IScalable
     {
         bool MaintainAspectRatio { get; set; }
     }

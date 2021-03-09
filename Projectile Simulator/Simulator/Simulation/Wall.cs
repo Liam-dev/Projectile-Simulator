@@ -1,19 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using Simulator.Converters;
 using Newtonsoft.Json;
+using Simulator.Converters;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
     /// <summary>
     /// A Box with a scalable non-textured rectangular shape.
     /// </summary>
-    class Wall : Box, IScalable
+    internal class Wall : Box, IScalable
     {
         /// <summary>
         /// Gets or sets the colour of the wall.
@@ -61,7 +58,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Wall()
         {
-
         }
 
         /// <summary>
@@ -94,6 +90,5 @@ namespace Simulator.Simulation
                 DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
         }
-
     }
 }

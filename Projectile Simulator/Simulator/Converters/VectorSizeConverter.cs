@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Xna.Framework;
 using System.Drawing;
-using Microsoft.Xna.Framework;
 
 namespace Simulator.Converters
 {
     /// <summary>
     /// Converter between Vector2 and Size types.
     /// </summary>
-    static class VectorSizeConverter
+    internal static class VectorSizeConverter
     {
         /// <summary>
         /// Converts Vector2 to Size.

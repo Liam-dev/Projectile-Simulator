@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Simulator.UserInterface
@@ -12,14 +8,14 @@ namespace Simulator.UserInterface
     /// Control that is used in Homepage form as large buttons.
     /// </summary>
     public partial class LargeMenuButton : UserControl
-    {   
+    {
         /// <summary>
         /// Occurs when the button is pressed
         /// </summary>
         public event EventHandler Pressed;
 
         /// <summary>
-        /// Gets or sets the heading string that is displayed on the button. 
+        /// Gets or sets the heading string that is displayed on the button.
         /// </summary>
         public string Heading
         {
@@ -28,7 +24,7 @@ namespace Simulator.UserInterface
         }
 
         /// <summary>
-        /// Gets or sets the subheading string that is displayed on the button. 
+        /// Gets or sets the subheading string that is displayed on the button.
         /// </summary>
         public string Subheading
         {
@@ -37,7 +33,7 @@ namespace Simulator.UserInterface
         }
 
         /// <summary>
-        /// Gets or sets the icon that is displayed on the button. 
+        /// Gets or sets the icon that is displayed on the button.
         /// </summary>
         public Image Icon
         {

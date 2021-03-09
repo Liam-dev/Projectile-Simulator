@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
-using Simulator.Converters;
 using MonoGame.Forms.Services;
+using Newtonsoft.Json;
+using Simulator.Converters;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
@@ -45,7 +44,7 @@ namespace Simulator.Simulation
         [Browsable(true)]
         [Category("Cannon")]
         [DisplayName("Facing direction")]
-        public FacingDirection Facing { get; set; }      
+        public FacingDirection Facing { get; set; }
 
         /// <summary>
         /// Gets or sets the projectile angle of the cannon (in radians).
@@ -70,7 +69,7 @@ namespace Simulator.Simulation
         /// Gets or sets the projectile speed of the cannon.
         /// </summary>
         [Browsable(false)]
-        [Category("Cannon")] 
+        [Category("Cannon")]
         public float Speed { get; set; }
 
         /// <summary>
@@ -105,7 +104,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Cannon()
         {
-
         }
 
         /// <summary>
@@ -163,7 +161,7 @@ namespace Simulator.Simulation
             {
                 spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.07f);
             }
-            
+
             if (Selected)
             {
                 //DrawBorder(spriteBatch, zoom, BoundingBox, 4);
@@ -190,8 +188,8 @@ namespace Simulator.Simulation
             else
             {
                 float reflectedX = BoundingBox.Right - (transformedPosition.X - BoundingBox.Left);
-                return new Vector2(reflectedX, transformedPosition.Y); 
-            }       
+                return new Vector2(reflectedX, transformedPosition.Y);
+            }
         }
     }
 

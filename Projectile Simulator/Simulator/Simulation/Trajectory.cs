@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
+using System.Collections.Generic;
 
 namespace Simulator.Simulation
 {
@@ -65,7 +63,7 @@ namespace Simulator.Simulation
             if (drawCount % DrawInterval == 0)
             {
                 points.Add(position);
-            }   
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)

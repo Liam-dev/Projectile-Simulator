@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Forms.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using Simulator.Converters;
 using System.ComponentModel;
@@ -54,7 +49,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Box()
         {
-
         }
 
         /// <summary>
@@ -78,7 +72,7 @@ namespace Simulator.Simulation
             if (Selected)
             {
                 DrawBorder(spriteBatch, zoom, BoundingBox, 4);
-            }  
+            }
         }
     }
 }

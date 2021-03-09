@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Simulator.UserInterface
 {
@@ -9,7 +7,7 @@ namespace Simulator.UserInterface
     /// Stores generic states in structure that implements undo-redo functionality.
     /// </summary>
     /// <typeparam name="T">Type of UndoRedoStack state</typeparam>
-    class UndoRedoStack<T>
+    internal class UndoRedoStack<T>
     {
         /// <summary>
         /// Stack of states that can be undone.

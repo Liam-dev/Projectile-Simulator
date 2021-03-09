@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Simulator.Simulation
 {
@@ -48,7 +43,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Camera()
         {
-            
         }
 
         /// <summary>
@@ -136,7 +130,7 @@ namespace Simulator.Simulation
         public Vector2 GetSimulationPostion(Vector2 position)
         {
             Matrix inverse = Matrix.Invert(Transform);
-            return Vector2.Transform(position, inverse);       
+            return Vector2.Transform(position, inverse);
         }
 
         /// <summary>

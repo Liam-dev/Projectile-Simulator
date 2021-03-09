@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
@@ -53,7 +49,6 @@ namespace Simulator.UserInterface
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void listBox_DoubleClick(object sender, EventArgs e)

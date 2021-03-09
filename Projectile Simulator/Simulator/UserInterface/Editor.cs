@@ -1,22 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using Simulator.Simulation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Design;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Simulator.Simulation;
-using System.Text.Json;
-using Newtonsoft.Json;
-using Simulator.Converters;
-using System.Linq;
 
 namespace Simulator.UserInterface
 {
@@ -97,7 +89,7 @@ namespace Simulator.UserInterface
             Trajectory.Visible = preferences.ShowTrajectories;
 
             if (!isTemplate)
-            { 
+            {
                 Filename = filename;
                 ChangeFormTitle();
             }
@@ -160,7 +152,7 @@ namespace Simulator.UserInterface
                 if (button.Tag is string text)
                 {
                     tag = text;
-                }      
+                }
             }
             else if (sender is ToolStripMenuItem item)
             {
@@ -261,7 +253,7 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newTapeMeasure":
-                    
+
                     TapeMeasure tapeMeasure = new TapeMeasure("tape measure", simulation.ScreenCentre, simulation.ScreenCentre + new Vector2(100, 0), 8, "line", "Arial");
                     bool created = CreateNewObject(tapeMeasure);
                     if (created)
@@ -397,7 +389,7 @@ namespace Simulator.UserInterface
                 ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
                 if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
                 {
-                    @object.Name = objectCreationBox.ObjectName;   
+                    @object.Name = objectCreationBox.ObjectName;
                 }
                 else
                 {
@@ -444,7 +436,7 @@ namespace Simulator.UserInterface
                 ChangeFormTitle();
             });
             thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();    
+            thread.Start();
         }
 
         // Writes simulation to file if already saved or shows dialogue for unnamed files
@@ -491,7 +483,6 @@ namespace Simulator.UserInterface
                             // Perform action
                             action();
                         }
-
                     });
 
                     saveThread.SetApartmentState(ApartmentState.STA);
@@ -544,7 +535,7 @@ namespace Simulator.UserInterface
         private DialogResult ShowUnsavedFileMessage()
         {
             string name = "Untitled Simulation";
-            
+
             if (Filename != null && Filename != string.Empty)
             {
                 name = Path.GetFileName(Filename);
@@ -579,7 +570,7 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Shows open file dialogue and opens selected file in new thread and closes current Editor 
+        // Shows open file dialogue and opens selected file in new thread and closes current Editor
         private void ShowOpenFileDialogue()
         {
             OpenFileDialog fileDialogue = new OpenFileDialog
@@ -653,10 +644,9 @@ namespace Simulator.UserInterface
                         {
                             availableTriggers.Add(trigger);
                         }
-                        
                     }
                 }
-                
+
                 foreach (var trigger in stopwatch.TriggerDictionary)
                 {
                     if (trigger.Value == input)
@@ -665,9 +655,9 @@ namespace Simulator.UserInterface
                     }
                 }
 
-                string title = "Select " + input.ToString().ToLower() +" triggers for " + stopwatch.Name;
+                string title = "Select " + input.ToString().ToLower() + " triggers for " + stopwatch.Name;
 
-               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
+                ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
 
                 if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
                 {
@@ -683,10 +673,10 @@ namespace Simulator.UserInterface
                         stopwatch.RemoveTrigger(trigger);
                     }
                 }
-            }   
+            }
         }
 
-        // Opens URL of web page in default browser 
+        // Opens URL of web page in default browser
         private void OpenWebPage(string url)
         {
             System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo

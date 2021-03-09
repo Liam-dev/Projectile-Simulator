@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace Simulator.Simulation
@@ -10,7 +7,7 @@ namespace Simulator.Simulation
     /// <summary>
     /// A SimulationObject that can be moved to manipulate other simulation objects.
     /// </summary>
-    public class Handle : SimulationObject , IPersistent
+    public class Handle : SimulationObject, IPersistent
     {
         /// <summary>
         /// The zoom of the simulation (used for drawing and selection)
@@ -43,7 +40,6 @@ namespace Simulator.Simulation
         /// </summary>
         public Handle()
         {
-
         }
 
         /// <summary>

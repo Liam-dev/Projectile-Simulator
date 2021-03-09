@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Simulator.UserInterface
+﻿namespace Simulator.UserInterface
 {
     /// <summary>
     /// Structure which in which Editor preferences are stored.
