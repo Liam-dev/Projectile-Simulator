@@ -43,12 +43,14 @@ namespace Simulator.UserInterface
             contextMenuStrip.Items.Clear();
 
             // Cannon
+            /*
             if (value is Cannon)
             {
                 contextMenuStrip.Items.AddRange(new ToolStripItem[] {
                 fireCannonToolStripMenuItem,
                 toolStripSeparator2 });
             }
+            */
 
             // Stopwatch
             if (value is Stopwatch)

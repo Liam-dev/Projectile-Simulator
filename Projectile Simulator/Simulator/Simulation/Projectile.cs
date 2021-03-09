@@ -64,6 +64,7 @@ namespace Simulator.Simulation
         public override Vector2 Centre
         {
             get { return Position + new Vector2(Radius); }
+            set { Position = value - new Vector2(Radius); }
         }
 
         public Projectile()
@@ -94,7 +95,7 @@ namespace Simulator.Simulation
             ApplyForce(CalculateWeight());
             ApplyForce(CalulateDrag());
 
-            if (trajectory != null)
+            if (trajectory != null && Trajectory.Visible)
             {
                 trajectory?.AddPoint(Centre);
             }
@@ -106,8 +107,8 @@ namespace Simulator.Simulation
         {
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 2 * (int)Radius, 2 * (int)Radius), Color.White);
 
-            // Trajectory
-            if (trajectory != null)
+            // Trajectory drawing
+            if (trajectory != null && Trajectory.Visible)
             {
                 trajectory.Draw(spriteBatch, zoom);
             }   

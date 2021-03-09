@@ -1,0 +1,193 @@
+{
+  "$id": "1",
+  "$type": "Simulator.SimulationState, Simulator",
+  "Objects": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "Simulator.Simulation.Camera, Simulator",
+        "Transform": {
+          "$id": "4",
+          "$type": "Microsoft.Xna.Framework.Matrix, MonoGame.Framework",
+          "M11": 0.8264472,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M14": 0.0,
+          "M21": 0.0,
+          "M22": 0.8264472,
+          "M23": 0.0,
+          "M24": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 0.8264472,
+          "M34": 0.0,
+          "M41": -1893.8774,
+          "M42": -263.30933,
+          "M43": 0.0,
+          "M44": 1.0
+        },
+        "ZoomMultiplier": 1.1,
+        "MaxZoomLevel": 6,
+        "MinZoomLevel": -16,
+        "Zoom": 0.82644624,
+        "OldZoom": 0.9090909
+      },
+      {
+        "$id": "5",
+        "$type": "Simulator.Simulation.Handle, Simulator",
+        "Parent": {
+          "$id": "6",
+          "$type": "Simulator.Simulation.TapeMeasure, Simulator",
+          "FontName": "Arial",
+          "Start": {
+            "$id": "7",
+            "$type": "Simulator.Simulation.Handle, Simulator",
+            "Parent": {
+              "$ref": "6"
+            },
+            "Name": "tape measureStart",
+            "Position": "3327.4465, 734.409",
+            "TextureName": "handle",
+            "Selected": false,
+            "Selectable": true,
+            "Movable": true
+          },
+          "End": {
+            "$ref": "5"
+          },
+          "Position": "3327.4465, 734.409",
+          "Thickness": 8,
+          "Name": "TapeMeasure",
+          "TextureName": "line",
+          "Selected": false,
+          "Selectable": true,
+          "Movable": true
+        },
+        "Name": "tape measureEnd",
+        "Position": "3084.5872, 933.39844",
+        "TextureName": "handle",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$ref": "7"
+      },
+      {
+        "$ref": "6"
+      },
+      {
+        "$id": "8",
+        "$type": "Simulator.Simulation.Detector, Simulator",
+        "Detecting": false,
+        "Direction": 1,
+        "Separation": 300.0,
+        "Name": "Detector",
+        "Position": "3734.0059, 758.5246",
+        "TextureName": "detector",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "9",
+        "$type": "Simulator.Simulation.Stopwatch, Simulator",
+        "FontName": "SevenSegment",
+        "Timer": "00:00:00.8321425",
+        "Triggers": {
+          "$id": "10",
+          "$type": "System.Collections.Generic.List`1[[System.ValueTuple`2[[Simulator.Simulation.ITrigger, Simulator],[Simulator.Simulation.Stopwatch+StopwatchInput, Simulator]], System.Private.CoreLib]], System.Private.CoreLib",
+          "$values": [
+            {
+              "$id": "11",
+              "$type": "System.ValueTuple`2[[Simulator.Simulation.ITrigger, Simulator],[Simulator.Simulation.Stopwatch+StopwatchInput, Simulator]], System.Private.CoreLib",
+              "Item1": {
+                "$id": "12",
+                "$type": "Simulator.Simulation.Cannon, Simulator",
+                "Facing": 1,
+                "ProjectionAngle": 0.7853982,
+                "Speed": 1500.0,
+                "Projectile": {
+                  "$id": "13",
+                  "$type": "Simulator.Simulation.Projectile, Simulator",
+                  "DragCoefficient": 0.005,
+                  "Radius": 16.0,
+                  "Mass": 5.0,
+                  "RestitutionCoefficient": 0.9,
+                  "Name": "Simple projectile",
+                  "Position": "0, 0",
+                  "TextureName": "ball",
+                  "Selected": false,
+                  "Selectable": false,
+                  "Movable": false
+                },
+                "Name": "Cannon",
+                "Position": "2999.8057, 1262.5824",
+                "TextureName": "cannon",
+                "Selected": false,
+                "Selectable": true,
+                "Movable": true
+              },
+              "Item2": 0
+            },
+            {
+              "$id": "14",
+              "$type": "System.ValueTuple`2[[Simulator.Simulation.ITrigger, Simulator],[Simulator.Simulation.Stopwatch+StopwatchInput, Simulator]], System.Private.CoreLib",
+              "Item1": {
+                "$ref": "8"
+              },
+              "Item2": 1
+            }
+          ]
+        },
+        "TestTriggers": {
+          "$id": "15",
+          "$type": "System.Collections.Generic.List`1[[Simulator.Simulation.ITrigger, Simulator]], System.Private.CoreLib",
+          "$values": []
+        },
+        "Name": "Stopwatch",
+        "Position": "3431.2295, 1236.8467",
+        "TextureName": "stopwatch",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$ref": "12"
+      },
+      {
+        "$id": "16",
+        "$type": "Simulator.Simulation.Wall, Simulator",
+        "Colour": {
+          "$id": "17",
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 34,
+          "G": 139,
+          "R": 34,
+          "A": 255
+        },
+        "MaintainAspectRatio": false,
+        "Dimensions": "3000, 150",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Floor",
+        "Position": "1997.9388, 1387.1731",
+        "TextureName": "wall",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      }
+    ]
+  },
+  "Paused": false,
+  "BackgroundColour": {
+    "$id": "18",
+    "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+    "B": 235,
+    "G": 206,
+    "R": 135,
+    "A": 255
+  },
+  "Gravity": "0, 980"
+}

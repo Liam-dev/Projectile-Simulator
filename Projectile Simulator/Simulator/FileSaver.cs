@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Xna.Framework;
 using Simulator.Converters;
-
+using System.Windows.Forms;
 
 namespace Simulator
 {
@@ -16,42 +16,23 @@ namespace Simulator
     /// </summary>
     public static class FileSaver
     {
-        // Custom converters for XNA Vector structures.
-        
-        private static JsonSerializerOptions options = new JsonSerializerOptions()
-        {
-            Converters =
-            {
-                new Vector2JsonConverter(),
-                new Vector3JsonConverter()
-            }
-        };
-
-
         /// <summary>
-        /// Writes a list of generic objects to a specified file path
+        /// Writes a state object to a specified file path
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path">Path the save file to.</param>
         /// <param name="state"></param>
-        public static void WriteJson(string path, SimulationState state)
+        public static void WriteJson<T>(string path, T state)
         {
             StreamWriter writer = new StreamWriter(path);
-            string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
+            string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.All
+            });
+
             writer.Write(data);
             
-            /*
-            foreach (T @object in objects)
-            {
-                if (@object is IPersistent)
-                {
-                    string data = JsonSerializer.Serialize(@object, @object.GetType(), options);
-                    writer.WriteLine(@object.GetType());
-                    writer.WriteLine(data);
-                }
-            }
-            */
-
             writer.Close();
         }
 
@@ -62,27 +43,26 @@ namespace Simulator
         /// <param name="path">Path to file.</param>
         /// <returns>List of deserialized generic objects</returns>
         ///
-        public static SimulationState ReadJson(string path)
+        public static T ReadJson<T>(string path)
         {
             StreamReader reader = new StreamReader(path);
 
-            SimulationState state;
+            T state;
 
-            string text = reader.ReadToEnd();
-            state = JsonConvert.DeserializeObject<SimulationState>(text, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All });
-            
-            /*
-            while (!reader.EndOfStream)
+            try
             {
-                string line = reader.ReadLine();
-
-                if (line.Length > 0)
+                string text = reader.ReadToEnd();
+                state = JsonConvert.DeserializeObject<T>(text, new JsonSerializerSettings()
                 {
-                    Type dataType = Type.GetType(line);
-                    T @object = (T)System.Text.Json.JsonSerializer.Deserialize(reader.ReadLine(), dataType, options);
-                    objects.Add(@object);
-                }
-            }*/
+                    TypeNameHandling = TypeNameHandling.All,
+                    PreserveReferencesHandling = PreserveReferencesHandling.All
+                });
+            }
+            catch (JsonReaderException e)
+            {
+                MessageBox.Show("File could not be loaded. Loading default file instead.", "File invalid!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return default;
+            }           
 
             reader.Close();
 

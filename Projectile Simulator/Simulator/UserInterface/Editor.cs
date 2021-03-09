@@ -34,7 +34,14 @@ namespace Simulator.UserInterface
         // Object that is currently saved to clipboard
         private SimulationObject clipboardObject;
 
+        // Object to save undo redo changes
         private UndoRedoStack<SimulationState> undoRedoStack = new UndoRedoStack<SimulationState>();
+
+        // Editor preferences
+        private EditorPreferences preferences;
+
+        // Path to save preferences file to
+        public static string PreferencesPath = "preferences.json";
 
         /// <summary>
         /// Gets the filename of the file in the editor.
@@ -49,24 +56,6 @@ namespace Simulator.UserInterface
             simulation.MouseHoverUpdatesOnly = false;
 
             WindowState = FormWindowState.Maximized;
-
-            /*
-            // TEMPORARY
-            // Test objects for mouse zoom testing
-            objectsToLoad.Add(new Box("box", new Vector2(0, -64), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(0, 0), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(100, 400), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(400, 100), "crate", 0.95f, new Vector2(64, 64)));
-            objectsToLoad.Add(new Box("box", new Vector2(400, 400), "crate", 0.95f, new Vector2(64, 64)));
-
-            objectsToLoad.Add(new Wall("wall", new Vector2(800, 100), Microsoft.Xna.Framework.Color.SaddleBrown, 0.95f, new Vector2(20, 500)));
-            objectsToLoad.Add(new Wall("floor", new Vector2(320, 600), Microsoft.Xna.Framework.Color.ForestGreen, 0.95f, new Vector2(500, 20)));
-
-            Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
-            objectsToLoad.Add(new Cannon("cannon", new Vector2(0, 600), "cannon", projectile));
-
-            objectsToLoad.Add(new TapeMeasure("tape measure", new Vector2(64, -64), new Vector2(0, 64), 8, "line", "Arial"));
-            */
         }
 
         /// <summary>
@@ -84,10 +73,23 @@ namespace Simulator.UserInterface
             WindowState = FormWindowState.Maximized;
 
             // Load simulation state from file
-            loadedState = FileSaver.ReadJson(filename);
+            loadedState = FileSaver.ReadJson<SimulationState>(filename);
 
             // Initialise undo redo stack
             undoRedoStack.AddState(loadedState);
+
+            // Read preferences
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + PreferencesPath;
+            if (File.Exists(path))
+            {
+                preferences = FileSaver.ReadJson<EditorPreferences>(path);
+            }
+            else
+            {
+                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
+            }
+
+            Trajectory.Visible = preferences.ShowTrajectories;
 
             if (!isTemplate)
             { 
@@ -142,12 +144,6 @@ namespace Simulator.UserInterface
             inspector.SelectedObject = sender;
         }
 
-        private void PerformedAction()
-        {
-            undoRedoStack.AddState(simulation.GetState());
-            toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
-        }
-
         // When a button is clicked in the toolbar or context menu
         private void toolbar_ButtonClicked(object sender, EventArgs e)
         {
@@ -196,6 +192,10 @@ namespace Simulator.UserInterface
                     Screenshot();
                     break;
 
+                case "preferences":
+                    OpenPreferences();
+                    break;
+
                 case "undo":
                     simulation.LoadState(undoRedoStack.Undo());
                     toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
@@ -218,20 +218,12 @@ namespace Simulator.UserInterface
                     break;
 
                 case "paste":
-                    /*
-                    JsonSerializerOptions options = new JsonSerializerOptions() { Converters = { new Vector2JsonConverter() } };
-                    SimulationObject @object = (SimulationObject)JsonSerializer.Deserialize(JsonSerializer.Serialize(clipboardObject, clipboardObject.GetType(), options), clipboardObject.GetType(), options);
-                    */
                     JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
                     string data = JsonConvert.SerializeObject(clipboardObject, Formatting.Indented, settings);
                     SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
                     @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
-                    simulation.AddObject(@object);
+                    CreateNewObject(@object);
                     PerformedAction();
-                    break;
-
-                case "ball":
-                    simulation.FireAllCannons();
                     break;
 
                 case "deleteObject":
@@ -249,35 +241,39 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newBox":
-                    simulation.AddObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
+                    CreateNewObject(new Box("box", simulation.ScreenCentre, "crate", 0.95f, new Vector2(64, 64)));
                     PerformedAction();
                     break;
 
                 case "newWall":
-
+                    CreateNewObject(new Wall("wall", simulation.ScreenCentre, Microsoft.Xna.Framework.Color.SaddleBrown, 0.95f, new Vector2(25, 300)));
                     break;
 
                 case "newCannon":
                     Projectile projectile = new Projectile("redTempProjectile", Vector2.Zero, "ball", 5, 0.9f, 16, 0.005f);
-                    simulation.AddObject(new Cannon("cannon", simulation.ScreenCentre, "cannon", projectile));
+                    CreateNewObject(new Cannon("cannon", simulation.ScreenCentre, "cannon", projectile));
                     PerformedAction();
                     break;
 
                 case "newTapeMeasure":
+                    
                     TapeMeasure tapeMeasure = new TapeMeasure("tape measure", simulation.ScreenCentre, simulation.ScreenCentre + new Vector2(100, 0), 8, "line", "Arial");
-                    simulation.AddObject(tapeMeasure);
-                    simulation.AddObject(tapeMeasure.Start);
-                    simulation.AddObject(tapeMeasure.End);
+                    bool created = CreateNewObject(tapeMeasure);
+                    if (created)
+                    {
+                        simulation.AddObject(tapeMeasure.Start);
+                        simulation.AddObject(tapeMeasure.End);
+                    }
                     PerformedAction();
                     break;
 
                 case "newStopwatch":
-                    simulation.AddObject(new Stopwatch("stopwatch", simulation.ScreenCentre, "stopwatch", "SevenSegment"));
+                    CreateNewObject(new Stopwatch("stopwatch", simulation.ScreenCentre, "stopwatch", "SevenSegment"));
                     PerformedAction();
                     break;
 
                 case "newDetector":
-                    simulation.AddObject(new Detector("detector", simulation.ScreenCentre, "detector", 150));
+                    CreateNewObject(new Detector("detector", simulation.ScreenCentre, "detector", 150));
                     PerformedAction();
                     break;
 
@@ -340,15 +336,73 @@ namespace Simulator.UserInterface
                         break;
 
                     // Close without saving
-                    case DialogResult.No:       
+                    case DialogResult.No:
                         break;
 
                     // Cancel
-                    case DialogResult.Cancel:        
+                    case DialogResult.Cancel:
                         e.Cancel = true;
                         break;
                 }
-            }               
+            }
+            else
+            {
+                SaveFile();
+            }
+        }
+
+        private void PerformedAction()
+        {
+            undoRedoStack.AddState(simulation.GetState());
+            toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
+        }
+
+        private void OpenPreferences()
+        {
+            PreferencesEditor preferencesEditor = new PreferencesEditor(preferences, true, simulation.GetState());
+            preferencesEditor.ShowDialog(this);
+            preferences = preferencesEditor.Preferences;
+
+            Trajectory.Visible = preferences.ShowTrajectories;
+            simulation.LoadSettings(preferencesEditor.SimulationSettings);
+        }
+
+        private bool CreateNewObject(SimulationObject @object)
+        {
+            if (preferences.AutoName)
+            {
+                List<string> usedNames = new List<string>();
+                foreach (SimulationObject existingObject in simulation.GetObjects())
+                {
+                    usedNames.Add(existingObject.Name);
+                }
+
+                string name = @object.GetType().Name;
+                int i = 1;
+                while (usedNames.Contains(name))
+                {
+                    name = @object.GetType().Name + i.ToString();
+                    i++;
+                }
+
+                @object.Name = name;
+            }
+            else
+            {
+                ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
+                if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
+                {
+                    @object.Name = objectCreationBox.ObjectName;   
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            simulation.AddObject(@object);
+            inspector.SelectedObject = @object;
+            return true;
         }
 
         // Closes Editor and opens new blank editor in new thread (does not save current file)
@@ -570,27 +624,39 @@ namespace Simulator.UserInterface
         {
             if (selectable is Stopwatch stopwatch)
             {
-                List<object> allTriggers = new List<object>();
+                List<object> availableTriggers = new List<object>();
+                List<object> currentTriggers = new List<object>();
+
                 foreach (SimulationObject simulationObject in simulation.GetObjects())
                 {
-                    if (simulationObject is ITrigger)
+                    if (simulationObject is ITrigger trigger)
                     {
-                        allTriggers.Add(simulationObject);
+                        if (stopwatch.TriggerDictionary.ContainsKey(trigger))
+                        {
+                            if (stopwatch.TriggerDictionary[trigger] == input)
+                            {
+                                availableTriggers.Add(trigger);
+                            }
+                        }
+                        else
+                        {
+                            availableTriggers.Add(trigger);
+                        }
+                        
                     }
                 }
-
-                List<object> currentTriggers = new List<object>();
-                foreach (var trigger in stopwatch.Triggers)
+                
+                foreach (var trigger in stopwatch.TriggerDictionary)
                 {
-                    if (trigger.Item2 == input)
+                    if (trigger.Value == input)
                     {
-                        currentTriggers.Add(trigger.Item1);
+                        currentTriggers.Add(trigger.Key);
                     }
                 }
 
                 string title = "Select " + input.ToString().ToLower() +" triggers for " + stopwatch.Name;
 
-               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(allTriggers, currentTriggers, title, "Update triggers");
+               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
 
                 if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
                 {
@@ -601,9 +667,9 @@ namespace Simulator.UserInterface
                     }
 
                     // Remove old triggers
-                    foreach (ITrigger trigger in allTriggers.Except(objectSelectionBox.CheckedObjects))
+                    foreach (ITrigger trigger in availableTriggers.Except(objectSelectionBox.CheckedObjects))
                     {
-                        stopwatch.RemoveTrigger(trigger, input);
+                        stopwatch.RemoveTrigger(trigger);
                     }
                 }
             }   

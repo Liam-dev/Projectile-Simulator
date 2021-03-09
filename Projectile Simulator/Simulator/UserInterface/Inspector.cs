@@ -21,7 +21,22 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Gets or sets the inspector's selected object.
         /// </summary>
-        public object SelectedObject { get { return selectedObject; }  set { selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value; } }
+        public object SelectedObject
+        {
+            get { return selectedObject; }
+
+            set
+            {
+                if (value is Handle handle)
+                {
+                    propertyGrid.SelectedObject = handle.Parent;
+                }
+                else
+                {
+                    selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value;
+                } 
+            }
+        }           
 
         /// <summary>
         /// Occurs when the inspector's selected object is changed.
@@ -49,6 +64,9 @@ namespace Simulator.UserInterface
             {
                 SelectedObject = null;
             }
+
+            // Remove handle objects
+            source.RemoveAll(x => x is Handle);
 
             // Remove and re-add items to selection combo box
             selectionBox.Items.Clear();

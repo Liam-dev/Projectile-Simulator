@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel;
 using Simulator.Converters;
+using MonoGame.Forms.Services;
 
 namespace Simulator.Simulation
 {
@@ -16,26 +17,22 @@ namespace Simulator.Simulation
     {
         protected List<Projectile> projectiles = new List<Projectile>();
 
+        // The offset of firing position from position of cannon
+        protected Vector2 firingPosition = new Vector2(40, 80);
+
+        // The offset position to rotate around
+        protected Vector2 rotationCentre = new Vector2(66, 95);
+
         public enum FacingDirection
         {
             Right = 1,
             Left = -1
         }
 
-        public FacingDirection Facing { get; set; }
-
-        /// <summary>
-        /// Occurs when the cannon is fired.
-        /// </summary>
-        public event EventHandler<FiringArgs> Fired;
-
-        public event EventHandler Triggered;
-
-        /// <summary>
-        /// Gets or sets the offset of firing position from position of cannon.
-        /// </summary>
-        [Browsable(false)]
-        public Vector2 FiringPosition { get; set; }
+        [Browsable(true)]
+        [Category("Cannon")]
+        [DisplayName("Facing direction")]
+        public FacingDirection Facing { get; set; }      
 
         /// <summary>
         /// Gets or sets the projectile angle of the cannon (in radians).
@@ -83,6 +80,13 @@ namespace Simulator.Simulation
         [Category("Cannon")]
         public Projectile Projectile { get; set; }
 
+        /// <summary>
+        /// Occurs when the cannon is fired.
+        /// </summary>
+        public event EventHandler<FiringArgs> Fired;
+
+        public event EventHandler Triggered;
+
         public Cannon()
         {
 
@@ -95,7 +99,12 @@ namespace Simulator.Simulation
             Facing = FacingDirection.Right;
             ProjectionAngle = 0.25f * MathF.PI;
             Speed = 1000;
-            FiringPosition = new Vector2(50, 50);
+        }
+
+        public override void OnLoad(MonoGameService Editor)
+        {
+            base.OnLoad(Editor);
+            firingPosition = new Vector2(texture.Width, texture.Height) / 2;
         }
 
         /// <summary>
@@ -109,7 +118,8 @@ namespace Simulator.Simulation
                 p.RemoveTrajectory();
             }
 
-            Projectile projectile = new Projectile("projectile", Position + FiringPosition, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
+            Projectile projectile = new Projectile("projectile", Position, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
+            projectile.Centre = DetermineFiringPosition();
             projectiles.Add(projectile);
 
             // Takes into account facing direction
@@ -124,17 +134,38 @@ namespace Simulator.Simulation
             // Flip if facing left
             if (Facing == FacingDirection.Left)
             {
-                spriteBatch.Draw(texture, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0.15f);
+                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, ProjectionAngle + 1.75f * MathF.PI, rotationCentre, 1, SpriteEffects.FlipHorizontally, 0.07f);
             }
             else
             {
-                spriteBatch.Draw(texture, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.15f);
+                spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.07f);
             }
             
             if (Selected)
             {
-                DrawBorder(spriteBatch, zoom, BoundingBox, 4);
+                //DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
+        }
+
+        // Gets the transformed position of the cannon's firing position
+        protected Vector2 DetermineFiringPosition()
+        {
+            Matrix transform = Matrix.Identity;
+            transform *= Matrix.CreateTranslation(new Vector3(-(Position + rotationCentre), 1));
+            transform *= Matrix.CreateRotationZ(-ProjectionAngle);
+            transform *= Matrix.CreateTranslation(new Vector3(Position + rotationCentre, 1));
+
+            Vector2 transformedPosition = Vector2.Transform(Position + firingPosition, transform);
+
+            if (Facing == FacingDirection.Right)
+            {
+                return transformedPosition;
+            }
+            else
+            {
+                float reflectedX = BoundingBox.Right - (transformedPosition.X - BoundingBox.Left);
+                return new Vector2(reflectedX, transformedPosition.Y); 
+            }       
         }
     }
 

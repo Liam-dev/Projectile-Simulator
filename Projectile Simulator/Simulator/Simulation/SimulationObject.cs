@@ -14,7 +14,8 @@ namespace Simulator.Simulation
     /// <summary>
     /// Base class for an object in a simulation.
     /// </summary>
-    //[TypeConverter(typeof(ExpandableObjectConverter))]
+    [JsonObject]
+    [TypeConverter(typeof(SerializableExpandableObjectConverter))]
     public class SimulationObject : ISelectable, IMovable
     {
         // Texture of object
@@ -111,7 +112,7 @@ namespace Simulator.Simulation
         [Browsable(false)]
         public bool Selected { get; set; }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Category("Object")]
         public bool Selectable { get; set; }
 
@@ -137,12 +138,12 @@ namespace Simulator.Simulation
             Movable = true;
         }
 
-        /*
+        
         public override string ToString()
         {
             return Name;
         }
-        */
+        
 
         /// <summary>
         /// Called when an object in loaded into a simulation.
@@ -222,7 +223,7 @@ namespace Simulator.Simulation
             // Draw all sides
             foreach (Rectangle side in border)
             {
-                spriteBatch.Draw(borderTexture, destinationRectangle: side, color: Color.White);
+                spriteBatch.Draw(borderTexture, side, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             }
         }   
     }

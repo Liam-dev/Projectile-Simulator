@@ -27,14 +27,17 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/SevenSegment.spritefont
 
-#begin Templates/Blank simulation.sim
-/copy:Templates/Blank simulation.sim
+#begin Templates/1. Blank simulation.sim
+/copy:Templates/1. Blank simulation.sim
 
-#begin Templates/Colourful Walls.sim
-/copy:Templates/Colourful Walls.sim
+#begin Templates/2. Simple cannon.sim
+/copy:Templates/2. Simple cannon.sim
 
-#begin Templates/Simple cannon.sim
-/copy:Templates/Simple cannon.sim
+#begin Templates/3. Collision example.sim
+/copy:Templates/3. Collision example.sim
+
+#begin Templates/4. Detection example.sim
+/copy:Templates/4. Detection example.sim
 
 #begin Textures/ball.png
 /importer:TextureImporter
@@ -131,18 +134,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/stopwatch.png
-
-#begin Textures/tree.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/tree.png
 
 #begin Textures/wall.png
 /importer:TextureImporter

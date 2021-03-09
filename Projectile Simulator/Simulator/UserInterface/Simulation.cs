@@ -28,7 +28,7 @@ namespace Simulator.UserInterface
         protected float timeTolerance = 2f;
 
         // Update frame time multiplier
-        protected float speed = 1.4f;
+        protected float speed = 1.3f;
 
         // State of Mouse in the previous update frame
         protected MouseState lastMouseState;
@@ -192,7 +192,16 @@ namespace Simulator.UserInterface
             LeftMouseButtonJustReleased += Simulation_LeftMouseButtonJustReleased;
             RightMouseButtonJustPressed += Simulation_RightMouseButtonJustPressed;
             RightMouseButtonJustReleased += Simulation_RightMouseButtonJustReleased;
-            
+
+            MouseHover += Simulation_MouseHover;
+
+            // Initialize fire cannon button
+            /*
+            fireCannonButton = new FireCannonButton();
+            fireCannonButton.Hide();
+            Controls.Add(fireCannonButton);
+            */
+
             // Instantiate object list 
             objects = new List<SimulationObject>();
 
@@ -202,12 +211,11 @@ namespace Simulator.UserInterface
         // Load settings for simulation from state
         public void LoadState(SimulationState state, bool initialLoad = false)
         {
-            Paused = state.Paused;
-            BackgroundColour = state.BackgroundColour;
-            Projectile.GravitationalAcceleration = state.Gravity;
-
             // Clear any old objects
             objects.Clear();
+
+            // Load settings
+            LoadSettings(state);        
 
             // Load objects into simulation
             foreach (object @object in state.Objects)
@@ -222,6 +230,13 @@ namespace Simulator.UserInterface
                     Camera = camera;
                 }
             }
+        }
+
+        public void LoadSettings(SimulationState state)
+        {
+            Paused = state.Paused;
+            BackgroundColour = state.BackgroundColour;
+            Projectile.GravitationalAcceleration = state.Gravity;
         }
 
         // Updates the simulation
@@ -268,7 +283,7 @@ namespace Simulator.UserInterface
             GraphicsDevice.Clear(BackgroundColour);
 
             // Start spriteBatch with the camera's transform matrix applied to all of the objects drawn.
-            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform/*, sortMode: SpriteSortMode.FrontToBack*/);
+            Editor.spriteBatch.Begin(transformMatrix : Camera.Transform, sortMode: SpriteSortMode.FrontToBack);
 
             // Draw each of the objects
             foreach (SimulationObject @object in objects)
@@ -287,7 +302,14 @@ namespace Simulator.UserInterface
         {
             @object.OnLoad(Editor);
 
-            objects.Add(@object);
+            if (@object is Wall)
+            {
+                objects.Add(@object); 
+            }
+            else
+            {
+                objects.Insert(0, @object);
+            }
 
             if (@object is ISelectable selectable && selectable.Selectable)
             {
@@ -569,11 +591,17 @@ namespace Simulator.UserInterface
 
         private void Simulation_LeftMouseButtonJustReleased(object sender, EventArgs e)
         {
+            // Cannon fire
+            if (SelectedObject is Cannon cannon && !objectMoving)
+            {
+                cannon.Fire();
+            }
+
             if (objectMoving)
             {
                 objectMoving = false;
                 ObjectMoved?.Invoke(this, new EventArgs());
-            }
+            }  
         }
 
         private void Simulation_RightMouseButtonJustPressed(object sender, EventArgs e)
@@ -582,6 +610,11 @@ namespace Simulator.UserInterface
         }
 
         private void Simulation_RightMouseButtonJustReleased(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Simulation_MouseHover(object sender, EventArgs e)
         {
 
         }
@@ -697,18 +730,6 @@ namespace Simulator.UserInterface
             return renderTarget;
         }
 
-        //TEMP
-        public void FireAllCannons()
-        {
-            foreach (SimulationObject @object in objects.ToArray())
-            {
-                if (@object is Cannon cannon)
-                {
-                    cannon.Fire();
-                }
-            }
-        }
-
         // When a cannon is fired in the simulation
         private void CannonFired(object sender, EventArgs e)
         {
@@ -728,7 +749,6 @@ namespace Simulator.UserInterface
                 }
             } 
         }
-
 
         #region Collisions
 

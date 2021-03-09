@@ -10,10 +10,12 @@ namespace Simulator.Simulation
     /// <summary>
     /// A SimulationObject that can be moved to manipulate other SimulationObjects.
     /// </summary>
-    public class Handle : SimulationObject
+    public class Handle : SimulationObject , IPersistent
     {
         // The zoom of the simulation (used for drawing and selection)
         protected float zoom;
+
+        public SimulationObject Parent { get; set; }
 
         /// <summary>
         /// Occurs when the position of the handle is changed.
@@ -41,8 +43,9 @@ namespace Simulator.Simulation
 
         }
 
-        public Handle(string name, Vector2 position, string textureName) : base(name, position, textureName)
+        public Handle(string name, Vector2 position, string textureName, SimulationObject parent) : base(name, position, textureName)
         {
+            Parent = parent;
             Selectable = true;
             Movable = true;
         }

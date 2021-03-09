@@ -49,10 +49,7 @@
             this.selectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selectionBox.FormattingEnabled = true;
             this.selectionBox.Items.AddRange(new object[] {
-            "hello",
-            "1",
-            "2",
-            "3"});
+            "<Empty simulation>"});
             this.selectionBox.Location = new System.Drawing.Point(0, 2);
             this.selectionBox.Name = "selectionBox";
             this.selectionBox.Size = new System.Drawing.Size(250, 23);
