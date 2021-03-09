@@ -315,6 +315,34 @@
         J5nBJhUlLbsqAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="zoomInToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA68AAAOvAGVvHJJAAAA20lE
+        QVQ4T6WTsRGEIBBFLeFqsoUrwQaMjSzE4Eq4sQDHlIwSqIKU28cos3Co4xh8XHY/j0WxCSEkee9HkRMF
+        Jeaj9mnFQQwvkV2WJXRdF9q2TWJOnjq+I4CdpikuGIYhLjDGxCdz8tTx/QEkOWLENM+zbj2JPPWtk+w4
+        ABxtspNe1LzjjknU8UnsSoCmJ5WAvUviKoAzE7OwFHnqp4AnHTx+B3e/Qp8BGCR5eQ/UBtmF2gGXN3Hv
+        ooSkVjbQ0b/Qi2wNkgHOhLkC+VbNRyohEq9V45k2yCoSgP/8AM2YDy68ghfAAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="zoomOutToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA68AAAOvAGVvHJJAAAA10lE
+        QVQ4T6WTsRGEIBBFLeFqsoUrwQaMjSyE4Eq4sQDH1IwSrIKU28cosyDo3Bh8XHY/j0Wx8d5HOedG0Sby
+        SsxH7dMKgxheIjvPs++6zrdtG8WcPHV8NYA1xoQFwzCEBeu6hidz8tTxnQCSHDFimqZJtx5FnvreSXIc
+        ABttspNelIs6Pom3HKDpVR1dEhcBnJm4eZuTyFO/BDzp4PE7+Pcr9AmAQZK390BtkFyoA3B7E48uckhs
+        ZQfV/oVeZEuQBHAlzAXIt2iuKYdIvBSNV9ohi0gA7vMD0mUW+t4ssjkAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="screenshotToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vQAADr0BR/uQrQAAAI1JREFUOE+1k00KgCAUhDubglsv6LYLdAEvUl2h2ridGiHwJ0Oxgg+e07wvChoA
+        dPEYthBdDJxz0wUKjJkgLVlroZSCECKCGe+lfS9Iy7VkgmVePWHpjaJASgljDPbt8HBmFi6TTHDDBYq0
+        1h7OzNJeUcCncvE+c2YWdsh/gu5X6P6ItXwn6CH6MdrBcAKs2ZkDohKRIgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="toolStripSplitButton1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

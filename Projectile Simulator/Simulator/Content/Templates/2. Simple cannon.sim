@@ -1,0 +1,97 @@
+{
+  "$id": "1",
+  "$type": "Simulator.SimulationState, Simulator",
+  "Objects": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "Simulator.Simulation.Camera, Simulator",
+        "Transform": {
+          "$id": "4",
+          "$type": "Microsoft.Xna.Framework.Matrix, MonoGame.Framework",
+          "M11": 0.56447434,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M14": 0.0,
+          "M21": 0.0,
+          "M22": 0.56447434,
+          "M23": 0.0,
+          "M24": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 0.56447434,
+          "M34": 0.0,
+          "M41": -1163.9897,
+          "M42": 122.26523,
+          "M43": 0.0,
+          "M44": 1.0
+        },
+        "ZoomMultiplier": 1.1,
+        "MaxZoomLevel": 6,
+        "MinZoomLevel": -16,
+        "Zoom": 0.5644739,
+        "OldZoom": 0.5131581
+      },
+      {
+        "$id": "5",
+        "$type": "Simulator.Simulation.Cannon, Simulator",
+        "Facing": 1,
+        "ProjectionAngle": 0.87266463,
+        "Speed": 1000.0,
+        "Projectile": {
+          "$id": "6",
+          "$type": "Simulator.Simulation.Projectile, Simulator",
+          "DragCoefficient": 0.0,
+          "Radius": 16.0,
+          "Mass": 5.0,
+          "RestitutionCoefficient": 0.9,
+          "Name": "Simple projectile",
+          "Position": "0, 0",
+          "TextureName": "ball",
+          "Selected": false,
+          "Selectable": false,
+          "Movable": false
+        },
+        "Name": "Cannon",
+        "Position": "2400, 1280",
+        "TextureName": "cannon",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "7",
+        "$type": "Simulator.Simulation.Wall, Simulator",
+        "Colour": {
+          "$id": "8",
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 34,
+          "G": 139,
+          "R": 34,
+          "A": 255
+        },
+        "MaintainAspectRatio": false,
+        "Dimensions": "3000, 150",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Floor",
+        "Position": "1997.9388, 1387.1731",
+        "TextureName": "wall",
+        "Selected": true,
+        "Selectable": true,
+        "Movable": true
+      }
+    ]
+  },
+  "Paused": false,
+  "BackgroundColour": {
+    "$id": "9",
+    "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+    "B": 235,
+    "G": 206,
+    "R": 135,
+    "A": 255
+  },
+  "Gravity": "0, 980"
+}

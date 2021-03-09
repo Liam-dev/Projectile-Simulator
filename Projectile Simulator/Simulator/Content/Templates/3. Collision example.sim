@@ -1,0 +1,154 @@
+{
+  "$id": "1",
+  "$type": "Simulator.SimulationState, Simulator",
+  "Objects": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "Simulator.Simulation.Camera, Simulator",
+        "Transform": {
+          "$id": "4",
+          "$type": "Microsoft.Xna.Framework.Matrix, MonoGame.Framework",
+          "M11": 0.56447434,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M14": 0.0,
+          "M21": 0.0,
+          "M22": 0.56447434,
+          "M23": 0.0,
+          "M24": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 0.56447434,
+          "M34": 0.0,
+          "M41": -1212.4326,
+          "M42": 29.598083,
+          "M43": 0.0,
+          "M44": 1.0
+        },
+        "ZoomMultiplier": 1.1,
+        "MaxZoomLevel": 6,
+        "MinZoomLevel": -16,
+        "Zoom": 0.5644739,
+        "OldZoom": 0.6209213
+      },
+      {
+        "$id": "5",
+        "$type": "Simulator.Simulation.Box, Simulator",
+        "Dimensions": "64, 64",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Box2",
+        "Position": "3579.317, 1136.2797",
+        "TextureName": "crate",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "6",
+        "$type": "Simulator.Simulation.Box, Simulator",
+        "Dimensions": "64, 64",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Box1",
+        "Position": "3731.67, 1274.4645",
+        "TextureName": "crate",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "7",
+        "$type": "Simulator.Simulation.Box, Simulator",
+        "Dimensions": "64, 64",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Box",
+        "Position": "3898.1992, 1219.5468",
+        "TextureName": "crate",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "8",
+        "$type": "Simulator.Simulation.Cannon, Simulator",
+        "Facing": 1,
+        "ProjectionAngle": 0.7853982,
+        "Speed": 1200.0,
+        "Projectile": {
+          "$id": "9",
+          "$type": "Simulator.Simulation.Projectile, Simulator",
+          "DragCoefficient": 0.005,
+          "Radius": 16.0,
+          "Mass": 5.0,
+          "RestitutionCoefficient": 0.9,
+          "Name": "redTempProjectile",
+          "Position": "0, 0",
+          "TextureName": "ball",
+          "Selected": false,
+          "Selectable": false,
+          "Movable": false
+        },
+        "Name": "Cannon",
+        "Position": "2999.8057, 1262.5824",
+        "TextureName": "cannon",
+        "Selected": true,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "10",
+        "$type": "Simulator.Simulation.Wall, Simulator",
+        "Colour": {
+          "$id": "11",
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 34,
+          "G": 139,
+          "R": 34,
+          "A": 255
+        },
+        "MaintainAspectRatio": false,
+        "Dimensions": "3000, 150",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Floor",
+        "Position": "1997.9388, 1387.1731",
+        "TextureName": "wall",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      },
+      {
+        "$id": "12",
+        "$type": "Simulator.Simulation.Wall, Simulator",
+        "Colour": {
+          "$id": "13",
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 19,
+          "G": 69,
+          "R": 139,
+          "A": 255
+        },
+        "MaintainAspectRatio": false,
+        "Dimensions": "25, 500",
+        "RestitutionCoefficient": 0.95,
+        "Name": "Wall",
+        "Position": "4062.9587, 888.2643",
+        "TextureName": "wall",
+        "Selected": false,
+        "Selectable": true,
+        "Movable": true
+      }
+    ]
+  },
+  "Paused": false,
+  "BackgroundColour": {
+    "$id": "14",
+    "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+    "B": 235,
+    "G": 206,
+    "R": 135,
+    "A": 255
+  },
+  "Gravity": "0, 980"
+}

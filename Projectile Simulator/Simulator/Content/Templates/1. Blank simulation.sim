@@ -1,0 +1,49 @@
+{
+  "$id": "1",
+  "$type": "Simulator.SimulationState, Simulator",
+  "Objects": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "Simulator.Simulation.Camera, Simulator",
+        "Transform": {
+          "$id": "4",
+          "$type": "Microsoft.Xna.Framework.Matrix, MonoGame.Framework",
+          "M11": 0.4240979,
+          "M12": 0.0,
+          "M13": 0.0,
+          "M14": 0.0,
+          "M21": 0.0,
+          "M22": 0.4240979,
+          "M23": 0.0,
+          "M24": 0.0,
+          "M31": 0.0,
+          "M32": 0.0,
+          "M33": 0.4240979,
+          "M34": 0.0,
+          "M41": -760.1537,
+          "M42": 165.81033,
+          "M43": 0.0,
+          "M44": 1.0
+        },
+        "ZoomMultiplier": 1.1,
+        "MaxZoomLevel": 6,
+        "MinZoomLevel": -16,
+        "Zoom": 0.42409757,
+        "OldZoom": 0.46650735
+      }
+    ]
+  },
+  "Paused": false,
+  "BackgroundColour": {
+    "$id": "5",
+    "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+    "B": 235,
+    "G": 206,
+    "R": 135,
+    "A": 255
+  },
+  "Gravity": "0, 980"
+}

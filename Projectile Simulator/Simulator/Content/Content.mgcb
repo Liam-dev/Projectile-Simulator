@@ -27,6 +27,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/SevenSegment.spritefont
 
+#begin Templates/1. Blank simulation.sim
+/copy:Templates/1. Blank simulation.sim
+
+#begin Templates/2. Simple cannon.sim
+/copy:Templates/2. Simple cannon.sim
+
+#begin Templates/3. Collision example.sim
+/copy:Templates/3. Collision example.sim
+
+#begin Templates/4. Detection example.sim
+/copy:Templates/4. Detection example.sim
+
 #begin Textures/ball.png
 /importer:TextureImporter
 /processor:TextureProcessor
