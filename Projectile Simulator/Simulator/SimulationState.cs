@@ -22,7 +22,7 @@ namespace Simulator
         /// Gets or sets if the simulation is paused.
         /// </summary>
         [Browsable(false)]
-        public bool Paused { get; set; }
+        public bool Paused { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the background colour of the simulation.
@@ -46,7 +46,7 @@ namespace Simulator
         /// Gets or sets the gravitational field strength in the simulation.
         /// </summary>
         [Browsable(false)]
-        public Vector2 Gravity { get; set; }
+        public Vector2 Gravity { get; set; } = 980 * Vector2.UnitY;
 
         /// <summary>
         /// Gets or sets the displayed gravitational field strength as a float. Only to be used for display.

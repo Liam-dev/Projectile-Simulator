@@ -21,7 +21,7 @@ namespace Simulator.UserInterface
         private delegate void SafeCallDelegate();
 
         // List of object to load into simulation when form is loaded
-        private SimulationState loadedState = new SimulationState();
+        private SimulationState loadedState;
 
         // Object that is currently saved to clipboard
         private SimulationObject clipboardObject;
@@ -53,6 +53,12 @@ namespace Simulator.UserInterface
             simulation.MouseHoverUpdatesOnly = false;
 
             WindowState = FormWindowState.Maximized;
+
+            // Load default simulation state
+            loadedState = new SimulationState();
+
+            // Load preferences
+            ReadPreferences();
         }
 
         /// <summary>
@@ -75,18 +81,7 @@ namespace Simulator.UserInterface
             // Initialise undo redo stack
             undoRedoStack.AddState(loadedState);
 
-            // Read preferences
-            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + PreferencesPath;
-            if (File.Exists(path))
-            {
-                preferences = FileSaver.ReadJson<EditorPreferences>(path);
-            }
-            else
-            {
-                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
-            }
-
-            Trajectory.Visible = preferences.ShowTrajectories;
+            ReadPreferences();      
 
             if (!isTemplate)
             {
@@ -113,6 +108,22 @@ namespace Simulator.UserInterface
             toolbar.SetUndoButtonState(false, false);
 
             simulation.LoadState(loadedState, true);
+        }
+
+        // Reads user preferences from preferences file
+        private void ReadPreferences()
+        {
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + PreferencesPath;
+            if (File.Exists(path))
+            {
+                preferences = FileSaver.ReadJson<EditorPreferences>(path);
+            }
+            else
+            {
+                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
+            }
+
+            Trajectory.Visible = preferences.ShowTrajectories;
         }
 
         private void Simulation_ObjectMoved(object sender, EventArgs e)

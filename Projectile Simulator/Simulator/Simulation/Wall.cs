@@ -10,7 +10,7 @@ namespace Simulator.Simulation
     /// <summary>
     /// A Box with a scalable non-textured rectangular shape.
     /// </summary>
-    internal class Wall : Box, IScalable
+    public class Wall : Box, IScalable
     {
         /// <summary>
         /// Gets or sets the colour of the wall.

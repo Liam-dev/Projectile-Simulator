@@ -1,6 +1,6 @@
 ﻿namespace Simulator.Simulation
 {
-    internal interface IScalable
+     interface IScalable
     {
         bool MaintainAspectRatio { get; set; }
     }

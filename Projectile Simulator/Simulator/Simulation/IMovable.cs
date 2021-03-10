@@ -5,7 +5,7 @@ namespace Simulator.Simulation
     /// <summary>
     /// An interface for moving selected objects.
     /// </summary>
-    internal interface IMovable
+     interface IMovable
     {
         /// <summary>
         /// Gets or sets whether the object is currently moving.

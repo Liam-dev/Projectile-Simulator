@@ -7,7 +7,7 @@ namespace Simulator.UserInterface
     /// Stores generic states in structure that implements undo-redo functionality.
     /// </summary>
     /// <typeparam name="T">Type of UndoRedoStack state</typeparam>
-    internal class UndoRedoStack<T>
+     class UndoRedoStack<T>
     {
         /// <summary>
         /// Stack of states that can be undone.

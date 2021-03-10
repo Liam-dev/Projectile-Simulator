@@ -6,7 +6,7 @@ namespace Simulator.Converters
     /// <summary>
     /// Converter for expandable objects which can be serialized.
     /// </summary>
-    internal class SerializableExpandableObjectConverter : ExpandableObjectConverter
+     class SerializableExpandableObjectConverter : ExpandableObjectConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {

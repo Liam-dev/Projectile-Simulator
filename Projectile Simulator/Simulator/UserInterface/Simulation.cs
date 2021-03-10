@@ -12,30 +12,46 @@ namespace Simulator.UserInterface
     /// <summary>
     /// XNA controlled simulation window.
     /// </summary>
-    internal class Simulation : MonoGameControl
+    public class Simulation : MonoGameControl
     {
-        // List of all simulation objects to be updated and drawn
+        /// <summary>
+        /// List of all simulation objects to be updated and drawn.
+        /// </summary>
         protected List<SimulationObject> objects;
 
-        // Determines if simulation objects are updated
+        /// <summary>
+        /// Determines if simulation objects are updated.
+        /// </summary>
         protected bool paused;
 
-        // Timespan of previous update frame
+        /// <summary>
+        /// Timespan of previous update frame.
+        /// </summary>
         protected TimeSpan previousDelta;
 
-        // Tolerance to how long a frame should be before the previous frame time is used
+        /// <summary>
+        /// Tolerance to how long a frame should be before the previous frame time is used.
+        /// </summary>
         protected float timeTolerance = 2f;
 
-        // Update frame time multiplier
+        /// <summary>
+        /// Update frame time multiplier.
+        /// </summary>
         protected float speed = 1.3f;
 
-        // State of Mouse in the previous update frame
+        /// <summary>
+        /// State of Mouse in the previous update frame.
+        /// </summary>
         protected MouseState lastMouseState;
 
-        // Records if the context menu for the simulation is open
+        /// <summary>
+        /// Records if the context menu for the simulation is open
+        /// </summary>
         protected bool contextMenuOpen;
 
-        // Record if an object is being moved by the mouse
+        /// <summary>
+        /// Records if an object is being moved by the mouse
+        /// </summary>
         protected bool objectMoving;
 
         /// <summary>
@@ -176,11 +192,6 @@ namespace Simulator.UserInterface
             // Apply scale to static property of SimulationObject
             SimulationObject.Scale = Scale;
 
-            // If there is no camera, create a default one
-            if (Camera == null)
-            {
-                Camera = new Camera(1.1f, 8, -20);
-            }
 
             // Assign initial mouse state
             lastMouseState = Mouse.GetState();
@@ -225,6 +236,12 @@ namespace Simulator.UserInterface
                     // Load camera
                     Camera = camera;
                 }
+            }
+
+            // If there is no camera, create a default one
+            if (Camera.Transform == new Matrix())
+            {
+                Camera = new Camera(1.1f, 8, -20);
             }
         }
 
