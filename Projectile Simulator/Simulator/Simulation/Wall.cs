@@ -77,6 +77,7 @@ namespace Simulator.Simulation
         {
             base.OnLoad(Editor);
 
+            // Create new blank texture for wall
             texture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
             texture.SetData(new[] { Colour });
         }

@@ -34,19 +34,24 @@ namespace Simulator.UserInterface
             }
         }
 
+        // When accept button is clicked
         private void addButton_Click(object sender, EventArgs e)
         {
+            // Check if entered text is valid
+
             if (textBox.TextLength == 0)
             {
+                // Nothing entered
                 MessageBox.Show("No name was entered", "Invalid name!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else if (usedNames.Contains(textBox.Text))
             {
+                // Name was not unique
                 MessageBox.Show("Name entered was not unique", "Invalid name!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                // Unique name
+                // Unique name entered
                 ObjectName = textBox.Text;
                 DialogResult = DialogResult.OK;
             }

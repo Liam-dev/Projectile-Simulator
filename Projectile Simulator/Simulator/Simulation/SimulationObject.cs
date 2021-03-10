@@ -167,7 +167,7 @@ namespace Simulator.Simulation
             // Load and apply texture
             texture = LoadTexture(TextureName, Editor.Content);
 
-            // Load border texture
+            // Load border texture as blank white texture
             borderTexture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
             borderTexture.SetData(new[] { Color.White });
         }
@@ -225,9 +225,10 @@ namespace Simulator.Simulation
         /// <param name="width">Width of the border to draw.</param>
         protected void DrawBorder(SpriteBatch spriteBatch, float zoom, Rectangle rectangle, int width)
         {
-            // Border width
-            int _width = (int)MathF.Max(1, MathF.Round(width / MathF.Pow(zoom, 0.5f), 0f));
+            // Calculate border width as a rounded power of -0.5 to give consistent, yet changing border at differnt zoom levels
+            int _width = (int)MathF.Max(1, MathF.Round(width * MathF.Pow(zoom, -0.5f), 0f));
 
+            // Create rectangle sides of border
             Rectangle[] border = new Rectangle[]
             {
                 // Left

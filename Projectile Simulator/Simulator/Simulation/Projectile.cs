@@ -104,6 +104,7 @@ namespace Simulator.Simulation
             ApplyForce(CalculateWeight());
             ApplyForce(CalulateDrag());
 
+            // Add point to trajectory
             if (trajectory != null && Trajectory.Visible)
             {
                 trajectory?.AddPoint(Centre);

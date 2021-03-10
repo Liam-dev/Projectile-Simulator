@@ -173,7 +173,7 @@ namespace Simulator.UserInterface
                 }
             }
 
-            // Get action to perform
+            // Get action to perform and perform it
             switch (tag)
             {
                 case "newFile":
@@ -326,7 +326,7 @@ namespace Simulator.UserInterface
         {
             if (Filename == null)
             {
-                // Unsaved file warning
+                // Show unsaved file warning of close
 
                 switch (ShowUnsavedFileMessage())
                 {
@@ -359,47 +359,63 @@ namespace Simulator.UserInterface
             }
         }
 
+        // Saves simulation state to undo stack
         private void PerformedAction()
         {
             undoRedoStack.AddState(simulation.GetState());
             toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
         }
 
+        // Opens preferences editor to edit Editor preferences and simulation settings
         private void OpenPreferences()
         {
+            // Open preferences editor form
             PreferencesEditor preferencesEditor = new PreferencesEditor(preferences, true, simulation.GetState());
             preferencesEditor.ShowDialog(this);
-            preferences = preferencesEditor.Preferences;
 
+            // Update preferences
+            preferences = preferencesEditor.Preferences;
             Trajectory.Visible = preferences.ShowTrajectories;
+
+            // Update simulation settings
             simulation.LoadSettings(preferencesEditor.SimulationSettings);
         }
 
+        // Attempts to add a simulation object into the simulation
+        // Returns true if successful, and false if not
         private bool CreateNewObject(SimulationObject @object)
         {
+            // Check if new object should be automatically named
             if (preferences.AutoName)
             {
+                // Get list of already used names
                 List<string> usedNames = new List<string>();
                 foreach (SimulationObject existingObject in simulation.GetObjects())
                 {
                     usedNames.Add(existingObject.Name);
                 }
 
+                // Continue to attempt to generate new unique object name until it is unique
                 string name = @object.GetType().Name;
                 int i = 1;
                 while (usedNames.Contains(name))
                 {
+                    // Generate new name
                     name = @object.GetType().Name + i.ToString();
                     i++;
                 }
 
+                // Apply unique name
                 @object.Name = name;
             }
             else
             {
+                // Open object creation form to get user to enter name
                 ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
+
                 if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
                 {
+                    // Apply unique name
                     @object.Name = objectCreationBox.ObjectName;
                 }
                 else
@@ -408,6 +424,7 @@ namespace Simulator.UserInterface
                 }
             }
 
+            // Add object to simulation
             simulation.AddObject(@object);
             inspector.SelectedObject = @object;
             return true;
@@ -421,7 +438,7 @@ namespace Simulator.UserInterface
             new Thread(() => new Editor().ShowDialog()).Start();
         }
 
-        // Open open file dialogue in new thread (does not save current file)
+        // Open a open file dialogue in new thread (does not save current file)
         private void OpenFile()
         {
             // Open simulation
@@ -545,12 +562,14 @@ namespace Simulator.UserInterface
         // Shows message warning box about unsaved file
         private DialogResult ShowUnsavedFileMessage()
         {
+            // Get filename to display in message
             string name = "Untitled Simulation";
-
+            
             if (Filename != null && Filename != string.Empty)
             {
                 name = Path.GetFileName(Filename);
             }
+
             string message = "Do you want to save your changes to \"" + name + "\" \n\n" +
                              "If you click \"No\", your changes will be lost forever! (a long time!)";
 
@@ -558,6 +577,7 @@ namespace Simulator.UserInterface
         }
 
         // Shows save file dialogue and saves simulation to file
+        // Returns true if file saved, and false if not
         private bool ShowSaveFileDialogue()
         {
             SaveFileDialog fileDialogue = new SaveFileDialog
@@ -569,6 +589,7 @@ namespace Simulator.UserInterface
                 Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*"
             };
 
+            // If file is saved by user, then write simulation state to file
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 Filename = fileDialogue.FileName;
@@ -595,6 +616,7 @@ namespace Simulator.UserInterface
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
+                // Open file in new editor
                 CloseEditor();
                 new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
             }
@@ -610,6 +632,7 @@ namespace Simulator.UserInterface
         {
             Thread saveThread = new Thread(() =>
             {
+                // Get the rendered simulation
                 RenderTarget2D screenshot = simulation.GetDrawCapture();
 
                 SaveFileDialog fileDialogue = new SaveFileDialog
@@ -623,6 +646,7 @@ namespace Simulator.UserInterface
 
                 if (fileDialogue.ShowDialog() == DialogResult.OK)
                 {
+                    // Save simulation render as png to the specified file
                     FileStream fileStream = new FileStream(fileDialogue.FileName, FileMode.Create);
                     screenshot.SaveAsPng(fileStream, screenshot.Width, screenshot.Height);
                     fileStream.Close();
@@ -633,6 +657,7 @@ namespace Simulator.UserInterface
             saveThread.Start();
         }
 
+        // Adds a trigger to the selected stopwatch
         private void AddTriggerToStopwatch(ISelectable selectable, Stopwatch.StopwatchInput input)
         {
             if (selectable is Stopwatch stopwatch)
@@ -640,24 +665,32 @@ namespace Simulator.UserInterface
                 List<object> availableTriggers = new List<object>();
                 List<object> currentTriggers = new List<object>();
 
+                // Get available triggers to add (any trigger in simulation that isn't on a different input of the selected stopwatch)
                 foreach (SimulationObject simulationObject in simulation.GetObjects())
                 {
                     if (simulationObject is ITrigger trigger)
                     {
+                        // Check if trigger is already assigned to the selected stopwatch
                         if (stopwatch.TriggerDictionary.ContainsKey(trigger))
                         {
+                            // Check is trigger is on the selected input
                             if (stopwatch.TriggerDictionary[trigger] == input)
                             {
+                                // If yes, then make trigger available
                                 availableTriggers.Add(trigger);
                             }
+
+                            // If trigger is already on the other input, then do not add trigger to stopwatch
                         }
                         else
                         {
+                            // If trigger is not assigned already to the stopwatch, then make it available
                             availableTriggers.Add(trigger);
                         }
                     }
                 }
 
+                // Get current triggers for the stopwatch on the specified input
                 foreach (var trigger in stopwatch.TriggerDictionary)
                 {
                     if (trigger.Value == input)
@@ -670,6 +703,7 @@ namespace Simulator.UserInterface
 
                 ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
 
+                // Show trigger selection box
                 if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
                 {
                     // Add new triggers
@@ -695,6 +729,8 @@ namespace Simulator.UserInterface
                 UseShellExecute = true,
                 FileName = url
             };
+
+            // Open page
             System.Diagnostics.Process.Start(processStartInfo);
         }
     }

@@ -44,14 +44,17 @@ namespace Simulator.UserInterface
             checkedListBox.Items.AddRange(objects.Except(CheckedObjects).ToArray());
 
             Text = title;
-            addTriggersButton.Text = buttonPrompt;
+            updateObjectsButton.Text = buttonPrompt;
         }
 
-        private void addTriggersButton_Click(object sender, EventArgs e)
+        // Accept button clicked
+        private void updateObjectsButton_Click(object sender, EventArgs e)
         {
+            // Create array of checked objects
             object[] objects = new object[checkedListBox.CheckedItems.Count];
             checkedListBox.CheckedItems.CopyTo(objects, 0);
 
+            // Update object list
             CheckedObjects.Clear();
             CheckedObjects.AddRange(objects);
             DialogResult = DialogResult.OK;

@@ -784,6 +784,8 @@ namespace Simulator.UserInterface
                     {
                         if (j is Projectile b && b != a)
                         {
+                            // Check collisions between two projectiles
+
                             bool colliding = MathF.Abs(MathF.Pow(a.Centre.X - b.Centre.X, 2) + MathF.Pow(a.Centre.Y - b.Centre.Y, 2)) <= MathF.Pow(a.Radius + b.Radius, 2);
 
                             if (colliding)
@@ -793,31 +795,36 @@ namespace Simulator.UserInterface
                         }
                         else if (j is Box c)
                         {
+                            // Check collisions between a projectile and a box
+
+                            // Get nearest point on box to the centre of the projectile
                             Vector2 nearestPoint = new Vector2()
                             {
                                 X = MathF.Max(c.Position.X, MathF.Min(a.Centre.X, c.Position.X + c.Dimensions.X)),
                                 Y = MathF.Max(c.Position.Y, MathF.Min(a.Centre.Y, c.Position.Y + c.Dimensions.Y))
                             };
 
-                            float overlap = a.Radius - (nearestPoint - a.Centre).Length();
-
-                            if (overlap > 0)
+                            if ((nearestPoint - a.Centre).LengthSquared() < a.Radius * a.Radius)
                             {
+                                // Colliding
+                                float overlap = a.Radius - (nearestPoint - a.Centre).Length();
                                 ResolveProjectileToBoxCollision(a, c, nearestPoint, overlap);
                             }
                         }
                         else if (j is Detector d)
                         {
+                            // Check collisions between projectile and detector
+
+                            // Get nearest point in detector's detection area to the centre of the projectile
                             Vector2 nearestPoint = new Vector2()
                             {
                                 X = MathF.Max(d.DetectionArea.Left, MathF.Min(a.Centre.X, d.DetectionArea.Right)),
                                 Y = MathF.Max(d.DetectionArea.Top, MathF.Min(a.Centre.Y, d.DetectionArea.Bottom))
                             };
 
-                            float overlap = a.Radius - (nearestPoint - a.Centre).Length();
-
-                            if (overlap > 0)
+                            if ((nearestPoint - a.Centre).LengthSquared() < a.Radius * a.Radius)
                             {
+                                // Colliding
                                 d.OnObjectEntered(a);
                             }
                         }
@@ -845,8 +852,10 @@ namespace Simulator.UserInterface
             // Dynamic resolution
             Vector2 relativeVelocity = a.GetVelocity() - b.GetVelocity();
 
+            // Get the squared geometric mean of the coefficients of restitution of the projectiles
             float restitution = a.RestitutionCoefficient * b.RestitutionCoefficient;
 
+            // Calculate impulse
             Vector2 impulse = -(1 + restitution)
                 * Vector2.Dot(relativeVelocity, collisionNormal) * collisionNormal
                 / (collisionNormal.LengthSquared() * ((1 / a.Mass) + (1 / b.Mass)));
@@ -870,8 +879,11 @@ namespace Simulator.UserInterface
             p.Position -= overlap * Vector2.Normalize(collisionNormal);
 
             // Dynamic resolution
+
+            // Get the squared geometric mean of the coefficients of restitution of the projectile and the box
             float restitution = p.RestitutionCoefficient * b.RestitutionCoefficient;
 
+            // Calculate impulse on projectile
             Vector2 impulse = -(1 + restitution)
                 * Vector2.Dot(p.GetVelocity(), collisionNormal) * collisionNormal
                 / (collisionNormal.LengthSquared() * (1 / p.Mass));

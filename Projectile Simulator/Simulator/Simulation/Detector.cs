@@ -13,7 +13,7 @@ namespace Simulator.Simulation
     public class Detector : SimulationObject, IPersistent, ITrigger
     {
         /// <summary>
-        /// Enumeration of the horizontal and verical directions.
+        /// Enumeration of the horizontal and vertical directions.
         /// </summary>
         public enum DetectionDirection
         {
@@ -147,20 +147,27 @@ namespace Simulator.Simulation
 
             float rotation = (int)Direction * 0.5f * MathF.PI;
 
+            // Determine texture section rectangles to draw.
             Rectangle start = new Rectangle(0, 0, 23, texture.Height);
             Rectangle middle = new Rectangle(24, 0, 1, texture.Height);
             Rectangle end = new Rectangle(73, 0, 23, texture.Height);
 
             if (Direction == DetectionDirection.Horizontal)
             {
+                // Draw start
                 spriteBatch.Draw(texture, new Rectangle(Position.ToPoint(), start.Size), start, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
+                // Draw middle
                 spriteBatch.Draw(texture, new Rectangle((Position + new Vector2(start.Width, 0)).ToPoint(), new Point((int)Separation, texture.Height)), middle, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
+                // Draw end
                 spriteBatch.Draw(texture, new Rectangle((Position + new Vector2(start.Width, 0) + new Vector2(Separation, 0)).ToPoint(), end.Size), end, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
             }
             else
             {
+                // Draw start
                 spriteBatch.Draw(texture, new Rectangle((Position + new Vector2(texture.Height, 0)).ToPoint(), start.Size), start, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
+                // Draw middle
                 spriteBatch.Draw(texture, new Rectangle((Position + new Vector2(texture.Height, 0) + new Vector2(0, start.Width)).ToPoint(), new Point((int)Separation, texture.Height)), middle, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
+                // Draw end
                 spriteBatch.Draw(texture, new Rectangle((Position + new Vector2(texture.Height, 0) + new Vector2(0, start.Width) + new Vector2(0, Separation)).ToPoint(), end.Size), end, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
             }
         }

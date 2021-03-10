@@ -27,6 +27,7 @@ namespace Simulator.UserInterface
         {
             if (templateList.SelectedItem != null)
             {
+                // Open new simulation from selected template in a new Editor
                 string templateName = templateList.SelectedItem;
                 string path = "Content/Templates/" + templateName + ".sim";
                 new Thread(() => new Editor(path, true).ShowDialog()).Start();
@@ -74,6 +75,7 @@ namespace Simulator.UserInterface
                 preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
             }
 
+            // Open preferences editor
             new PreferencesEditor(preferences, false).ShowDialog(this);
         }
     }

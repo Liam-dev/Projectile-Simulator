@@ -10,6 +10,9 @@ namespace Simulator.UserInterface
     /// </summary>
     public partial class TemplateList : UserControl
     {
+        // Directory containing template
+        private string templateDirectory = "/Content/Templates/";
+
         /// <summary>
         /// Occurs when an item in the list is double clicked.
         /// </summary>
@@ -33,11 +36,12 @@ namespace Simulator.UserInterface
             // If loaded into running application, display the built in simulation templates.
             if (!(Site != null && Site.DesignMode))
             {
-                string path = Directory.GetCurrentDirectory() + "/Content/Templates/";
+                string path = Directory.GetCurrentDirectory() + templateDirectory;
                 string[] names = Directory.GetFiles(path);
 
                 List<string> files = new List<string>();
 
+                // Add templates from directory to list of names of the template files (without extension)
                 foreach (string file in names)
                 {
                     files.Add(Path.GetFileNameWithoutExtension(file));

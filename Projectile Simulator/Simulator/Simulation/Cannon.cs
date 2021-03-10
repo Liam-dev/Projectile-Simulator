@@ -20,12 +20,12 @@ namespace Simulator.Simulation
         protected List<Projectile> projectiles = new List<Projectile>();
 
         /// <summary>
-        /// The offset of firing position from position of cannon
+        /// The offset of firing position from position of cannon.
         /// </summary>
-        protected Vector2 firingPosition = new Vector2(40, 80);
+        protected Vector2 firingPosition = new Vector2(45, 65);
 
         /// <summary>
-        /// The offset position to rotate around
+        /// The offset position to rotate around.
         /// </summary>
         protected Vector2 rotationCentre = new Vector2(66, 95);
 
@@ -122,12 +122,6 @@ namespace Simulator.Simulation
             Speed = 1000;
         }
 
-        public override void OnLoad(MonoGameService Editor)
-        {
-            base.OnLoad(Editor);
-            firingPosition = new Vector2(texture.Width, texture.Height) / 2;
-        }
-
         /// <summary>
         /// Fires the cannon's projectile from the cannon and its projection speed and projectile angle.
         /// </summary>
@@ -139,20 +133,24 @@ namespace Simulator.Simulation
                 p.RemoveTrajectory();
             }
 
+            // Create a copy of the cannon's projectile
             Projectile projectile = new Projectile("projectile", Position, Projectile.TextureName, Projectile.Mass, Projectile.RestitutionCoefficient, Projectile.Radius, Projectile.DragCoefficient);
+            
+            // Determine the transformed position to fire the projectile from.
             projectile.Centre = DetermineFiringPosition();
             projectiles.Add(projectile);
 
             // Takes into account facing direction
             Vector2 impulse = projectile.Mass * Speed * new Vector2((int)Facing * MathF.Cos(ProjectionAngle), -MathF.Sin(ProjectionAngle));
 
+            // Invoke events
             Fired?.Invoke(this, new FiringArgs(projectile, impulse));
             Triggered?.Invoke(this, new EventArgs());
         }
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
-            // Flip if facing left
+            // Reflect the texture in the y axis (horizontally) if facing left
             if (Facing == FacingDirection.Left)
             {
                 spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, ProjectionAngle + 1.75f * MathF.PI, rotationCentre, 1, SpriteEffects.FlipHorizontally, 0.07f);
@@ -160,11 +158,6 @@ namespace Simulator.Simulation
             else
             {
                 spriteBatch.Draw(texture, Position + new Vector2(66, 95), null, Color.White, -ProjectionAngle + 0.25f * MathF.PI, rotationCentre, 1, SpriteEffects.None, 0.07f);
-            }
-
-            if (Selected)
-            {
-                //DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
         }
 
@@ -174,19 +167,23 @@ namespace Simulator.Simulation
         /// <returns>Global position of transformed firing position</returns>
         protected Vector2 DetermineFiringPosition()
         {
+            // Create matrix which represents the transformation of a point in the cannon by a rotation around the cannon's rotation centre
             Matrix transform = Matrix.Identity;
-            transform *= Matrix.CreateTranslation(new Vector3(-(Position + rotationCentre), 1));
+            transform *= Matrix.CreateTranslation(new Vector3(-(Position + rotationCentre), 0));
             transform *= Matrix.CreateRotationZ(-ProjectionAngle);
-            transform *= Matrix.CreateTranslation(new Vector3(Position + rotationCentre, 1));
+            transform *= Matrix.CreateTranslation(new Vector3(Position + rotationCentre, 0));
 
+            // Transform the global firing position by the matrix
             Vector2 transformedPosition = Vector2.Transform(Position + firingPosition, transform);
 
             if (Facing == FacingDirection.Right)
             {
+                // If cannon facing right (orientation of texture), then do not transform position further
                 return transformedPosition;
             }
             else
             {
+                // If cannon facing left, then  reflect the transformed firing position in the vertical midpoint of the texture
                 float reflectedX = BoundingBox.Right - (transformedPosition.X - BoundingBox.Left);
                 return new Vector2(reflectedX, transformedPosition.Y);
             }

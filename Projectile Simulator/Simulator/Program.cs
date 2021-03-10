@@ -29,6 +29,7 @@ namespace Simulator
             }
             else
             {
+                // If no arguments given, then run Homepage form
                 Application.Run(new Homepage());
             }
         }

@@ -45,7 +45,9 @@ namespace Simulator.Simulation
         {
             get
             {
+                // Converts the list of tuples to a dictionary
                 Dictionary<ITrigger, StopwatchInput> result = new Dictionary<ITrigger, StopwatchInput>();
+
                 foreach (var trigger in Triggers)
                 {
                     result.Add(trigger.Item1, trigger.Item2);
@@ -89,12 +91,13 @@ namespace Simulator.Simulation
         {
             base.OnLoad(Editor);
 
+            // Load font
             font = Editor.Content.Load<SpriteFont>("Fonts/" + FontName);
 
             // Add triggers
-
             foreach (var trigger in TriggerDictionary)
             {
+                // Add event subscribers
                 switch (trigger.Value)
                 {
                     case StopwatchInput.Start:
@@ -104,7 +107,7 @@ namespace Simulator.Simulation
                     case StopwatchInput.Stop:
                         trigger.Key.Triggered += StopTrigger_Triggered;
                         break;
-                };
+                }
             }
         }
 
@@ -120,6 +123,8 @@ namespace Simulator.Simulation
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
             spriteBatch.Draw(texture, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.09f);
+
+            // Draw time on stopwatch in second and milliseconds format
             spriteBatch.DrawString(font, Timer.ToString(@"ss\.ff"), Position + new Vector2(24, 8), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0.1f);
 
             if (Selected)
@@ -161,6 +166,7 @@ namespace Simulator.Simulation
         /// <param name="input">The input to add the trigger to.</param>
         public void AddTrigger(ITrigger trigger, StopwatchInput input)
         {
+            // Remove specified trigger from current triggers
             RemoveTrigger(trigger);
 
             Triggers.Add((trigger, input));
@@ -183,6 +189,7 @@ namespace Simulator.Simulation
         /// <param name="trigger">The trigger to remove.</param>
         public void RemoveTrigger(ITrigger trigger)
         {
+            // Remove all trigger pairs which contain the specified trigger.
             Triggers.RemoveAll(x => x.Item1 == trigger);
 
             trigger.Triggered -= StartTrigger_Triggered;

@@ -26,6 +26,7 @@ namespace Simulator.Simulation
             {
                 if (texture != null)
                 {
+                    // Scale selection by zoom
                     return new Rectangle((int)Position.X, (int)Position.Y, (int)(texture.Width / zoom), (int)(texture.Height / zoom));
                 }
                 else
@@ -58,6 +59,7 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
+            // Scale the drawing and selection area by 1 / zoom factor
             this.zoom = zoom;
             spriteBatch.Draw(texture, Position, null, null, null, 0, new Vector2(1 / zoom), Color.White, SpriteEffects.None, 0);
         }

@@ -63,7 +63,7 @@ namespace Simulator.Simulation
             velocity += impulse / Mass;
             impulse = Vector2.Zero;
 
-            // Newton's second law
+            // Apply Newton's second law
             acceleration = resultantForce / Mass;
 
             // Update kinematics

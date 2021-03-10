@@ -71,6 +71,7 @@ namespace Simulator.Simulation
             OldZoom = Zoom;
             Zoom *= ZoomMultiplier;
 
+            // Clamp the zoom to its maximum level
             if (Zoom > MathF.Pow(ZoomMultiplier, MaxZoomLevel))
             {
                 Zoom = MathF.Pow(ZoomMultiplier, MaxZoomLevel);
@@ -87,6 +88,8 @@ namespace Simulator.Simulation
         {
             OldZoom = Zoom;
             Zoom /= ZoomMultiplier;
+
+            //Clamp the zoom to its minimum level
             if (Zoom < MathF.Pow(ZoomMultiplier, MinZoomLevel))
             {
                 Zoom = MathF.Pow(ZoomMultiplier, MinZoomLevel);
@@ -111,8 +114,7 @@ namespace Simulator.Simulation
         /// <param name="scaleFactor">The scale factor the zoom by.</param>
         protected void ZoomAtPoint(Vector2 position, float scaleFactor)
         {
-            // Multiply matrix by new zoom transformation matrix
-
+            // Multiply matrix by new zoom transformation matrices of an enlargement centred on the specified position
             Matrix toPosition = Matrix.CreateTranslation(new Vector3(-position, 0));
             Matrix scale = Matrix.CreateScale(scaleFactor);
             Matrix fromPosition = Matrix.CreateTranslation(new Vector3(position, 0));
@@ -129,6 +131,7 @@ namespace Simulator.Simulation
         /// <returns>The corresponding simulation position.</returns>
         public Vector2 GetSimulationPostion(Vector2 position)
         {
+            // Transforms the given position buy the inverse of the camera's transformation matrix
             Matrix inverse = Matrix.Invert(Transform);
             return Vector2.Transform(position, inverse);
         }
@@ -140,6 +143,7 @@ namespace Simulator.Simulation
         /// <returns>The corresponding screen location.</returns>
         public Vector2 GetActualPosition(Vector2 position)
         {
+            //Transforms the given position buy the camera's transformation matrix
             return Vector2.Transform(position, Transform);
         }
     }

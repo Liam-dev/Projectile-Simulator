@@ -70,11 +70,13 @@ namespace Simulator.Simulation
         {
             drawCount++;
 
+            // Check if trajectory has become too long
             if (points.Count > Length)
             {
                 points.RemoveAt(0);
             }
 
+            // Draw each trajectory at centre of location
             foreach (Vector2 point in points)
             {
                 spriteBatch.Draw(texture, point - radiusVector, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.06f);

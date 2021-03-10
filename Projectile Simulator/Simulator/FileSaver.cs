@@ -20,6 +20,7 @@ namespace Simulator
         {
             StreamWriter writer = new StreamWriter(path);
 
+            // Serialize state to JSON string
             string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.All,
@@ -47,6 +48,8 @@ namespace Simulator
             try
             {
                 string text = reader.ReadToEnd();
+
+                // Deserialize state to JSON string
                 state = JsonConvert.DeserializeObject<T>(text, new JsonSerializerSettings()
                 {
                     TypeNameHandling = TypeNameHandling.All,
