@@ -1,26 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace Simulator.Simulation
 {
     /// <summary>
-    /// A SimulationObject that can be moved to manipulate other SimulationObjects.
+    /// A SimulationObject that can be moved to manipulate other simulation objects.
     /// </summary>
-    public class Handle : SimulationObject , IPersistent
+    public class Handle : SimulationObject, IPersistent
     {
-        // The zoom of the simulation (used for drawing and selection)
+        /// <summary>
+        /// The zoom of the simulation (used for drawing and selection)
+        /// </summary>
         protected float zoom;
 
-        public SimulationObject Parent { get; set; }
-
         /// <summary>
-        /// Occurs when the position of the handle is changed.
+        /// Gets or sets the parent object of the handle.
         /// </summary>
-        public event EventHandler PositionChanged;
+        public SimulationObject Parent { get; set; }
 
         [JsonIgnore]
         public override Rectangle BoundingBox
@@ -29,6 +26,7 @@ namespace Simulator.Simulation
             {
                 if (texture != null)
                 {
+                    // Scale selection by zoom
                     return new Rectangle((int)Position.X, (int)Position.Y, (int)(texture.Width / zoom), (int)(texture.Height / zoom));
                 }
                 else
@@ -38,11 +36,20 @@ namespace Simulator.Simulation
             }
         }
 
+        /// <summary>
+        /// Parameterless constructor for Handle.
+        /// </summary>
         public Handle()
         {
-
         }
 
+        /// <summary>
+        /// Constructor for Handle.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="parent">The  parent object of the handle.</param>
         public Handle(string name, Vector2 position, string textureName, SimulationObject parent) : base(name, position, textureName)
         {
             Parent = parent;
@@ -52,6 +59,7 @@ namespace Simulator.Simulation
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
         {
+            // Scale the drawing and selection area by 1 / zoom factor
             this.zoom = zoom;
             spriteBatch.Draw(texture, Position, null, null, null, 0, new Vector2(1 / zoom), Color.White, SpriteEffects.None, 0);
         }

@@ -1,22 +1,14 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using Simulator.Simulation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Design;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Simulator.Simulation;
-using System.Text.Json;
-using Newtonsoft.Json;
-using Simulator.Converters;
-using System.Linq;
 
 namespace Simulator.UserInterface
 {
@@ -40,14 +32,19 @@ namespace Simulator.UserInterface
         // Editor preferences
         private EditorPreferences preferences;
 
-        // Path to save preferences file to
+        /// <summary>
+        /// Path to save the Editor preferences file to.
+        /// </summary>
         public static string PreferencesPath = "preferences.json";
 
         /// <summary>
         /// Gets the filename of the file in the editor.
         /// </summary>
-        public string Filename { get; protected set; }
+        public string Filename { get; private set; }
 
+        /// <summary>
+        /// Parameterless constructor for Editor to open with no file.
+        /// </summary>
         public Editor()
         {
             InitializeComponent();
@@ -56,13 +53,19 @@ namespace Simulator.UserInterface
             simulation.MouseHoverUpdatesOnly = false;
 
             WindowState = FormWindowState.Maximized;
+
+            // Load default simulation state
+            loadedState = new SimulationState();
+
+            // Load preferences
+            ReadPreferences();
         }
 
         /// <summary>
-        /// Open Editor with  file
+        /// Constructor for Editor to open with a file.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="isTemplate"></param>
+        /// <param name="filename">Name of file to load into editor.</param>
+        /// <param name="isTemplate">Whether the file is to be used as template.</param>
         public Editor(string filename, bool isTemplate = false)
         {
             InitializeComponent();
@@ -78,21 +81,10 @@ namespace Simulator.UserInterface
             // Initialise undo redo stack
             undoRedoStack.AddState(loadedState);
 
-            // Read preferences
-            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + PreferencesPath;
-            if (File.Exists(path))
-            {
-                preferences = FileSaver.ReadJson<EditorPreferences>(path);
-            }
-            else
-            {
-                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
-            }
-
-            Trajectory.Visible = preferences.ShowTrajectories;
+            ReadPreferences();      
 
             if (!isTemplate)
-            { 
+            {
                 Filename = filename;
                 ChangeFormTitle();
             }
@@ -116,6 +108,22 @@ namespace Simulator.UserInterface
             toolbar.SetUndoButtonState(false, false);
 
             simulation.LoadState(loadedState, true);
+        }
+
+        // Reads user preferences from preferences file
+        private void ReadPreferences()
+        {
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/" + PreferencesPath;
+            if (File.Exists(path))
+            {
+                preferences = FileSaver.ReadJson<EditorPreferences>(path);
+            }
+            else
+            {
+                preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
+            }
+
+            Trajectory.Visible = preferences.ShowTrajectories;
         }
 
         private void Simulation_ObjectMoved(object sender, EventArgs e)
@@ -155,7 +163,7 @@ namespace Simulator.UserInterface
                 if (button.Tag is string text)
                 {
                     tag = text;
-                }      
+                }
             }
             else if (sender is ToolStripMenuItem item)
             {
@@ -165,7 +173,7 @@ namespace Simulator.UserInterface
                 }
             }
 
-            // Get action to perform
+            // Get action to perform and perform it
             switch (tag)
             {
                 case "newFile":
@@ -256,7 +264,7 @@ namespace Simulator.UserInterface
                     break;
 
                 case "newTapeMeasure":
-                    
+
                     TapeMeasure tapeMeasure = new TapeMeasure("tape measure", simulation.ScreenCentre, simulation.ScreenCentre + new Vector2(100, 0), 8, "line", "Arial");
                     bool created = CreateNewObject(tapeMeasure);
                     if (created)
@@ -318,7 +326,7 @@ namespace Simulator.UserInterface
         {
             if (Filename == null)
             {
-                // Unsaved file warning
+                // Show unsaved file warning of close
 
                 switch (ShowUnsavedFileMessage())
                 {
@@ -351,48 +359,64 @@ namespace Simulator.UserInterface
             }
         }
 
+        // Saves simulation state to undo stack
         private void PerformedAction()
         {
             undoRedoStack.AddState(simulation.GetState());
             toolbar.SetUndoButtonState(undoRedoStack.CanUndo(), undoRedoStack.CanRedo());
         }
 
+        // Opens preferences editor to edit Editor preferences and simulation settings
         private void OpenPreferences()
         {
+            // Open preferences editor form
             PreferencesEditor preferencesEditor = new PreferencesEditor(preferences, true, simulation.GetState());
             preferencesEditor.ShowDialog(this);
-            preferences = preferencesEditor.Preferences;
 
+            // Update preferences
+            preferences = preferencesEditor.Preferences;
             Trajectory.Visible = preferences.ShowTrajectories;
+
+            // Update simulation settings
             simulation.LoadSettings(preferencesEditor.SimulationSettings);
         }
 
+        // Attempts to add a simulation object into the simulation
+        // Returns true if successful, and false if not
         private bool CreateNewObject(SimulationObject @object)
         {
+            // Check if new object should be automatically named
             if (preferences.AutoName)
             {
+                // Get list of already used names
                 List<string> usedNames = new List<string>();
                 foreach (SimulationObject existingObject in simulation.GetObjects())
                 {
                     usedNames.Add(existingObject.Name);
                 }
 
+                // Continue to attempt to generate new unique object name until it is unique
                 string name = @object.GetType().Name;
                 int i = 1;
                 while (usedNames.Contains(name))
                 {
+                    // Generate new name
                     name = @object.GetType().Name + i.ToString();
                     i++;
                 }
 
+                // Apply unique name
                 @object.Name = name;
             }
             else
             {
+                // Open object creation form to get user to enter name
                 ObjectCreationBox objectCreationBox = new ObjectCreationBox(simulation.GetObjectsToSave());
+
                 if (objectCreationBox.ShowDialog(this) == DialogResult.OK)
                 {
-                    @object.Name = objectCreationBox.ObjectName;   
+                    // Apply unique name
+                    @object.Name = objectCreationBox.ObjectName;
                 }
                 else
                 {
@@ -400,6 +424,7 @@ namespace Simulator.UserInterface
                 }
             }
 
+            // Add object to simulation
             simulation.AddObject(@object);
             inspector.SelectedObject = @object;
             return true;
@@ -413,7 +438,7 @@ namespace Simulator.UserInterface
             new Thread(() => new Editor().ShowDialog()).Start();
         }
 
-        // Open open file dialogue in new thread (does not save current file)
+        // Open a open file dialogue in new thread (does not save current file)
         private void OpenFile()
         {
             // Open simulation
@@ -439,11 +464,11 @@ namespace Simulator.UserInterface
                 ChangeFormTitle();
             });
             thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();    
+            thread.Start();
         }
 
         // Writes simulation to file if already saved or shows dialogue for unnamed files
-        protected void Save()
+        private void Save()
         {
             if (Filename == null)
             {
@@ -457,7 +482,7 @@ namespace Simulator.UserInterface
         }
 
         // Saves file before performing another action
-        protected void SaveFilePerformAction(Action action)
+        private void SaveFilePerformAction(Action action)
         {
             // Unsaved file warning message
 
@@ -486,7 +511,6 @@ namespace Simulator.UserInterface
                             // Perform action
                             action();
                         }
-
                     });
 
                     saveThread.SetApartmentState(ApartmentState.STA);
@@ -536,14 +560,16 @@ namespace Simulator.UserInterface
         }
 
         // Shows message warning box about unsaved file
-        protected DialogResult ShowUnsavedFileMessage()
+        private DialogResult ShowUnsavedFileMessage()
         {
+            // Get filename to display in message
             string name = "Untitled Simulation";
             
             if (Filename != null && Filename != string.Empty)
             {
                 name = Path.GetFileName(Filename);
             }
+
             string message = "Do you want to save your changes to \"" + name + "\" \n\n" +
                              "If you click \"No\", your changes will be lost forever! (a long time!)";
 
@@ -551,15 +577,19 @@ namespace Simulator.UserInterface
         }
 
         // Shows save file dialogue and saves simulation to file
-        protected bool ShowSaveFileDialogue()
+        // Returns true if file saved, and false if not
+        private bool ShowSaveFileDialogue()
         {
-            SaveFileDialog fileDialogue = new SaveFileDialog();
-            fileDialogue.Title = "Save Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.AddExtension = true;
-            fileDialogue.CheckPathExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*";
+            SaveFileDialog fileDialogue = new SaveFileDialog
+            {
+                Title = "Save Simulation File",
+                DefaultExt = "sim",
+                AddExtension = true,
+                CheckPathExists = true,
+                Filter = "Simulation files (*.sim)|*.sim|All files (*.*)|*.*"
+            };
 
+            // If file is saved by user, then write simulation state to file
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
                 Filename = fileDialogue.FileName;
@@ -572,18 +602,21 @@ namespace Simulator.UserInterface
             }
         }
 
-        // Shows open file dialogue and opens selected file in new thread and closes current Editor 
-        protected void ShowOpenFileDialogue()
+        // Shows open file dialogue and opens selected file in new thread and closes current Editor
+        private void ShowOpenFileDialogue()
         {
-            OpenFileDialog fileDialogue = new OpenFileDialog();
-            fileDialogue.Title = "Open Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.Multiselect = false;
-            fileDialogue.CheckFileExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
+            OpenFileDialog fileDialogue = new OpenFileDialog
+            {
+                Title = "Open Simulation File",
+                DefaultExt = "sim",
+                Multiselect = false,
+                CheckFileExists = true,
+                Filter = "Simulation files (*.sim)|*.sim"
+            };
 
             if (fileDialogue.ShowDialog() == DialogResult.OK)
             {
+                // Open file in new editor
                 CloseEditor();
                 new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
             }
@@ -595,21 +628,25 @@ namespace Simulator.UserInterface
         }
 
         // Takes a screenshot of the simulation window and saves it as a png image to a specified file
-        protected void Screenshot()
+        private void Screenshot()
         {
             Thread saveThread = new Thread(() =>
             {
+                // Get the rendered simulation
                 RenderTarget2D screenshot = simulation.GetDrawCapture();
 
-                SaveFileDialog fileDialogue = new SaveFileDialog();
-                fileDialogue.Title = "Save Screenshot";
-                fileDialogue.DefaultExt = "png";
-                fileDialogue.AddExtension = true;
-                fileDialogue.CheckPathExists = true;
-                fileDialogue.Filter = "Portable Graphics Format (*.png)|*.png|All files (*.*)|*.*";
+                SaveFileDialog fileDialogue = new SaveFileDialog
+                {
+                    Title = "Save Screenshot",
+                    DefaultExt = "png",
+                    AddExtension = true,
+                    CheckPathExists = true,
+                    Filter = "Portable Graphics Format (*.png)|*.png|All files (*.*)|*.*"
+                };
 
                 if (fileDialogue.ShowDialog() == DialogResult.OK)
                 {
+                    // Save simulation render as png to the specified file
                     FileStream fileStream = new FileStream(fileDialogue.FileName, FileMode.Create);
                     screenshot.SaveAsPng(fileStream, screenshot.Width, screenshot.Height);
                     fileStream.Close();
@@ -620,32 +657,40 @@ namespace Simulator.UserInterface
             saveThread.Start();
         }
 
-        protected void AddTriggerToStopwatch(ISelectable selectable, Stopwatch.StopwatchInput input)
+        // Adds a trigger to the selected stopwatch
+        private void AddTriggerToStopwatch(ISelectable selectable, Stopwatch.StopwatchInput input)
         {
             if (selectable is Stopwatch stopwatch)
             {
                 List<object> availableTriggers = new List<object>();
                 List<object> currentTriggers = new List<object>();
 
+                // Get available triggers to add (any trigger in simulation that isn't on a different input of the selected stopwatch)
                 foreach (SimulationObject simulationObject in simulation.GetObjects())
                 {
                     if (simulationObject is ITrigger trigger)
                     {
+                        // Check if trigger is already assigned to the selected stopwatch
                         if (stopwatch.TriggerDictionary.ContainsKey(trigger))
                         {
+                            // Check is trigger is on the selected input
                             if (stopwatch.TriggerDictionary[trigger] == input)
                             {
+                                // If yes, then make trigger available
                                 availableTriggers.Add(trigger);
                             }
+
+                            // If trigger is already on the other input, then do not add trigger to stopwatch
                         }
                         else
                         {
+                            // If trigger is not assigned already to the stopwatch, then make it available
                             availableTriggers.Add(trigger);
                         }
-                        
                     }
                 }
-                
+
+                // Get current triggers for the stopwatch on the specified input
                 foreach (var trigger in stopwatch.TriggerDictionary)
                 {
                     if (trigger.Value == input)
@@ -654,10 +699,11 @@ namespace Simulator.UserInterface
                     }
                 }
 
-                string title = "Select " + input.ToString().ToLower() +" triggers for " + stopwatch.Name;
+                string title = "Select " + input.ToString().ToLower() + " triggers for " + stopwatch.Name;
 
-               ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
+                ObjectSelectionBox objectSelectionBox = new ObjectSelectionBox(availableTriggers, currentTriggers, title, "Update triggers");
 
+                // Show trigger selection box
                 if (objectSelectionBox.ShowDialog(this) == DialogResult.OK)
                 {
                     // Add new triggers
@@ -672,15 +718,19 @@ namespace Simulator.UserInterface
                         stopwatch.RemoveTrigger(trigger);
                     }
                 }
-            }   
+            }
         }
 
-        // Opens URL of web page in default browser 
-        protected void OpenWebPage(string url)
+        // Opens URL of web page in default browser
+        private void OpenWebPage(string url)
         {
-            var processStartInfo = new System.Diagnostics.ProcessStartInfo();
-            processStartInfo.UseShellExecute = true;
-            processStartInfo.FileName = url;
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = url
+            };
+
+            // Open page
             System.Diagnostics.Process.Start(processStartInfo);
         }
     }

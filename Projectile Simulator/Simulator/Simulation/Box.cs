@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Forms.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 using Simulator.Converters;
 using System.ComponentModel;
@@ -49,11 +44,21 @@ namespace Simulator.Simulation
             get { return Position + (Dimensions / 2); }
         }
 
+        /// <summary>
+        /// Parameterless constructor for Box.
+        /// </summary>
         public Box()
         {
-
         }
 
+        /// <summary>
+        /// Constructor for Box.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="position"></param>
+        /// <param name="textureName"></param>
+        /// <param name="restitutionCoefficient"></param>
+        /// <param name="dimensions"></param>
         public Box(string name, Vector2 position, string textureName, float restitutionCoefficient, Vector2 dimensions) : base(name, position, textureName, restitutionCoefficient)
         {
             Dimensions = dimensions;
@@ -67,7 +72,7 @@ namespace Simulator.Simulation
             if (Selected)
             {
                 DrawBorder(spriteBatch, zoom, BoundingBox, 4);
-            }  
+            }
         }
     }
 }

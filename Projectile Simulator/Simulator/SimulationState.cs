@@ -1,22 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Simulator.Converters;
 using Simulator.Simulation;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Simulator
 {
+    /// <summary>
+    /// An encapsulation of a simulation's objects and properties.
+    /// </summary>
     public class SimulationState
     {
+        /// <summary>
+        /// Gets or sets the objects stored in the state.
+        /// </summary>
         [Browsable(false)]
-        public List<object> Objects { get; set; }
+        public List<object> Objects { get; set; } = new List<object>();
 
+        /// <summary>
+        /// Gets or sets if the simulation is paused.
+        /// </summary>
         [Browsable(false)]
-        public bool Paused { get; set; }
+        public bool Paused { get; set; } = false;
 
+        /// <summary>
+        /// Gets or sets the background colour of the simulation.
+        /// </summary>
         [Browsable(false)]
         public Color BackgroundColour { get; set; } = Color.SkyBlue;
 
@@ -32,9 +42,15 @@ namespace Simulator
             set { BackgroundColour = new Color(value.R, value.G, value.B, value.A); }
         }
 
+        /// <summary>
+        /// Gets or sets the gravitational field strength in the simulation.
+        /// </summary>
         [Browsable(false)]
-        public Vector2 Gravity { get; set; }
+        public Vector2 Gravity { get; set; } = 980 * Vector2.UnitY;
 
+        /// <summary>
+        /// Gets or sets the displayed gravitational field strength as a float. Only to be used for display.
+        /// </summary>
         [JsonIgnore]
         [Category("Physics")]
         [DisplayName("Gravitational acceleration")]
@@ -44,15 +60,19 @@ namespace Simulator
             set { Gravity = ScaleConverter.InverseScaleVector(new Vector2(0, value), SimulationObject.Scale, 1); }
         }
 
+        /// <summary>
+        /// Parameterless constructor for SimulationState.
+        /// </summary>
         public SimulationState()
         {
-            Objects = new List<object>();
         }
 
+        /// <summary>
+        /// Constructor for SimulationState from a list of objects.
+        /// </summary>
+        /// <param name="objects">Objects to save.</param>
         public SimulationState(List<object> objects)
         {
-            Objects = new List<object>();
-
             foreach (object @object in objects)
             {
                 if (@object is IPersistent)

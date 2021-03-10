@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// A Form used to select and check objects from a list.
+    /// </summary>
     public partial class ObjectSelectionBox : Form
     {
+        /// <summary>
+        /// Gets or sets the objects which are checked.
+        /// </summary>
         public List<object> CheckedObjects { get; set; }
 
+        /// <summary>
+        /// Constructor for ObjectSelectionBox.
+        /// </summary>
+        /// <param name="objects">List of all available objects to select from.</param>
+        /// <param name="checkedObjects">List of objects which are already checked.</param>
+        /// <param name="title">Title of the form.</param>
+        /// <param name="buttonPrompt">Prompt to display on the button.</param>
         public ObjectSelectionBox(List<object> objects, List<object> checkedObjects, string title, string buttonPrompt)
         {
             InitializeComponent();
@@ -35,14 +44,17 @@ namespace Simulator.UserInterface
             checkedListBox.Items.AddRange(objects.Except(CheckedObjects).ToArray());
 
             Text = title;
-            addTriggersButton.Text = buttonPrompt;
+            updateObjectsButton.Text = buttonPrompt;
         }
 
-        private void addTriggersButton_Click(object sender, EventArgs e)
+        // Accept button clicked
+        private void updateObjectsButton_Click(object sender, EventArgs e)
         {
+            // Create array of checked objects
             object[] objects = new object[checkedListBox.CheckedItems.Count];
             checkedListBox.CheckedItems.CopyTo(objects, 0);
 
+            // Update object list
             CheckedObjects.Clear();
             CheckedObjects.AddRange(objects);
             DialogResult = DialogResult.OK;

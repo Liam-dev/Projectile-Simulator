@@ -730,7 +730,6 @@
         private System.Windows.Forms.ToolStripMenuItem newStopwatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newDetectorToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton undoToolStripButton;
-        private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton redoToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;

@@ -1,38 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Simulator.UserInterface;
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Simulator
 {
-    static class Program
+      static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
-        ///  If arguments contain a filename, then an Editor will open the specified file
+        ///  If arguments contain a filename, then an Editor will open the specified file.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);          
+            Application.SetCompatibleTextRenderingDefault(false);
 
             if (args != null && args.Length > 0)
             {
+                // Get filename argument
                 string filename = args[0];
                 if (File.Exists(filename))
                 {
+                    // Open Editor with filename
                     Application.Run(new Editor(filename, false));
                 }
             }
             else
             {
+                // If no arguments given, then run Homepage form
                 Application.Run(new Homepage());
-            }  
+            }
         }
     }
 }

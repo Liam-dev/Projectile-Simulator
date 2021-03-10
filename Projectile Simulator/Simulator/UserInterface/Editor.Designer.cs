@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Simulator.Simulation.Camera camera1 = new Simulator.Simulation.Camera();
+            Simulator.Simulation.Camera camera1 = new Simulator.Simulation.Camera(1.1f, 8, -20);
             this.simulation = new Simulator.UserInterface.Simulation();
             this.toolbar = new Simulator.UserInterface.Toolbar();
             this.inspector = new Simulator.UserInterface.Inspector();
@@ -40,11 +40,6 @@
             this.simulation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            camera1.MaxZoomLevel = 8;
-            camera1.MinZoomLevel = -20;
-            camera1.OldZoom = 1F;
-            camera1.Zoom = 1F;
-            camera1.ZoomMultiplier = 1.1F;
             this.simulation.Camera = camera1;
             this.simulation.Location = new System.Drawing.Point(5, 52);
             this.simulation.MouseHoverUpdatesOnly = true;

@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.addTriggersButton = new System.Windows.Forms.Button();
+            this.updateObjectsButton = new System.Windows.Forms.Button();
             this.checkedListBox = new System.Windows.Forms.CheckedListBox();
             this.label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // addTriggersButton
+            // updateObjectsButton
             // 
-            this.addTriggersButton.Location = new System.Drawing.Point(89, 176);
-            this.addTriggersButton.Name = "addTriggersButton";
-            this.addTriggersButton.Size = new System.Drawing.Size(100, 23);
-            this.addTriggersButton.TabIndex = 2;
-            this.addTriggersButton.Text = "Select objects";
-            this.addTriggersButton.UseVisualStyleBackColor = true;
-            this.addTriggersButton.Click += new System.EventHandler(this.addTriggersButton_Click);
+            this.updateObjectsButton.Location = new System.Drawing.Point(89, 176);
+            this.updateObjectsButton.Name = "updateObjectsButton";
+            this.updateObjectsButton.Size = new System.Drawing.Size(100, 23);
+            this.updateObjectsButton.TabIndex = 2;
+            this.updateObjectsButton.Text = "Select objects";
+            this.updateObjectsButton.UseVisualStyleBackColor = true;
+            this.updateObjectsButton.Click += new System.EventHandler(this.updateObjectsButton_Click);
             // 
             // checkedListBox
             // 
@@ -68,7 +68,7 @@
             this.ClientSize = new System.Drawing.Size(284, 211);
             this.Controls.Add(this.label);
             this.Controls.Add(this.checkedListBox);
-            this.Controls.Add(this.addTriggersButton);
+            this.Controls.Add(this.updateObjectsButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "ObjectSelectionBox";
@@ -83,7 +83,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button addTriggersButton;
+        private System.Windows.Forms.Button updateObjectsButton;
         private System.Windows.Forms.CheckedListBox checkedListBox;
         private System.Windows.Forms.Label label;
     }

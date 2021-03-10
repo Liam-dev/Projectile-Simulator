@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Simulator.Simulation
 {
+    /// <summary>
+    /// An interface for selecable objects.
+    /// </summary>
     public interface ISelectable
     {
         /// <summary>

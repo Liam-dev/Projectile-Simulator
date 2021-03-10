@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
-using System.ComponentModel;
+using Newtonsoft.Json;
 using Simulator.Converters;
+using System;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
@@ -18,10 +16,14 @@ namespace Simulator.Simulation
     [TypeConverter(typeof(SerializableExpandableObjectConverter))]
     public class SimulationObject : ISelectable, IMovable
     {
-        // Texture of object
+        /// <summary>
+        /// The texture of the object.
+        /// </summary>
         protected Texture2D texture;
 
-        // Texture of selection border
+        /// <summary>
+        /// The texture of the selection border of the object.
+        /// </summary>
         protected Texture2D borderTexture;
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace Simulator.Simulation
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the position of the object.
+        /// Gets or sets the position vector of the object.
         /// </summary>
         [Browsable(false)]
         public Vector2 Position { get; set; }
@@ -48,7 +50,7 @@ namespace Simulator.Simulation
         [JsonIgnore]
         [Browsable(true)]
         [DisplayName("Position")]
-        [Category("Object")]        
+        [Category("Object")]
         public Vector2 DisplayPosition
         {
             get { return ScaleConverter.ScaleVector(Position, Scale, 1, true, 2); }
@@ -125,10 +127,19 @@ namespace Simulator.Simulation
         [DefaultValue(true)]
         public bool Movable { get; set; }
 
+        /// <summary>
+        /// Parameterless constructor for SimulationObject.
+        /// </summary>
         public SimulationObject()
         {
         }
 
+        /// <summary>
+        /// Constructor for SimulationObject.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="textureName">Name of texture to load.</param>
         public SimulationObject(string name, Vector2 position, string textureName)
         {
             Name = name;
@@ -138,23 +149,25 @@ namespace Simulator.Simulation
             Movable = true;
         }
 
-        
+        /// <summary>
+        /// Gets a string that represents the object.
+        /// </summary>
+        /// <returns>The Name of the object.</returns>
         public override string ToString()
         {
             return Name;
         }
-        
 
         /// <summary>
         /// Called when an object in loaded into a simulation.
         /// </summary>
-        /// <param name="Editor">MonoGameServiceEditor</param>
+        /// <param name="Editor">MonoGameServiceEditor.</param>
         public virtual void OnLoad(MonoGameService Editor)
         {
             // Load and apply texture
-            SetTexture(TextureName, Editor.Content);
+            texture = LoadTexture(TextureName, Editor.Content);
 
-            // Load border texture
+            // Load border texture as blank white texture
             borderTexture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
             borderTexture.SetData(new[] { Color.White });
         }
@@ -162,10 +175,9 @@ namespace Simulator.Simulation
         /// <summary>
         /// Updates the object over a certain timespan.
         /// </summary>
-        /// <param name="delta">The time since the last update</param>
+        /// <param name="delta">The time since the last update.</param>
         public virtual void Update(TimeSpan delta)
         {
-            
         }
 
         /// <summary>
@@ -183,10 +195,15 @@ namespace Simulator.Simulation
             }
         }
 
-        // Sets the object's texture from a texture name
-        protected void SetTexture(string textureName, ContentManager content)
+        /// <summary>
+        /// Loads a texture from a name using a ContentManager.
+        /// </summary>
+        /// <param name="textureName">Name of texture to load.</param>
+        /// <param name="content">Content manager to load from.</param>
+        /// <returns>Loaded Texture2D.</returns>
+        protected Texture2D LoadTexture(string textureName, ContentManager content)
         {
-            texture = content.Load<Texture2D>("Textures/" + textureName);
+            return content.Load<Texture2D>("Textures/" + textureName);
         }
 
         public bool Intersects(Vector2 point)
@@ -197,14 +214,21 @@ namespace Simulator.Simulation
         public void Move(Vector2 displacement)
         {
             Position += displacement;
-        }     
+        }
 
-        // Draws a border outline around the object's bounding box
+        /// <summary>
+        /// Draws a border outline around the object's bounding box.
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="zoom">Zoom level of simulation.</param>
+        /// <param name="rectangle">Rectangle to draw border around.</param>
+        /// <param name="width">Width of the border to draw.</param>
         protected void DrawBorder(SpriteBatch spriteBatch, float zoom, Rectangle rectangle, int width)
         {
-            // Border width
-            int _width = (int)MathF.Max(1, MathF.Round(width / MathF.Pow(zoom, 0.5f), 0f));
+            // Calculate border width as a rounded power of -0.5 to give consistent, yet changing border at differnt zoom levels
+            int _width = (int)MathF.Max(1, MathF.Round(width * MathF.Pow(zoom, -0.5f), 0f));
 
+            // Create rectangle sides of border
             Rectangle[] border = new Rectangle[]
             {
                 // Left
@@ -225,6 +249,6 @@ namespace Simulator.Simulation
             {
                 spriteBatch.Draw(borderTexture, side, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0.5f);
             }
-        }   
+        }
     }
 }

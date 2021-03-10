@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Simulator.Simulation;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Simulator.Simulation;
 
 namespace Simulator.UserInterface
 {
@@ -16,7 +11,7 @@ namespace Simulator.UserInterface
     public partial class Inspector : UserControl
     {
         // The current selected object in the inspector
-        protected object selectedObject;
+        private object selectedObject;
 
         /// <summary>
         /// Gets or sets the inspector's selected object.
@@ -34,15 +29,18 @@ namespace Simulator.UserInterface
                 else
                 {
                     selectedObject = propertyGrid.SelectedObject = selectionBox.SelectedItem = value;
-                } 
+                }
             }
-        }           
+        }
 
         /// <summary>
         /// Occurs when the inspector's selected object is changed.
         /// </summary>
         public event EventHandler SelectedObjectChanged;
 
+        /// <summary>
+        /// Constructor for Inspector.
+        /// </summary>
         public Inspector()
         {
             InitializeComponent();
@@ -50,13 +48,12 @@ namespace Simulator.UserInterface
 
         private void Inspector_Load(object sender, EventArgs e)
         {
-
         }
 
         /// <summary>
         /// Sets the data source for the inspector's selection box.
         /// </summary>
-        /// <param name="source">List of objects to set as data source</param>
+        /// <param name="source">List of objects to set as data source.</param>
         public void SetDataSource(List<SimulationObject> source)
         {
             // if object deleted from simulation then clear from inspector

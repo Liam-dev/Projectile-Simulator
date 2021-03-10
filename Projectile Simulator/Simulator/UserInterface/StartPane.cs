@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
 using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Simulator.UserInterface
 {
@@ -15,6 +10,9 @@ namespace Simulator.UserInterface
     /// </summary>
     public partial class StartPane : UserControl
     {
+        /// <summary>
+        /// Constructor for StartPane.
+        /// </summary>
         public StartPane()
         {
             InitializeComponent();
@@ -22,7 +20,6 @@ namespace Simulator.UserInterface
 
         private void StartPane_Load(object sender, EventArgs e)
         {
-
         }
 
         // When new button is clicked, load the selected template simulation into Editor
@@ -30,6 +27,7 @@ namespace Simulator.UserInterface
         {
             if (templateList.SelectedItem != null)
             {
+                // Open new simulation from selected template in a new Editor
                 string templateName = templateList.SelectedItem;
                 string path = "Content/Templates/" + templateName + ".sim";
                 new Thread(() => new Editor(path, true).ShowDialog()).Start();
@@ -47,18 +45,20 @@ namespace Simulator.UserInterface
         private void loadButton_Click(object sender, EventArgs e)
         {
             // Open OpenFileDialog for simulation files
-            OpenFileDialog fileDialogue = new OpenFileDialog();
-            fileDialogue.Title = "Open Simulation File";
-            fileDialogue.DefaultExt = "sim";
-            fileDialogue.Multiselect = false;
-            fileDialogue.CheckFileExists = true;
-            fileDialogue.Filter = "Simulation files (*.sim)|*.sim";
+            OpenFileDialog fileDialogue = new OpenFileDialog
+            {
+                Title = "Open Simulation File",
+                DefaultExt = "sim",
+                Multiselect = false,
+                CheckFileExists = true,
+                Filter = "Simulation files (*.sim)|*.sim"
+            };
 
             if (fileDialogue.ShowDialog(this) == DialogResult.OK)
             {
                 new Thread(() => new Editor(fileDialogue.FileName, false).ShowDialog()).Start();
                 Application.ExitThread();
-            }        
+            }
         }
 
         private void preferencesButton_Click(object sender, EventArgs e)
@@ -75,6 +75,7 @@ namespace Simulator.UserInterface
                 preferences = new EditorPreferences() { AutoName = false, ShowTrajectories = true };
             }
 
+            // Open preferences editor
             new PreferencesEditor(preferences, false).ShowDialog(this);
         }
     }

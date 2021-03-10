@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Simulator
+﻿namespace Simulator
 {
     /// <summary>
     /// Interface for objects that are to be saved to a file.
     /// </summary>
-    interface IPersistent
+     interface IPersistent
     {
-        
     }
-    
 }

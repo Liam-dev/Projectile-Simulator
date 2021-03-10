@@ -1,19 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using Simulator.Converters;
 using Newtonsoft.Json;
+using Simulator.Converters;
+using System.ComponentModel;
 
 namespace Simulator.Simulation
 {
     /// <summary>
     /// A Box with a scalable non-textured rectangular shape.
     /// </summary>
-    class Wall : Box, IScalable
+    public class Wall : Box, IScalable
     {
         /// <summary>
         /// Gets or sets the colour of the wall.
@@ -56,10 +53,21 @@ namespace Simulator.Simulation
         [Browsable(false)]
         public bool MaintainAspectRatio { get; set; }
 
+        /// <summary>
+        /// Parameterless constructor for Wall.
+        /// </summary>
         public Wall()
         {
         }
 
+        /// <summary>
+        /// Constructor for Wall.
+        /// </summary>
+        /// <param name="name">Name of object.</param>
+        /// <param name="position">Position to place object.</param>
+        /// <param name="colour">Colour of the object's texture.</param>
+        /// <param name="restitutionCoefficient">Coefficient of restitution of the object.</param>
+        /// <param name="dimensions">The width and height of the wall.</param>
         public Wall(string name, Vector2 position, Color colour, float restitutionCoefficient, Vector2 dimensions) : base(name, position, "wall", restitutionCoefficient, dimensions)
         {
             Colour = colour;
@@ -69,6 +77,7 @@ namespace Simulator.Simulation
         {
             base.OnLoad(Editor);
 
+            // Create new blank texture for wall
             texture = new Texture2D(Editor.graphics, 1, 1, false, SurfaceFormat.Color);
             texture.SetData(new[] { Colour });
         }
@@ -82,6 +91,5 @@ namespace Simulator.Simulation
                 DrawBorder(spriteBatch, zoom, BoundingBox, 4);
             }
         }
-
     }
 }

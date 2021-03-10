@@ -1,20 +1,26 @@
-﻿using System;
+﻿using Simulator.Simulation;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using Simulator.Simulation;
 
 namespace Simulator.UserInterface
 {
+    /// <summary>
+    /// Form used to name and create a new object.
+    /// </summary>
     public partial class ObjectCreationBox : Form
     {
-        List<string> usedNames = new List<string>();
+        private List<string> usedNames = new List<string>();
 
-        public string ObjectName { get; set; }
+        /// <summary>
+        /// Gets the name of the created object.
+        /// </summary>
+        public string ObjectName { get; private set; }
 
+        /// <summary>
+        /// Constructor for ObjectCreationBox.
+        /// </summary>
+        /// <param name="objects">Objects that have already been created.</param>
         public ObjectCreationBox(List<object> objects)
         {
             InitializeComponent();
@@ -28,19 +34,24 @@ namespace Simulator.UserInterface
             }
         }
 
+        // When accept button is clicked
         private void addButton_Click(object sender, EventArgs e)
         {
+            // Check if entered text is valid
+
             if (textBox.TextLength == 0)
             {
+                // Nothing entered
                 MessageBox.Show("No name was entered", "Invalid name!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else if (usedNames.Contains(textBox.Text))
             {
+                // Name was not unique
                 MessageBox.Show("Name entered was not unique", "Invalid name!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                // Unique name
+                // Unique name entered
                 ObjectName = textBox.Text;
                 DialogResult = DialogResult.OK;
             }
