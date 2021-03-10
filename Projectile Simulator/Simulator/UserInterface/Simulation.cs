@@ -239,7 +239,7 @@ namespace Simulator.UserInterface
             }
 
             // If there is no camera, create a default one
-            if (Camera.Transform == new Matrix())
+            if (Camera == null)
             {
                 Camera = new Camera(1.1f, 8, -20);
             }

@@ -20,10 +20,11 @@ namespace Simulator
 
             if (args != null && args.Length > 0)
             {
-                // Gets filename argument
+                // Get filename argument
                 string filename = args[0];
                 if (File.Exists(filename))
                 {
+                    // Open Editor with filename
                     Application.Run(new Editor(filename, false));
                 }
             }
