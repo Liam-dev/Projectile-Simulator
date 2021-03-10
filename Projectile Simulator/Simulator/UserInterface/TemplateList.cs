@@ -33,22 +33,15 @@ namespace Simulator.UserInterface
 
         private void TemplateList_Load(object sender, EventArgs e)
         {
-            // If loaded into running application, display the built in simulation templates.
-            if (!(Site != null && Site.DesignMode))
+            List<string> files = new List<string>()
             {
-                string path = Directory.GetCurrentDirectory() + templateDirectory;
-                string[] names = Directory.GetFiles(path);
+                "Blank simulation",
+                "Collision example",
+                "Detection example",
+                "Simple cannon"
+            };
 
-                List<string> files = new List<string>();
-
-                // Add templates from directory to list of names of the template files (without extension)
-                foreach (string file in names)
-                {
-                    files.Add(Path.GetFileNameWithoutExtension(file));
-                }
-
-                listBox.DataSource = files;
-            }
+            listBox.DataSource = files;
         }
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)

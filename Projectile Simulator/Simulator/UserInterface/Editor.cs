@@ -66,7 +66,8 @@ namespace Simulator.UserInterface
         /// </summary>
         /// <param name="filename">Name of file to load into editor.</param>
         /// <param name="isTemplate">Whether the file is to be used as template.</param>
-        public Editor(string filename, bool isTemplate = false)
+        /// <param name="state">JSON text of simulation state to deserialize.</param>
+        public Editor(string filename, bool isTemplate = false, string state = default)
         {
             InitializeComponent();
 
@@ -75,8 +76,16 @@ namespace Simulator.UserInterface
 
             WindowState = FormWindowState.Maximized;
 
-            // Load simulation state from file
-            loadedState = FileSaver.ReadJson<SimulationState>(filename);
+            // Load simulation state from file or template
+            if (isTemplate)
+            {
+                loadedState = FileSaver.DeserializeJson<SimulationState>(state);
+            }
+            else
+            {
+                loadedState = FileSaver.ReadJson<SimulationState>(filename);
+            }
+            
 
             // Initialise undo redo stack
             undoRedoStack.AddState(loadedState);

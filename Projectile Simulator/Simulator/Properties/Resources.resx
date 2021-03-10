@@ -117,4 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Blank_simulation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Templates\Blank simulation.sim;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Collision_example" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Templates\Collision example.sim;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Detection_example" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Templates\Detection example.sim;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Simple_cannon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Templates\Simple cannon.sim;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

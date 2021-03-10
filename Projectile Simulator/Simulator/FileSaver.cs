@@ -20,12 +20,8 @@ namespace Simulator
         {
             StreamWriter writer = new StreamWriter(path);
 
-            // Serialize state to JSON string
-            string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.All,
-                PreserveReferencesHandling = PreserveReferencesHandling.All
-            });
+            // Serialize data
+            string data = SerializeJson(state);
 
             writer.Write(data);
 
@@ -45,10 +41,45 @@ namespace Simulator
             T state;
 
             // Attempt to open file
+            string text = reader.ReadToEnd();
+
+            // Deserialize string
+            state = DeserializeJson<T>(text);
+
+            reader.Close();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Serializes generic state to JSON string.
+        /// </summary>
+        /// <typeparam name="T">Type of state.</typeparam>
+        /// <param name="state">State to serialize.</param>
+        /// <returns>Serialized JSON string.</returns>
+        public static string SerializeJson<T>(T state)
+        {
+            string data = JsonConvert.SerializeObject(state, Formatting.Indented, new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                PreserveReferencesHandling = PreserveReferencesHandling.All
+            });
+
+            return data;
+        }
+
+        /// <summary>
+        /// Serializes JSON string to generic state.
+        /// </summary>
+        /// <typeparam name="T">Type of state.</typeparam>
+        /// <param name="text">JSON string to deserialize.</param>
+        /// <returns>Deserialized generic state.</returns>
+        public static T DeserializeJson<T>(string text)
+        {
+            T state;
+
             try
             {
-                string text = reader.ReadToEnd();
-
                 // Deserialize state to JSON string
                 state = JsonConvert.DeserializeObject<T>(text, new JsonSerializerSettings()
                 {
@@ -62,8 +93,6 @@ namespace Simulator
                 MessageBox.Show("File could not be loaded. Loading default file instead.", "File invalid!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return default;
             }
-
-            reader.Close();
 
             return state;
         }

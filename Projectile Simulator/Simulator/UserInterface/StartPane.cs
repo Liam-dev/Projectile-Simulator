@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -26,11 +29,15 @@ namespace Simulator.UserInterface
         private void newButton_Click(object sender, EventArgs e)
         {
             if (templateList.SelectedItem != null)
-            {
+            {  
                 // Open new simulation from selected template in a new Editor
                 string templateName = templateList.SelectedItem;
-                string path = "Content/Templates/" + templateName + ".sim";
-                new Thread(() => new Editor(path, true).ShowDialog()).Start();
+                
+                // Get name of resource
+                string path = templateName.Replace(' ', '_');
+                string data = Properties.Resources.ResourceManager.GetString(path);
+
+                new Thread(() => new Editor(path, true, data).ShowDialog()).Start();
             }
             else
             {

@@ -59,5 +59,101 @@ namespace Simulator.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;$id&quot;: &quot;1&quot;,
+        ///  &quot;$type&quot;: &quot;Simulator.SimulationState, Simulator&quot;,
+        ///  &quot;Objects&quot;: {
+        ///    &quot;$id&quot;: &quot;2&quot;,
+        ///    &quot;$type&quot;: &quot;System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib&quot;,
+        ///    &quot;$values&quot;: [
+        ///      {
+        ///        &quot;$id&quot;: &quot;3&quot;,
+        ///        &quot;$type&quot;: &quot;Simulator.Simulation.Camera, Simulator&quot;,
+        ///        &quot;Transform&quot;: {
+        ///          &quot;$id&quot;: &quot;4&quot;,
+        ///          &quot;$type&quot;: &quot;Microsoft.Xna.Framework.Matrix, MonoGame.Framework&quot;,
+        ///          &quot;M11&quot;: 0.4240979,
+        ///          &quot;M12&quot;: 0.0,
+        ///          &quot;M [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Blank_simulation {
+            get {
+                return ResourceManager.GetString("Blank_simulation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;$id&quot;: &quot;1&quot;,
+        ///  &quot;$type&quot;: &quot;Simulator.SimulationState, Simulator&quot;,
+        ///  &quot;Objects&quot;: {
+        ///    &quot;$id&quot;: &quot;2&quot;,
+        ///    &quot;$type&quot;: &quot;System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib&quot;,
+        ///    &quot;$values&quot;: [
+        ///      {
+        ///        &quot;$id&quot;: &quot;3&quot;,
+        ///        &quot;$type&quot;: &quot;Simulator.Simulation.Camera, Simulator&quot;,
+        ///        &quot;Transform&quot;: {
+        ///          &quot;$id&quot;: &quot;4&quot;,
+        ///          &quot;$type&quot;: &quot;Microsoft.Xna.Framework.Matrix, MonoGame.Framework&quot;,
+        ///          &quot;M11&quot;: 0.56447434,
+        ///          &quot;M12&quot;: 0.0,
+        ///          &quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Collision_example {
+            get {
+                return ResourceManager.GetString("Collision_example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;$id&quot;: &quot;1&quot;,
+        ///  &quot;$type&quot;: &quot;Simulator.SimulationState, Simulator&quot;,
+        ///  &quot;Objects&quot;: {
+        ///    &quot;$id&quot;: &quot;2&quot;,
+        ///    &quot;$type&quot;: &quot;System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib&quot;,
+        ///    &quot;$values&quot;: [
+        ///      {
+        ///        &quot;$id&quot;: &quot;3&quot;,
+        ///        &quot;$type&quot;: &quot;Simulator.Simulation.Camera, Simulator&quot;,
+        ///        &quot;Transform&quot;: {
+        ///          &quot;$id&quot;: &quot;4&quot;,
+        ///          &quot;$type&quot;: &quot;Microsoft.Xna.Framework.Matrix, MonoGame.Framework&quot;,
+        ///          &quot;M11&quot;: 0.8264472,
+        ///          &quot;M12&quot;: 0.0,
+        ///          &quot;M [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Detection_example {
+            get {
+                return ResourceManager.GetString("Detection_example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;$id&quot;: &quot;1&quot;,
+        ///  &quot;$type&quot;: &quot;Simulator.SimulationState, Simulator&quot;,
+        ///  &quot;Objects&quot;: {
+        ///    &quot;$id&quot;: &quot;2&quot;,
+        ///    &quot;$type&quot;: &quot;System.Collections.Generic.List`1[[System.Object, System.Private.CoreLib]], System.Private.CoreLib&quot;,
+        ///    &quot;$values&quot;: [
+        ///      {
+        ///        &quot;$id&quot;: &quot;3&quot;,
+        ///        &quot;$type&quot;: &quot;Simulator.Simulation.Camera, Simulator&quot;,
+        ///        &quot;Transform&quot;: {
+        ///          &quot;$id&quot;: &quot;4&quot;,
+        ///          &quot;$type&quot;: &quot;Microsoft.Xna.Framework.Matrix, MonoGame.Framework&quot;,
+        ///          &quot;M11&quot;: 0.56447434,
+        ///          &quot;M12&quot;: 0.0,
+        ///          &quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Simple_cannon {
+            get {
+                return ResourceManager.GetString("Simple_cannon", resourceCulture);
+            }
+        }
     }
 }
