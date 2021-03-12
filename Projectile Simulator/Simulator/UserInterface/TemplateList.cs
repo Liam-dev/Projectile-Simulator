@@ -11,7 +11,7 @@ namespace Simulator.UserInterface
     public partial class TemplateList : UserControl
     {
         // Directory containing template
-        private string templateDirectory = "/Content/Templates/";
+        private string templateDirectory;
 
         /// <summary>
         /// Occurs when an item in the list is double clicked.

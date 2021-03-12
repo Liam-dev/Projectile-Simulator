@@ -11,7 +11,7 @@ namespace Simulator.Simulation
     /// <summary>
     /// A SimulationObject used to measure distance in a simulation.
     /// </summary>
-     class TapeMeasure : SimulationObject, IPersistent
+    class TapeMeasure : SimulationObject, IPersistent
     {
         /// <summary>
         /// Font used for length display

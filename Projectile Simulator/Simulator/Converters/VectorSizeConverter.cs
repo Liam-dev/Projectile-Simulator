@@ -6,7 +6,7 @@ namespace Simulator.Converters
     /// <summary>
     /// Converter between Vector2 and Size types.
     /// </summary>
-     static class VectorSizeConverter
+    static class VectorSizeConverter
     {
         /// <summary>
         /// Converts Vector2 to Size.

@@ -3,7 +3,7 @@
 namespace Simulator.Simulation
 {
     /// <summary>
-    /// An interface for selecable objects.
+    /// An interface for selectable objects.
     /// </summary>
     public interface ISelectable
     {
