@@ -1,8 +1,7 @@
 # Projectile-Simulator
 Respository for Projectile-Simulator project.
 
-![GitHub Logo](example.png)
-Format: ![Alt Text](url)
+![Projectile simulator application](example.png)
 
 ## Features
 * Real-time physical simulation of projectile motion.
