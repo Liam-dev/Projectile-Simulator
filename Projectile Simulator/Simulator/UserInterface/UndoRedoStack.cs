@@ -79,7 +79,7 @@ namespace Simulator.UserInterface
             }
             else
             {
-                // If stack has only one state, then only peek the current state from the undo stack, rather than popping from the redo stack.
+                // If stack has only no more states, then only peek the current state from the undo stack, rather than popping from the redo stack.
                 return undoStack.Peek();
             }
         }

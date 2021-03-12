@@ -235,12 +235,20 @@ namespace Simulator.UserInterface
                     break;
 
                 case "paste":
-                    JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
-                    string data = JsonConvert.SerializeObject(clipboardObject, Formatting.Indented, settings);
-                    SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
-                    @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
-                    CreateNewObject(@object);
-                    PerformedAction();
+                    if (clipboardObject != null)
+                    {
+                        // Create copy of object
+                        JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
+                        string data = JsonConvert.SerializeObject(clipboardObject, Formatting.Indented, settings);
+                        SimulationObject @object = JsonConvert.DeserializeObject<SimulationObject>(data, settings);
+
+                        @object.Position = simulation.Camera.GetSimulationPostion(simulation.MousePosition);
+
+                        // Get name of object
+                        CreateNewObject(@object);
+
+                        PerformedAction();
+                    }        
                     break;
 
                 case "deleteObject":
