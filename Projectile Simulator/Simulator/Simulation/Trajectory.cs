@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Services;
+using System;
 using System.Collections.Generic;
 
 namespace Simulator.Simulation
@@ -66,7 +67,7 @@ namespace Simulator.Simulation
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, float zoom)
+        public override void Update(TimeSpan delta)
         {
             drawCount++;
 
@@ -75,7 +76,10 @@ namespace Simulator.Simulation
             {
                 points.RemoveAt(0);
             }
+        }
 
+        public override void Draw(SpriteBatch spriteBatch, float zoom)
+        {
             // Draw each trajectory at centre of location
             foreach (Vector2 point in points)
             {

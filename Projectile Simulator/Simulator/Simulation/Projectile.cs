@@ -93,7 +93,7 @@ namespace Simulator.Simulation
         {
             base.OnLoad(Editor);
 
-            trajectory = new Trajectory(Name + "Trajectory", Position, "dot", 300, 50);
+            trajectory = new Trajectory(Name + "Trajectory", Position, "dot", 300, 100);
             trajectory.OnLoad(Editor);
         }
 
@@ -104,13 +104,14 @@ namespace Simulator.Simulation
             ApplyForce(CalculateWeight());
             ApplyForce(CalulateDrag());
 
+            base.Update(delta);
+
             // Add point to trajectory
             if (trajectory != null && Trajectory.Visible)
             {
                 trajectory?.AddPoint(Centre);
+                trajectory.Update(delta);
             }
-
-            base.Update(delta);
         }
 
         public override void Draw(SpriteBatch spriteBatch, float zoom)
