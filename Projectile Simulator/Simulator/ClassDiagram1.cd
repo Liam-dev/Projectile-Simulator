@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Simulator.UserInterface.Editor">
-    <Position X="0.75" Y="2" Width="3.75" />
+    <Position X="3.5" Y="7.25" Width="3.5" />
     <NestedTypes>
       <Delegate Name="Simulator.UserInterface.Editor.SafeCallDelegate" Collapsed="true">
         <TypeIdentifier>
@@ -10,21 +10,14 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>ACAAAIAAACAAQBGAAAKAAAAKBAAAgkBEBBEgAQAQAAI=</HashCode>
+      <HashCode>BCIAQIAAgCMAQHGEAAKAAAEKJAAAkkBEBBEggQAQBAI=</HashCode>
       <FileName>UserInterface\Editor.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Simulator.UserInterface.Inspector">
-    <Position X="10.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>CAAAAgAAACAAAAAkAACQAAgCCAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>UserInterface\Inspector.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Simulator.UserInterface.Simulation">
-    <Position X="6.75" Y="1" Width="3" />
+    <Position X="10.75" Y="6.75" Width="1.5" />
     <NestedTypes>
-      <Enum Name="Simulator.UserInterface.Simulation.ScrollDiretion" Collapsed="true">
+      <Enum Name="Simulator.UserInterface.Simulation.MouseScrollDiretion" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>UserInterface\Simulation.cs</NewMemberFileName>
         </TypeIdentifier>
@@ -36,8 +29,22 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>IQQiGFAAggAEQwAAJkIRBAAABQEAAECICAIAAAFCKBA=</HashCode>
+      <HashCode>IQQiuHAAoAAEA4AgJsIJBFAEFQEAAUCICAIAAINCOFA=</HashCode>
       <FileName>UserInterface\Simulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulator.UserInterface.Homepage">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAAAAAAACAAAACABAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>UserInterface\Homepage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulator.UserInterface.SimulationContextMenu">
+    <Position X="7.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAA0AACAAAQAIAACAACICEAABAAEAICAAACAAAgA=</HashCode>
+      <FileName>UserInterface\SimulationContextMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

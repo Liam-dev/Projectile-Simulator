@@ -113,13 +113,13 @@ namespace Simulator.Simulation
             // Find angle (note negative angle for clockwise rotation)
             float angle = -MathF.Atan2(-(End.Centre.Y - Start.Centre.Y), End.Centre.X - Start.Centre.X);
 
-            // Drawn rectangle width is scaled using the zoom to -0.5 power to maintain size at differnt zoom levels
+            // Drawn rectangle width is scaled using the zoom to -0.5 power to maintain size at different zoom levels
             Rectangle rectangle = new Rectangle((int)Start.Position.X, (int)Start.Position.Y, (int)Length, (int)MathF.Round(Thickness * MathF.Pow(zoom, -0.5f), 0));
 
             spriteBatch.Draw(texture, rectangle, null, Color.White, angle, Vector2.Zero, SpriteEffects.None, 0.2f);
 
             // Draw length as string the side of the centre of the tape measure
-            spriteBatch.DrawString(font, DisplayLength.ToString() + " m", Start.Position + (End.Position - Start.Position) / 2 + new Vector2(40, 40), Color.Black, 0, Vector2.Zero, 1 / zoom, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, DisplayLength.ToString() + " m", Start.Position + (End.Position - Start.Position) / 2 + new Vector2(40, 40), Color.Black, 0, Vector2.Zero, 1 / zoom, SpriteEffects.None, 0.11f);
         }
     }
 }

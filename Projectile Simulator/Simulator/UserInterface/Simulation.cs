@@ -37,7 +37,7 @@ namespace Simulator.UserInterface
         /// <summary>
         /// Update frame time multiplier.
         /// </summary>
-        protected float speed = 1.3f;
+        protected float speed = 2.8f;
 
         /// <summary>
         /// State of Mouse in the previous update frame.

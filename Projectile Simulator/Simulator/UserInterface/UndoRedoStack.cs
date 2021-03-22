@@ -34,13 +34,8 @@ namespace Simulator.UserInterface
         /// <param name="state">State to add.</param>
         public void AddState(T state)
         {
-            // Create a copy of the state through serialization and deserialization
-            JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
-            string data = JsonConvert.SerializeObject(state, Formatting.Indented, settings);
-            T copiedState = JsonConvert.DeserializeObject<T>(data, settings);
-
-            // Push state to undo stack and clear redo stack
-            undoStack.Push(copiedState);
+            // Push copy of state to undo stack and clear redo stack
+            undoStack.Push(CopyState(state));
             redoStack.Clear();
         }
 
@@ -55,12 +50,12 @@ namespace Simulator.UserInterface
                 // Transfer the state at top of undo stack to top of redo stack and return the previously added state (peek top of undo stack)
                 T undoneState = undoStack.Pop();
                 redoStack.Push(undoneState);
-                return undoStack.Peek();
+                return CopyState(undoStack.Peek());
             }
             else
             {
                 // If stack has only one state, then only peek the current state from the undo stack, rather than popping.
-                return undoStack.Peek();
+                return CopyState(undoStack.Peek());
             }
         }
 
@@ -75,13 +70,21 @@ namespace Simulator.UserInterface
                 // Transfer the state at top of redo stack to top of undo stack and return the redone state
                 T redoneState = redoStack.Pop();
                 undoStack.Push(redoneState);
-                return redoneState;
+                return CopyState(redoneState);
             }
             else
             {
                 // If stack has only no more states, then only peek the current state from the undo stack, rather than popping from the redo stack.
-                return undoStack.Peek();
+                return CopyState(undoStack.Peek());
             }
+        }
+
+        protected T CopyState(T state)
+        {
+            // Create a copy of the state through serialization and deserialization
+            JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, PreserveReferencesHandling = PreserveReferencesHandling.All };
+            string data = JsonConvert.SerializeObject(state, Formatting.Indented, settings);
+            return JsonConvert.DeserializeObject<T>(data, settings);
         }
 
         /// <summary>

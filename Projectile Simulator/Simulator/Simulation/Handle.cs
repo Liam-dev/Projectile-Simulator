@@ -61,7 +61,7 @@ namespace Simulator.Simulation
         {
             // Scale the drawing and selection area by 1 / zoom factor
             this.zoom = zoom;
-            spriteBatch.Draw(texture, Position, null, null, null, 0, new Vector2(1 / zoom), Color.White, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, Position, null, null, null, 0, new Vector2(1 / zoom), Color.White, SpriteEffects.None, 0.1f);
         }
     }
 }

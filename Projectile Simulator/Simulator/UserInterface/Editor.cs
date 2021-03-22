@@ -84,8 +84,13 @@ namespace Simulator.UserInterface
             else
             {
                 loadedState = FileSaver.ReadJson<SimulationState>(filename);
-            }
-            
+
+                // Test if file didn't load correctly and set blank state
+                if (loadedState == null)
+                {
+                    loadedState = new SimulationState();
+                }
+            }          
 
             // Initialise undo redo stack
             undoRedoStack.AddState(loadedState);
